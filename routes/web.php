@@ -16,3 +16,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+Route::get('dashboard','Admin\DashboardController@index')->name('dashboard');
+Route::get('dashboard/subjects','Admin\DashboardController@subjects')->name('subjects');
+Route::get('dashboard/roles','Admin\DashboardController@roles')->name('roles');

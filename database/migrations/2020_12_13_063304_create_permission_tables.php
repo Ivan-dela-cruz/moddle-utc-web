@@ -23,14 +23,19 @@ class CreatePermissionTables extends Migration
         Schema::create($tableNames['permissions'], function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->string('guard_name');
+            $table->string('modulo');
+            $table->string('alias');
+            $table->string('guard_name')->default('web');
             $table->timestamps();
         });
 
         Schema::create($tableNames['roles'], function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->string('guard_name');
+            $table->string('description')->nullable();
+            $table->boolean('status')->nullable()->default(true);
+            $table->string('guard_name')->default('web');
+            $table->softDeletes();
             $table->timestamps();
         });
 
