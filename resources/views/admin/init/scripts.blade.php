@@ -45,6 +45,11 @@ window.livewire.on('teacherStore', () => {
     $('#createModal').modal('hide');
     $('#updateModal').modal('hide');
 });
+window.livewire.on('levelStore', () => {
+    $('#createModal').modal('hide');
+    $('#updateModal').modal('hide');
+});
+
 
 </script>
 
