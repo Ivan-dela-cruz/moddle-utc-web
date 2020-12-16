@@ -24,3 +24,4 @@ Route::get('dashboard','Admin\DashboardController@index')->name('dashboard');
 Route::get('dashboard/subjects','Admin\DashboardController@subjects')->name('subjects');
 Route::get('dashboard/roles','Admin\DashboardController@roles')->name('roles');
 Route::get('dashboard/students','Admin\DashboardController@students')->name('students');
+Route::get('dashboard/teachers','Admin\DashboardController@teachers')->name('teachers');
