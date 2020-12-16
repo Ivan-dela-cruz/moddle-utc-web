@@ -79,13 +79,23 @@ class="{{request()->is('/ruta')?'active':''}}"
                         <li><a href="">Usuarios</a></li>
                     </ul>
                 </li>
-               
                 <li class="nav-item pcoded-hasmenu">
                     <a href="javascript: return void();" class="nav-link ">
                         <span class="pcoded-micon">
                             <i class="feather icon-layout"></i>
                         </span>
-                        <span class="pcoded-mtext">Clientes</span>
+                        <span class="pcoded-mtext">Estudiantes</span>
+                    </a>
+                    <ul class="pcoded-submenu">
+                        <li><a href="{{route('students')}}">Estudiantes</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item pcoded-hasmenu">
+                    <a href="javascript: return void();" class="nav-link ">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-layout"></i>
+                        </span>
+                        <span class="pcoded-mtext">Materias</span>
                     </a>
                     <ul class="pcoded-submenu">
                         <li><a href="{{route('subjects')}}">Lista de materias</a></li>
