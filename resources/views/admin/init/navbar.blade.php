@@ -101,6 +101,17 @@ class="{{request()->is('/ruta')?'active':''}}"
                         <li><a href="{{route('subjects')}}">Lista de materias</a></li>
                     </ul>
                 </li>
+                <li class="nav-item pcoded-hasmenu">
+                    <a href="javascript: return void();" class="nav-link ">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-layout"></i>
+                        </span>
+                        <span class="pcoded-mtext">Profesores</span>
+                    </a>
+                    <ul class="pcoded-submenu">
+                        <li><a href="{{route('teachers')}}">Lista de profesores</a></li>
+                    </ul>
+                </li>
 
             
             
