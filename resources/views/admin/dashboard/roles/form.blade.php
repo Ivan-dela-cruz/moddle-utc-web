@@ -2,28 +2,39 @@
     <div class="row">
 
         <div class="col-sm-12">
-            <div class="form-group">
+            <div class="form-group fill">
                 <label class="floating-label" for="Name">Nombre</label>
-                <input type="text" class="form-control" id="Name" placeholder="">
+                <input type="text"  class="form-control" id="Name" wire:model="name" placeholder="">
+                @error('name')
+                <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
         </div>
         <div class="col-sm-12">
             <div class="form-group fill">
-                <label class="floating-label" for="Email">Descripción</label>
-                <input type="email" class="form-control" id="Email" placeholder="">
+                <label class="floating-label" for="description">Descripción</label>
+                <input type="text"  class="form-control" id="description" wire:model="description" placeholder="">
+                @error('description')
+                <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
         </div>
         
         <div class="col-sm-12">
-            <div class="form-group">
-                <label class="floating-label" for="Sex">Estado</label>
-                <select class="form-control" id="Sex">
-                    <option value="male">Activo</option>
-                    <option value="female">Inactivo</option>
+            <div class="form-group fill">
+                <label class="floating-label" for="status">Estado</label>
+                <select class="form-control" name="status" id="exampleFormControlInput3" wire:model="status">
+                    <option value="">Seleciona estado</option>
+                    <option value="1">Activo</option>
+                    <option value="0">Inactivo</option>
                 </select>
+                
+                @error('status')
+                <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
         </div>
-        <div class="col-sm-12">
+        <div class="col-sm-12 table-responsive">
              <div class="form-group">
                 <h6>Permisos</h6>
              </div>
@@ -43,7 +54,7 @@
                         <tr>
                             <td class="text-left">{{$k}}</td>
                             @foreach($v as $p)
-                                <td><input type="checkbox" name="permissions[]" value="{{$p->id}}"></td>
+                                <td><input wire:model='select_permissions.{{ $p->id}}' type="checkbox" name="select_permissions[]" value="{{$p->id}}"></td>
                             @endforeach
                         </tr>
                     @endforeach
@@ -51,7 +62,7 @@
            </table>
         </div>
         <div class="col-sm-12">
-            <button class="btn btn-primary">Guardar</button>
+            <button  wire:click.prevent="store()" class="btn btn-primary">Guardar</button>
             <button class="btn btn-danger">Cancelar</button>
         </div>
     </div>
