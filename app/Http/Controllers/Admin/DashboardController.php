@@ -49,4 +49,9 @@ class DashboardController extends Controller
     {
         return view('admin.dashboard.teachers.index');
     }
+    public function levels()
+    {
+        return view('admin.dashboard.levels.index');
+        
+    }
 }
