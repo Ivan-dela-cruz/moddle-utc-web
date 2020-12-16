@@ -114,7 +114,7 @@ class="{{request()->is('/ruta')?'active':''}}"
                 </li>
 
             
-                
+            
                
                 
                  <li class="nav-item pcoded-hasmenu">
@@ -125,7 +125,7 @@ class="{{request()->is('/ruta')?'active':''}}"
                         <span class="pcoded-mtext">Configuraciones</span>
                     </a>
                     <ul class="pcoded-submenu">
-                        <li><a href="">Alergías</a></li>
+                        <li><a href="{{route('periods')}}">Periodos</a></li>
                         <li><a href="">Empleados</a></li>
 
                        

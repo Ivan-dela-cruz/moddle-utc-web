@@ -31,7 +31,7 @@ class DashboardController extends Controller
    
     public function periods()
     {
-        //
+        return view('admin.dashboard.periods.index');
     }
 
    
