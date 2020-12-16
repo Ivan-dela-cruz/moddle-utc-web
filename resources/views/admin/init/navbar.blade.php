@@ -76,7 +76,7 @@ class="{{request()->is('/ruta')?'active':''}}"
                         <span class="pcoded-mtext">Usuarios</span>
                     </a>
                     <ul class="pcoded-submenu">
-                        <li><a href="">Cursos</a></li>
+                        <li><a href="">Usuarios</a></li>
                     </ul>
                 </li>
                
@@ -85,7 +85,7 @@ class="{{request()->is('/ruta')?'active':''}}"
                         <span class="pcoded-micon">
                             <i class="feather icon-layout"></i>
                         </span>
-                        <span class="pcoded-mtext">Materias</span>
+                        <span class="pcoded-mtext">Clientes</span>
                     </a>
                     <ul class="pcoded-submenu">
                         <li><a href="{{route('subjects')}}">Lista de materias</a></li>
@@ -105,7 +105,7 @@ class="{{request()->is('/ruta')?'active':''}}"
                     </a>
                     <ul class="pcoded-submenu">
                         <li><a href="">Alergías</a></li>
-                        <li><a href="">Especialidades</a></li>
+                        <li><a href="">Empleados</a></li>
 
                        
                     </ul>

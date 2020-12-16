@@ -9,13 +9,12 @@ use Spatie\Permission\Models\Role as HasRoles;
 class Roles extends Component
 {
     public  $roles,$permissions,$name, $description, $status, $data_id;
-
+    public $select_permissions  = [];
     public function render()
     {
         $this->roles = HasRoles::all();
         $this->permissions = Permission::all();
        //->groupBy('modulo')
-    	
         return view('livewire.roles');
     }
 
@@ -32,10 +31,11 @@ class Roles extends Component
     		'name'	=>	'required',
     		'description' => 'required',
     		'status' => 'required'
-    	]);
+        ]);
+       //dd($this->select_permissions);
         $role = HasRoles::create($validation);
         $role->save();
-        $role->syncPermissions($request->get('permissions'));
+        $role->syncPermissions($this->select_permissions);
 
     	session()->flash('message', 'Role creado con exíto.');
     	$this->resetInputFields();
