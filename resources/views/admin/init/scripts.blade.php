@@ -34,6 +34,11 @@ window.livewire.on('subjectStore', () => {
     $('#updateModal').modal('hide');
 });
 
+window.livewire.on('studentStore', () => {
+    $('#createModal').modal('hide');
+    $('#updateModal').modal('hide');
+});
+
 </script>
 
 @yield('scripts')

@@ -19,7 +19,7 @@ class DashboardController extends Controller
     }
 
    
-    public function users($id)
+    public function users()
     {
         //
     }
@@ -29,23 +29,23 @@ class DashboardController extends Controller
     }
 
    
-    public function periods($id)
+    public function periods()
     {
         //
     }
 
    
-    public function courses(Request $request, $id)
+    public function courses()
     {
         //
     }
 
   
-    public function students($id)
+    public function students()
     {
-        //
+        return view('admin.dashboard.students.index');
     }
-     public function teachers($id)
+     public function teachers()
     {
         //
     }
