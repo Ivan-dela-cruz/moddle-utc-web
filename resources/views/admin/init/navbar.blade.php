@@ -126,7 +126,7 @@ class="{{request()->is('/ruta')?'active':''}}"
                     </a>
                     <ul class="pcoded-submenu">
                         <li><a href="{{route('periods')}}">Periodos</a></li>
-                        <li><a href="">Empleados</a></li>
+                        <li><a href="{{route('courses')}}">Cursos</a></li>
 
                        
                     </ul>
