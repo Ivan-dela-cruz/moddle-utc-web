@@ -37,7 +37,7 @@ class DashboardController extends Controller
    
     public function courses()
     {
-        //
+        return view('admin.dashboard.courses.index');
     }
 
   

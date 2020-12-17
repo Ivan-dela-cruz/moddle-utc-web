@@ -28,6 +28,10 @@
  @livewireScripts
 
 <script type="text/javascript">
+window.livewire.on('courseStore', () => {
+    $('#createModal').modal('hide');
+    $('#updateModal').modal('hide');
+});
 window.livewire.on('periodStore', () => {
     $('#createModal').modal('hide');
     $('#updateModal').modal('hide');

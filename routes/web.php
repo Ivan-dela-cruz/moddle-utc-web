@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
+Route::get('dashboard/courses','Admin\DashboardController@courses')->name('courses');
 Auth::routes();
 Route::get('dashboard/periods','Admin\DashboardController@periods')->name('periods');
 Route::get('/home', 'HomeController@index')->name('home');
