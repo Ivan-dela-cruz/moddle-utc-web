@@ -16,6 +16,7 @@
             <tr>
                 <th>Nombre</th>
                 <th>Descripcion</th>
+                <th>Ciclo</th>
                 <th>Estado</th>
             </tr>
         </thead>
@@ -24,7 +25,8 @@
         	@foreach($subjects as $data)
         	<tr>	
         		<td>{{ $data->name }}</td>
-        		<td>{{ $data->description }}</td>
+                <td>{{ $data->description }}</td>
+                <td>{{ $data->level->name}}</td>
         		<td>
                     @if ($data->status === 1)
                          <span

@@ -27,5 +27,7 @@ Route::get('dashboard/students','Admin\DashboardController@students')->name('stu
 
 Route::get('dashboard/teachers','Admin\DashboardController@teachers')->name('teachers');
 Route::get('dashboard/levels','Admin\DashboardController@levels')->name('levels');
+Route::get('dashboard/tasks','Admin\DashboardController@tasks')->name('tasks');
+Route::get('dashboard/files','Admin\DashboardController@files')->name('files');
 
 

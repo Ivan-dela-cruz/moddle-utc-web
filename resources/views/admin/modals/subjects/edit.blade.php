@@ -29,6 +29,17 @@
                         @enderror
                     </div>
                     <div class="form-group">
+                        <label for="exampleFormControlInput3">Ciclo</label>
+                        <select class="form-control" id="exampleFormControlInput3" wire:model="level_id">
+                            <option value="">Seleccione</option>
+                            @foreach ($levels as $level)
+                            <option value="{{ $level->id }}">{{$level->name}}</option>
+                            @endforeach
+                        </select>
+                        @error('status')<span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="form-group">
                         <label for="exampleFormControlInput3">Estado</label>
                         <select class="form-control" id="exampleFormControlInput3" wire:model="status">
                             <option value="">Select</option>

@@ -54,4 +54,14 @@ class DashboardController extends Controller
         return view('admin.dashboard.levels.index');
         
     }
+    public function tasks()
+    {
+        return view('admin.dashboard.tasks.index');
+        
+    }
+    public function files()
+    {
+        return view('admin.dashboard.file.index');
+        
+    }
 }

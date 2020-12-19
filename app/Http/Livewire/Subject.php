@@ -4,14 +4,15 @@ namespace App\Http\Livewire;
 
 use App\Subject as Subjects;
 use Livewire\Component;
-
+use App\Level;
 
 class Subject extends Component
 {
-    public  $subjects, $name, $description, $slug, $status, $data_id;
+    public  $subjects,$levels, $name, $description, $slug, $status, $data_id,$level_id;
 
     public function render()
     {
+        $this->levels = Level::all();
     	$this->subjects = Subjects::all();
     	
         return view('livewire.subject');
@@ -22,6 +23,8 @@ class Subject extends Component
     	$this->name = '';
     	$this->description = '';
         $this->slug = '';
+        $this->status = '';
+        $this->level_id = '';
     }
 
     public function store()
@@ -29,7 +32,10 @@ class Subject extends Component
     	$validation = $this->validate([
     		'name'	=>	'required',
     		'description' => 'required',
-    		'slug' => 'required'
+            'slug' => 'required',
+            'status' => 'required',
+            'level_id' => 'required'
+            
     	]);
     	Subjects::create($validation);
     	session()->flash('message', 'Materia creada con exíto.');
@@ -44,7 +50,9 @@ class Subject extends Component
         $this->name = $data->name;
         $this->description = $data->description;
         $this->slug = $data->slug;
+        $this->level_id = $data->level_id;
         $this->data_id = $id;
+        $this->status = $data->status ;
     }
 
     public function update()
@@ -52,7 +60,9 @@ class Subject extends Component
         $validate = $this->validate([
             'name' => 'required',
             'description' => 'required',
-            'slug' => 'required'
+            'slug' => 'required',
+            'status' => 'required',
+            'level_id' => 'required'
         ]);
 
         $data = Subjects::find($this->data_id);
@@ -60,7 +70,9 @@ class Subject extends Component
         $data->update([
             'name'       =>   $this->name,
             'description'         =>  $this->description,
-            'slug'            =>  $this->slug
+            'slug'            =>  $this->slug,
+            'status'            =>  $this->status,
+            'level_id'            =>  $this->level_id
         ]);
 
         session()->flash('message', 'Materia actualizada con exíto.');

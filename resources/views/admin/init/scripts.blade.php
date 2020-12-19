@@ -53,6 +53,14 @@ window.livewire.on('levelStore', () => {
     $('#createModal').modal('hide');
     $('#updateModal').modal('hide');
 });
+window.livewire.on('taskStore', () => {
+    $('#createModal').modal('hide');
+    $('#updateModal').modal('hide');
+});
+window.livewire.on('fileStore', () => {
+    $('#createModal').modal('hide');
+    $('#updateModal').modal('hide');
+});
 
 
 </script>
