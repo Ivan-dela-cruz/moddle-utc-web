@@ -50,16 +50,22 @@
                     <div class="card-body p-b-0">
                         @foreach($roles as $role)
                             <div class="align-middle m-b-25">
-                            <img src="{{asset('assets2/images/user/avatar-2.jpg')}}" alt="user image" class="img-radius align-top m-r-15">
-                            <div  class="d-inline-block">
-                                <a href="#!">
-                                    <h6>{{$role->name}}</h6>
-                                </a>
-                                <small class="m-b-0">{{$role->description}}</small>
-                                <span @if($role->status == 0  )style="background-color:red;"@endif 
-                                    class="status @if($role->status == 1  ) active @else active text-danger @endif"></span>
+                                <div  class="d-inline-block">
+                                    <ul style="list-style: none; margin-left: -25px;">
+                                        <li><a href="javascript: return void();"><i class="fa fa-edit"></i></a></li>
+                                        <li><a href="javascript: return void();"><i class="fa fa-trash text-danger"></i></a></li>
+                                    </ul>
+                                </div>
+                                
+                                <div  class="d-inline-block ml-2">
+                                    <a href="javascript: return void();">
+                                        <h6>{{$role->name}}</h6>
+                                    </a>
+                                    <small class="m-b-0">{{$role->description}}</small>
+                                    <span @if($role->status == 0  )style="background-color:red;"@endif 
+                                        class="status @if($role->status == 1  ) active @else active text-danger @endif"></span>
+                                </div>
                             </div>
-                        </div>
                         @endforeach
                     </div>
                 </div>
