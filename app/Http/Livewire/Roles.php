@@ -23,6 +23,7 @@ class Roles extends Component
     	$this->name = '';
     	$this->description = '';
         $this->status = '';
+        $select_permissions  = [];
     }
 
     public function store()
@@ -48,6 +49,7 @@ class Roles extends Component
         $this->description = $data->description;
         $this->status = $data->status;
         $this->data_id = $id;
+        
     }
 
     public function update()
