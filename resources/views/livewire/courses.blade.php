@@ -13,19 +13,34 @@
     <table class="table nowrap mb-2 dataTable">
         <thead>
             <tr>
-                <th>Curso</th>
-                <th>Inico</th>
-                <th>Fin</th>
+                <th>Image</th>
+                <th>Nombre</th>
+                <th>Descripciòn</th>
+                <th>Carrera</th>
+                <th>content</th>
+                <th>Profesor</th>
+                <th>Periodo Acàdemico</th>
+                <th>Ciclo</th>
+                <th>Materia</th>
                 <th>Estado</th>
             </tr>
         </thead>
-
         <tbody>
         	@foreach($courses as $data)
         	<tr>	
+                <td>
+                    <div class="d-inline-block align-middle">
+                        <img src="{{$data->url_image}}" alt="user image" class="img-radius align-top m-r-15" style="width:40px;">
+                    </div>
+                </td>
         		<td>{{ $data->name }}</td>
-                <td>{{ $data->start_date }}</td>
-                <td>{{ $data->end_date }}</td>
+                <td>{{ $data->description }}</td>
+                <td>{{ $data->career }}</td>
+                <td>{{ $data->content }}</td>
+                <td>{{ $data->teacher->name}}</td>
+                <td>{{ $data->academic_period->name }}</td>
+                <td>{{ $data->level->name }}</td>
+                <td>{{ $data->subject->name}}</td>
         		<td>
                     @if ($data->status === 1)
                          <span

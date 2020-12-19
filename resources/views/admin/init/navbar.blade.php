@@ -123,9 +123,39 @@ class="{{request()->is('/ruta')?'active':''}}"
                         <li><a href="{{route('levels')}}">Ciclos</a></li>
                     </ul>
                 </li>
-            
-            
-               
+                <li class="nav-item pcoded-hasmenu">
+                    <a href="javascript: return void();" class="nav-link ">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-layout"></i>
+                        </span>
+                        <span class="pcoded-mtext">Cursos</span>
+                    </a>
+                    <ul class="pcoded-submenu">
+                        <li><a href="{{route('courses')}}">Cursos</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item pcoded-hasmenu">
+                    <a href="javascript: return void();" class="nav-link ">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-layout"></i>
+                        </span>
+                        <span class="pcoded-mtext">Tareas</span>
+                    </a>
+                    <ul class="pcoded-submenu">
+                        <li><a href="{{route('tasks')}}">Tareas</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item pcoded-hasmenu">
+                    <a href="javascript: return void();" class="nav-link ">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-layout"></i>
+                        </span>
+                        <span class="pcoded-mtext">Archivos</span>
+                    </a>
+                    <ul class="pcoded-submenu">
+                        <li><a href="{{route('files')}}">Archivos</a></li>
+                    </ul>
+                </li>
                 
                  <li class="nav-item pcoded-hasmenu">
                     <a href="javascript: return void();" class="nav-link ">

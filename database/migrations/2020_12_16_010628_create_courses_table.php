@@ -15,7 +15,9 @@ class CreateCoursesTable extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('period_level_subject_id');
+            $table->unsignedBigInteger('academic_period_id');
+            $table->unsignedBigInteger('level_id');
+            $table->unsignedBigInteger('subject_id');
             $table->unsignedBigInteger('teacher_id');
             $table->string('name')->nullable();
             $table->string('description')->nullable();
@@ -26,8 +28,10 @@ class CreateCoursesTable extends Migration
             $table->boolean('status')->nullable()->default(true);
             $table->softDeletes();
             $table->timestamps();
-            $table->foreign('period_level_subject_id')->references('id')->on('period_level_subject');
+            $table->foreign('academic_period_id')->references('id')->on('academic_periods');
+            $table->foreign('level_id')->references('id')->on('levels');
             $table->foreign('teacher_id')->references('id')->on('teachers');
+            $table->foreign('subject_id')->references('id')->on('subjects');
         });
     }
     /**
