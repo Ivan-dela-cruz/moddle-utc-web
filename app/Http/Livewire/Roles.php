@@ -10,6 +10,7 @@ class Roles extends Component
 {
     public  $roles,$permissions,$name, $description, $status, $data_id;
     public $select_permissions  = [];
+    public $confirming, $action = 'POST';
     public function render()
     {
         $this->roles = HasRoles::all();
@@ -23,7 +24,9 @@ class Roles extends Component
     	$this->name = '';
     	$this->description = '';
         $this->status = '';
-        $select_permissions  = [];
+        $this->select_permissions  = [];
+        $this->action = 'POST';
+    
     }
 
     public function store()
@@ -33,13 +36,15 @@ class Roles extends Component
     		'description' => 'required',
     		'status' => 'required'
         ]);
-       //dd($this->select_permissions);
+      // dd($this->select_permissions);
         $role = HasRoles::create($validation);
         $role->save();
         $role->syncPermissions($this->select_permissions);
 
     	session()->flash('message', 'Role creado con exíto.');
-    	$this->resetInputFields();
+        $this->resetInputFields();
+        $this->action = 'POST';
+        $this->emit('Success');
     }
 
     public function edit($id)
@@ -49,7 +54,35 @@ class Roles extends Component
         $this->description = $data->description;
         $this->status = $data->status;
         $this->data_id = $id;
+        $permissions = $data->permissions->pluck('id');
         
+        $data_list = [];
+        $list = [];
+        $cont=1;
+        $p_list = Permission::all('id');
+        foreach($p_list as $per){
+            if(count($permissions)>0){
+                $var_temp = false;
+                foreach ($permissions as $k => $v){
+                    if($per->id == $v){
+                      
+                       $var_temp = $v;
+                        unset($permissions[$k]);
+                        break;
+                    }else{
+                        $var_temp = false;
+                    }
+                }
+                $data_list[$cont] =  $var_temp;
+               
+                $cont ++;
+            }else{
+                $data_list[$cont] = false;
+                $cont ++;
+            }
+        }
+        $this->select_permissions =  $data_list;
+        $this->action = 'PUT';
     }
 
     public function update()
@@ -70,15 +103,25 @@ class Roles extends Component
          // revocamos todos los permisos otorgados
         $role->revokePermissionTo(Permission::all());
         // sincronizar los nuevos permisos
-        $role->syncPermissions($request->get('permissions'));
+        $role->syncPermissions($this->select_permissions);
         
         session()->flash('message', 'Role actualizada con exíto.');
         $this->resetInputFields();
+        $this->action = 'POST';
+        $this->alert('success', 'Rol actualizado exitosamente!');
     }
 
     public function delete($id)
     {
-        HasRoles::find($id)->delete();
-        session()->flash('message', 'Role eliminada con exíto.');
+       HasRoles::find($id)->delete();
+        $this->alert('success', 'Rol eliminado exitosamente!');
+        $this->resetInputFields();
+        $this->action = 'POST';
     }
+    public function confirmDelete($id)
+    {
+        $this->confirming = $id;
+    }
+
+   
 }

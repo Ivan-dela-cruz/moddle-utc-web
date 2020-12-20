@@ -62,8 +62,13 @@
            </table>
         </div>
         <div class="col-sm-12">
-            <button  wire:click.prevent="store()" class="btn btn-primary">Guardar</button>
-            <button class="btn btn-danger">Cancelar</button>
+         
+            @if($action=='POST')
+                <button  wire:click.prevent="store()" class="btn btn-primary ">Guardar</button>
+            @else
+                <button  wire:click.prevent="update()" class="btn btn-success ">Update</button>
+            @endif
+            <button wire:click.prevent="resetInputFields()" class="btn btn-danger">Cancelar</button>
         </div>
     </div>
 </form>

@@ -29,7 +29,7 @@ $(document).ready(function() {
                 '<a href="#!"></a>' +
             '</div>' +
             '<div class="style-block">' +
-                '<h4 class="mb-2">Souri <small class="font-weight-normal">dental</small></h4>' +
+                '<h4 class="mb-2">UTC <small class="font-weight-normal">Cursos</small></h4>' +
                 '<hr class="">' +
                 '<div class="m-style-scroller">' +
                     '<h6 class="mt-2">Diseño</h6>' +
@@ -122,7 +122,7 @@ $('body').append('' +
                 '<a href="#!"></a>' +
             '</div>' +
             '<div class="style-block">' +
-                '<h4 class="mb-2">Souri <small class="font-weight-normal">dental</small></h4>' +
+                '<h4 class="mb-2">UTC <small class="font-weight-normal">Cursos</small></h4>' +
                 '<hr class="">' +
                 '<div class="m-style-scroller">' +
                     '<h6 class="mt-2">Diseño</h6>' +
