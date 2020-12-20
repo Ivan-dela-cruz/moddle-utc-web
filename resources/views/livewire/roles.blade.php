@@ -52,9 +52,21 @@
                             <div class="align-middle m-b-25">
                                 <div  class="d-inline-block">
                                     <ul style="list-style: none; margin-left: -25px;">
-                                        <li><a href="javascript: return void();"><i class="fa fa-edit"></i></a></li>
-                                        <li><a href="javascript: return void();"><i class="fa fa-trash text-danger"></i></a></li>
+                                        <li><a class="btn btn-sm btn-primary"  wire:click="edit({{ $role->id }})"
+                                            href="javascript:void(0);"><i class="fas fa-pencil-alt text-white "></i></a></li>
+                                        <li>
+                                            @if($confirming===$role->id)
+                                            <a class="btn btn-sm btn-danger" wire:click="delete({{ $role->id }})"
+                                            href="javascript:void(0);"><i class="fas fa-check-circle text-withe"></i></a>
+                                            @else
+                                            <a  class="btn btn-sm btn-warning" wire:click="confirmDelete({{ $role->id }})"
+                                            href="javascript:void(0);"><i class="fas fa-trash-alt text-white"></i></a>
+                                            @endif
+                                            
+                                        </li>
+                                           
                                     </ul>
+                                   
                                 </div>
                                 
                                 <div  class="d-inline-block ml-2">
@@ -72,4 +84,37 @@
             </div>
         </div>
     </div>
+    @push('scripts')
+<script type="text/javascript">
+    
+document.addEventListener('DOMContentLoaded', function () {
+
+    @this.on('triggerDelete', id => {
+        Swal.fire({
+            title: 'Are You Sure?',
+            text: 'Order record will be deleted!',
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: 'var(--success)',
+            cancelButtonColor: 'var(--primary)',
+            confirmButtonText: 'Delete!'
+        }).then((result) => {
+    //if user clicks on delete
+            if (result.value) {
+         // calling destroy method to delete
+                @this.call('delete',id)
+        // success response
+                responseAlert({title: session('message'), type: 'success'});
+                
+            } else {
+                responseAlert({
+                    title: 'Operation Cancelled!',
+                    type: 'success'
+                });
+            }
+        });
+    });
+})
+</script>
+@endpush
 </div>

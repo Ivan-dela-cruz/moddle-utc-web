@@ -10,7 +10,7 @@
 <script src="{{asset('assets2/js/plugins/apexcharts.min.js')}}" type="text/javascript"></script>
 <!-- custom-chart js -->
 <script src="{{asset('assets2/js/pages/dashboard-main.js')}}" type="text/javascript"></script>
-<script src="{{asset('sweetalert2/dist/sweetalert2.all.min.js')}}" type="text/javascript"></script>
+<script src="{{asset('assets2/js/plugins/sweetalert.min.js')}}"></script>
 <script src="{{asset('js/axios.min.js')}}" type="text/javascript" ></script>
 <!-- datatable Js -->
 <script src="{{asset('assets2/js/plugins/jquery.dataTables.min.js')}}" type="text/javascript"></script>
@@ -24,9 +24,10 @@
 <script src="{{asset('assets2/js/plugins/select2.full.min.js')}}"></script>
 <!-- form-select-custom Js -->
 <script src="{{asset('assets2/js/pages/form-select-custom.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.0/dist/alpine.min.js" defer></script>
 
  @livewireScripts
-
+ <x-livewire-alert::scripts />
 <script type="text/javascript">
 window.livewire.on('courseStore', () => {
     $('#createModal').modal('hide');
@@ -61,7 +62,23 @@ window.livewire.on('fileStore', () => {
     $('#createModal').modal('hide');
     $('#updateModal').modal('hide');
 });
-
+window.livewire.on('Success', () => {
+    swal("¡Satisfactorio!", "Proceso realizado con exíto", "success");
+});
+window.livewire.on('Warning', () => {
+    swal("¡Alvertencia!", "Tu cambio afectará a otros registros", "warning");
+});
+window.livewire.on('Danger', () => {
+    swal("¡Error!", "Se produjo un error en la petición", "error");
+});
+window.livewire.on('RoleEdit', () => {
+    $('.btn_store_rol').attr('hidden',true);
+    $('.btn_update_rol').removeAttr('hidden','hidden');
+});
+window.livewire.on('RoleUpdate', () => {
+    $('.btn_update_rol').attr('hidden',true);
+    $('.btn_store_rol').removeAttr('hidden','hidden');
+});
 
 </script>
 
