@@ -25,7 +25,7 @@
 </div>
 <div class="form-group">
     <label for="exampleFormControlInput2">Imagen</label>
-    <input type="text" id="exampleFormControlInput2" class="form-control" placeholder="" wire:model="url_image" />
+    <input type="file" id="exampleFormControlInput2" class="form-control" placeholder="" wire:model="url_image" />
     @error('url_image')<span class="text-danger">{{ $message }}</span>
     @enderror
 </div>

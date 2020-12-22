@@ -6,9 +6,10 @@ use App\User;
 use App\Student;
 use Livewire\Component;
 use Illuminate\Validation\Rule;
-
+use Livewire\WithFileUploads;
 class Students extends Component
 {
+    use WithFileUploads;
     public $students, $data_id, $user_id,$name, $last_name, $url_image, $email, $dni, $status;
     
     public function render()
@@ -31,22 +32,26 @@ class Students extends Component
     {
     	$validation = $this->validate([
     		'name'	=>	'required',
-    		'last_name' => 'required',
+            'last_name' => 'required',
+            'url_image' => 'image|max:1024',
             'email' => 'required|email|unique:users',
             'dni' => 'required|unique:students',
             'status' => 'required'
         ]);
         $password = bcrypt($this->dni);
         $user = User::create(['name'=>$this->name,'email'=>$this->email,'password'=>$password]);
+        $name = "file-" . time() . '.' .  $this->url_image->getClientOriginalExtension();
+        $path =  $this->url_image->storeAs('/',$name,'students');
         $data =  [
             'user_id'=>$user->id,
             'name'=>$this->name,
             'last_name'=>$this->last_name,
-            'url_image'=> $this->url_image,
+            'url_image'=> 'students/'.$path,
             'email'=> $this->email,
             'dni'=> $this->dni,
             'status'=> $this->status
         ];
+        
         Student::create($data);
         
         session()->flash('message', 'Estudiante creado con exíto.');
@@ -72,18 +77,21 @@ class Students extends Component
     {
         $validation = $this->validate([
     		'name'	=>	'required',
-    		'last_name' => 'required',
+            'last_name' => 'required',
+            'url_image' => 'image|max:1024',
             'email' => ['required',Rule::unique('users')->ignore($this->data_id)],
             'dni' => ['required',Rule::unique('students')->ignore($this->data_id)],
             'status' => 'required'
         ]);
 
         $data = Student::find($this->data_id);
+        $name = "file-" . time() . '.' .  $this->url_image->getClientOriginalExtension();
+        $path =  $this->url_image->storeAs('/',$name,'students');
 
         $data->update([
             'name'=>$this->name,
             'last_name'=>$this->last_name,
-            'url_image'=> $this->url_image,
+            'url_image'=>'students/'.$path,
             'email'=> $this->email,
             'dni'=> $this->dni,
             'status'=> $this->status
