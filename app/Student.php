@@ -15,8 +15,14 @@ class Student extends Model
         'url_image',
         'email',
         'dni',
-        'status'
+        'status',
+        'passport',
+        'instruction',
+        'marital_status',
+        'birth_date',
+        'phone'
     ];
+            
 
     public function user()
     {

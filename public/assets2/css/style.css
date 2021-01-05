@@ -32666,3 +32666,11 @@ new-task label input[type=checkbox] {
 }
 
 /**====== user card css end ======**/
+
+
+.custom-form-modal.small{
+    font-size: 12px;
+}
+.custom-form-modal.input{
+    margin-top: -10px;
+}

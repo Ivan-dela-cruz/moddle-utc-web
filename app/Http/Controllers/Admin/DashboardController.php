@@ -64,4 +64,11 @@ class DashboardController extends Controller
         return view('admin.dashboard.file.index');
         
     }
+
+    //MATRICULAR UN STUDIANTE EN UN CURSO
+    public function periodsStudent()
+    {
+        return view('admin.dashboard.periods_sudents.index');
+        
+    }
 }

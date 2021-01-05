@@ -30,4 +30,5 @@ Route::get('dashboard/levels','Admin\DashboardController@levels')->name('levels'
 Route::get('dashboard/tasks','Admin\DashboardController@tasks')->name('tasks');
 Route::get('dashboard/files','Admin\DashboardController@files')->name('files');
 
+Route::get('dashboard/student-period-level','Admin\DashboardController@periodsStudent')->name('levelstudent');
 

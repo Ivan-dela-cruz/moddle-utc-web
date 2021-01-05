@@ -10,8 +10,8 @@ use Livewire\WithFileUploads;
 class Students extends Component
 {
     use WithFileUploads;
-    public $students, $data_id, $user_id,$name, $last_name, $url_image, $email, $dni, $status;
-    
+    public $students, $data_id, $user_id,$name, $last_name, $url_image, $email, $dni, $status = 1;
+    public $passport,$instruction, $marital_status,$birth_date,$phone;
     public function render()
     {
         $this->students = Student::all();
@@ -24,8 +24,13 @@ class Students extends Component
         $this->url_image = '';
         $this->email = '';
         $this->dni = '';
-        $this->status = '';
+        $this->status = 1;
         $this->user_id = '';
+        $this->passport = '';
+        $this->instruction = '';
+        $this->marital_status = '';
+        $this->birth_date = '';
+        $this->phone = '';
     }
 
     public function store()
@@ -34,7 +39,7 @@ class Students extends Component
     		'name'	=>	'required',
             'last_name' => 'required',
             'url_image' => 'image|max:1024',
-            'email' => 'required|email|unique:users',
+            'email' => 'required|email|unique:students',
             'dni' => 'required|unique:students',
             'status' => 'required'
         ]);
@@ -49,12 +54,17 @@ class Students extends Component
             'url_image'=> 'students/'.$path,
             'email'=> $this->email,
             'dni'=> $this->dni,
+            'passport' => $this->passport,
+            'instruction' => $this->instruction,
+            'marital_status' => $this->marital_status,
+            'birth_date' => $this->birth_date,
+            'phone' => $this->phone,
             'status'=> $this->status
         ];
         
         Student::create($data);
         
-        session()->flash('message', 'Estudiante creado con exíto.');
+        $this->alert('success', 'Estudiante creado con exíto.');
         
     	$this->resetInputFields();
 
@@ -71,6 +81,11 @@ class Students extends Component
         $this->dni = $student->dni;
         $this->status = $student->status;
         $this->data_id = $id;
+        $this->passport = $student->passport;
+        $this->instruction = $student->instruction;
+        $this->marital_status = $student->marital_status;
+        $this->birth_date = $student->birth_date;
+        $this->phone = $student->phone;
     }
 
     public function update()
@@ -79,7 +94,7 @@ class Students extends Component
     		'name'	=>	'required',
             'last_name' => 'required',
             'url_image' => 'image|max:1024',
-            'email' => ['required',Rule::unique('users')->ignore($this->data_id)],
+            'email' => ['required',Rule::unique('students')->ignore($this->data_id)],
             'dni' => ['required',Rule::unique('students')->ignore($this->data_id)],
             'status' => 'required'
         ]);
@@ -94,10 +109,15 @@ class Students extends Component
             'url_image'=>'students/'.$path,
             'email'=> $this->email,
             'dni'=> $this->dni,
+            'passport' => $this->passport,
+            'instruction' => $this->instruction,
+            'marital_status' => $this->marital_status,
+            'birth_date' => $this->birth_date,
+            'phone' => $this->phone,
             'status'=> $this->status
         ]);
 
-        session()->flash('message', 'Estudante actualizado con exíto.');
+        $this->alert('success', 'Estudante actualizado con exíto.');
 
         $this->resetInputFields();
 
@@ -107,7 +127,7 @@ class Students extends Component
     public function delete($id)
     {
         Student::find($id)->delete();
-        session()->flash('message', 'Estudiante eliminado con exíto.');
+        $this->alert('success', 'Estudiante eliminado con exíto.');
     }
     
 }

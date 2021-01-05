@@ -19,8 +19,13 @@ class CreateStudentsTable extends Migration
             $table->string('name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('url_image')->nullable();
-            $table->string('email')->nullable();
-            $table->integer('dni')->nullable();
+            $table->integer('dni')->unique()->nullable();
+            $table->string('passport')->unique()->nullable();
+            $table->string('instruction')->nullable();
+            $table->string('marital_status')->nullable();
+            $table->date('birth_date')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('email')->unique()->nullable();
             $table->boolean('status')->nullable()->default(true);
             $table->softDeletes();
             $table->timestamps();
