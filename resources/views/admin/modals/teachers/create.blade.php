@@ -10,7 +10,9 @@
             <div class="modal-body">
                 <form>
                    @include('admin.modals.teachers.form')
+                   @can('create_techier')
                     <button wire:click.prevent="store()" class="btn btn-success">Guardar</button>
+                    @endcan
                     <button wire:click.prevent="resetInputFields()" type="button" class="btn btn-danger close-btn" data-dismiss="modal">Cancelar</button>
                 </form>
             </div>

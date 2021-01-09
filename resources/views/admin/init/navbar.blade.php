@@ -54,7 +54,7 @@ class="{{request()->is('/ruta')?'active':''}}"
                 </li>
               
                
-
+                @can('read_role')
                 <li class="nav-item pcoded-hasmenu">
                     <a href="javascript: return void();" class="nav-link ">
                         <span class="pcoded-micon">
@@ -67,18 +67,7 @@ class="{{request()->is('/ruta')?'active':''}}"
                         <li><a href="">Crear rol</a></li>
                     </ul>
                 </li>
-               
-                <li class="nav-item pcoded-hasmenu">
-                    <a href="javascript: return void();" class="nav-link ">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-layout"></i>
-                        </span>
-                        <span class="pcoded-mtext">Usuarios</span>
-                    </a>
-                    <ul class="pcoded-submenu">
-                        <li><a href="">Usuarios</a></li>
-                    </ul>
-                </li>
+                @endcan
                 <li class="nav-item pcoded-hasmenu">
                     <a href="javascript: return void();" class="nav-link ">
                         <span class="pcoded-micon">
@@ -91,6 +80,7 @@ class="{{request()->is('/ruta')?'active':''}}"
                         <li><a href="{{route('levelstudent')}}">Inscripciones</a></li>
                     </ul>
                 </li>
+                @can('read_subject')
                 <li class="nav-item pcoded-hasmenu">
                     <a href="javascript: return void();" class="nav-link ">
                         <span class="pcoded-micon">
@@ -102,6 +92,9 @@ class="{{request()->is('/ruta')?'active':''}}"
                         <li><a href="{{route('subjects')}}">Lista de materias</a></li>
                     </ul>
                 </li>
+                @endcan
+
+                @can('read_techier')
                 <li class="nav-item pcoded-hasmenu">
                     <a href="javascript: return void();" class="nav-link ">
                         <span class="pcoded-micon">
@@ -113,6 +106,9 @@ class="{{request()->is('/ruta')?'active':''}}"
                         <li><a href="{{route('teachers')}}">Lista de profesores</a></li>
                     </ul>
                 </li>
+                @endcan
+
+                @can('read_level')
                 <li class="nav-item pcoded-hasmenu">
                     <a href="javascript: return void();" class="nav-link ">
                         <span class="pcoded-micon">
@@ -124,17 +120,8 @@ class="{{request()->is('/ruta')?'active':''}}"
                         <li><a href="{{route('levels')}}">Ciclos</a></li>
                     </ul>
                 </li>
-                <li class="nav-item pcoded-hasmenu">
-                    <a href="javascript: return void();" class="nav-link ">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-layout"></i>
-                        </span>
-                        <span class="pcoded-mtext">Cursos</span>
-                    </a>
-                    <ul class="pcoded-submenu">
-                        <li><a href="{{route('courses')}}">Cursos</a></li>
-                    </ul>
-                </li>
+                @endcan
+                @can('read_task')
                 <li class="nav-item pcoded-hasmenu">
                     <a href="javascript: return void();" class="nav-link ">
                         <span class="pcoded-micon">
@@ -146,6 +133,8 @@ class="{{request()->is('/ruta')?'active':''}}"
                         <li><a href="{{route('tasks')}}">Tareas</a></li>
                     </ul>
                 </li>
+                @endcan
+                @can('read_file')
                 <li class="nav-item pcoded-hasmenu">
                     <a href="javascript: return void();" class="nav-link ">
                         <span class="pcoded-micon">
@@ -157,7 +146,7 @@ class="{{request()->is('/ruta')?'active':''}}"
                         <li><a href="{{route('files')}}">Archivos</a></li>
                     </ul>
                 </li>
-                
+                @endcan
                  <li class="nav-item pcoded-hasmenu">
                     <a href="javascript: return void();" class="nav-link ">
                         <span class="pcoded-micon">
@@ -166,13 +155,16 @@ class="{{request()->is('/ruta')?'active':''}}"
                         <span class="pcoded-mtext">Configuraciones</span>
                     </a>
                     <ul class="pcoded-submenu">
+                      
                         <li><a href="{{route('periods')}}">Periodos</a></li>
+                
+                        @can('read_course')
                         <li><a href="{{route('courses')}}">Cursos</a></li>
-
+                        @endcan
                        
                     </ul>
                 </li>
-               
+              
             </ul>
         </div>
     </div>

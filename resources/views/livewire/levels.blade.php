@@ -39,13 +39,15 @@
                 @endif
              
                 <div class="overlay-edit">
+                    @can('update_level')
                     <button 
                         class="btn btn-icon btn-warning" 
                         wire:click="edit({{ $level->id }})"
                         type="button" 
                         data-toggle="modal" data-target="#updateModal">
                         <i class="feather icon-edit-2"></i></button>
-                         
+                         @endcan
+                         @can('destroy_level')   
                     <button
                         wire:click="delete({{ $level->id }})"
                         data-toggle="tooltip" 
@@ -54,6 +56,7 @@
                         class="btn btn-icon btn-danger">
                         <i class="feather icon-trash-2"></i>
                     </button>
+                    @endcan
                 </div>
                 
             </td>

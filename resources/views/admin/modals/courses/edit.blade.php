@@ -10,7 +10,9 @@
             <div class="modal-body">
                 <form>
                     @include('admin.modals.courses.form')
+                    @can('update_course')
                     <button wire:click.prevent="update()" class="btn btn-dark">Update</button>
+                    @endcan
                     <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal">Close</button>
                 </form>
             </div>
