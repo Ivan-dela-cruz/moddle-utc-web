@@ -64,9 +64,13 @@
         <div class="col-sm-12">
          
             @if($action=='POST')
+            @can('create_role')
                 <button  wire:click.prevent="store()" class="btn btn-primary ">Guardar</button>
+                @endcan
             @else
+            @can('update_role')
                 <button  wire:click.prevent="update()" class="btn btn-success ">Update</button>
+                @endcan
             @endif
             <button wire:click.prevent="resetInputFields()" class="btn btn-danger">Cancelar</button>
         </div>
