@@ -77,7 +77,7 @@ class="{{request()->is('/ruta')?'active':''}}"
                     </a>
                     <ul class="pcoded-submenu">
                         <li><a href="{{route('students')}}">Estudiantes</a></li>
-                        <li><a href="{{route('levelstudent')}}">Registro en nivel</a></li>
+                        <li><a href="{{route('levelstudent')}}">Inscripciones</a></li>
                     </ul>
                 </li>
                 @can('read_subject')

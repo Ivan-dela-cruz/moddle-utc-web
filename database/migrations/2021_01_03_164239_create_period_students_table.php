@@ -19,6 +19,7 @@ class CreatePeriodStudentsTable extends Migration
             $table->unsignedBigInteger('period_id');
             $table->unsignedBigInteger('level_id');
             $table->unsignedBigInteger('subject_id'); 
+            $table->boolean('status')->default(true);
             $table->softDeletes();
             $table->timestamps();
             $table->foreign('period_id')->references('id')->on('academic_periods');

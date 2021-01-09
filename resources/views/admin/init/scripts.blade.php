@@ -25,9 +25,17 @@
 <!-- form-select-custom Js -->
 <script src="{{asset('assets2/js/pages/form-select-custom.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.0/dist/alpine.min.js" defer></script>
+<script src="{{asset('assets2/js/plugins/moment.min.js')}}"></script>
+<script src="{{asset('assets2/js/plugins/daterangepicker.js')}}"></script>
+<script src="{{asset('assets2/js/pages/ac-datepicker.js')}}"></script>
 
  @livewireScripts
+ <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10">
+ </script>
  <x-livewire-alert::scripts />
+
+ 
+ 
 <script type="text/javascript">
 window.livewire.on('courseStore', () => {
     $('#createModal').modal('hide');
