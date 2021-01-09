@@ -12,7 +12,9 @@
             <div class="modal-body">
                 <form>
                     @include('admin.modals.courses.form')
+                    @can('create_course')
                     <button wire:click.prevent="store()" class="btn btn-success">Save</button>
+                    @endcan
                     <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal">Close</button>
                 </form>
             </div>

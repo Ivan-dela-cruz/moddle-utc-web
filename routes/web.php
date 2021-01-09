@@ -18,17 +18,37 @@ Route::get('/', function () {
 });
 Route::get('dashboard/courses','Admin\DashboardController@courses')->name('courses');
 Auth::routes();
-Route::get('dashboard/periods','Admin\DashboardController@periods')->name('periods');
-Route::get('/home', 'HomeController@index')->name('home');
-Route::get('dashboard','Admin\DashboardController@index')->name('dashboard');
-Route::get('dashboard/subjects','Admin\DashboardController@subjects')->name('subjects');
-Route::get('dashboard/roles','Admin\DashboardController@roles')->name('roles');
-Route::get('dashboard/students','Admin\DashboardController@students')->name('students');
+Route::namespace('Admin')->group(function () {
+    Route::group(['middleware' => ['auth']], function () {
+        Route::group(['middleware' => 'role:Administrador'], function() {
+        Route::group(['middleware' => ['permission:create_period|update_period|destroy_period|read_period']], function () {
+        Route::get('dashboard/periods','DashboardController@periods')->name('periods');
+        });
+        Route::get('/home', 'HomeController@index')->name('home');
+        Route::get('dashboard','DashboardController@index')->name('dashboard');
 
-Route::get('dashboard/teachers','Admin\DashboardController@teachers')->name('teachers');
-Route::get('dashboard/levels','Admin\DashboardController@levels')->name('levels');
-Route::get('dashboard/tasks','Admin\DashboardController@tasks')->name('tasks');
-Route::get('dashboard/files','Admin\DashboardController@files')->name('files');
-
-Route::get('dashboard/student-period-level','Admin\DashboardController@periodsStudent')->name('levelstudent');
-
+        Route::group(['middleware' => ['permission:create_subject|update_subject|destroy_subject|read_subject']], function () {
+        Route::get('dashboard/subjects','DashboardController@subjects')->name('subjects');
+        });
+        Route::group(['middleware' => ['permission:create_role|update_role|destroy_role|read_role']], function () {
+        Route::get('dashboard/roles','DashboardController@roles')->name('roles');
+        });
+        Route::get('dashboard/students','DashboardController@students')->name('students');
+        Route::group(['middleware' => ['permission:create_techier|update_techier|destroy_techier|read_techier']], function () {
+        Route::get('dashboard/teachers','DashboardController@teachers')->name('teachers');
+        });
+       
+        Route::group(['middleware' => ['permission:create_level|update_level|destroy_level|read_level']], function () {
+        Route::get('dashboard/levels','DashboardController@levels')->name('levels');
+        });
+        Route::group(['middleware' => ['permission:create_task|update_task|destroy_task|read_task']], function () {
+        Route::get('dashboard/tasks','DashboardController@tasks')->name('tasks');
+        });
+        Route::group(['middleware' => ['permission:create_file|update_file|destroy_file|read_file']], function () {
+        Route::get('dashboard/files','DashboardController@files')->name('files');
+        });
+        
+        Route::get('dashboard/student-period-level','DashboardController@periodsStudent')->name('levelstudent');
+    });
+    });
+});

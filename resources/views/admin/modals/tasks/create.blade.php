@@ -11,7 +11,9 @@
             <div class="modal-body">
                 <form>
                     @include('admin.modals.tasks.form')
+                    @can('create_task')
                     <button wire:click.prevent="store()" class="btn btn-success">Save</button>
+                    @endcan
                     <button wire:click.prevent="resetInputFields()"type="button" class="btn btn-secondary close-btn" data-dismiss="modal">Close</button>
                 </form>
             </div>

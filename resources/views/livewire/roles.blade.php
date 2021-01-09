@@ -52,15 +52,22 @@
                             <div class="align-middle m-b-25">
                                 <div  class="d-inline-block">
                                     <ul style="list-style: none; margin-left: -25px;">
-                                        <li><a class="btn btn-sm btn-primary"  wire:click="edit({{ $role->id }})"
+                                        <li>
+                                            @can('update_role')
+                                            <a class="btn btn-sm btn-primary"  wire:click="edit({{ $role->id }})"
                                             href="javascript:void(0);"><i class="fas fa-pencil-alt text-white "></i></a></li>
+                                            @endcan
                                         <li>
                                             @if($confirming===$role->id)
+                                            @can('destroy_role')
                                             <a class="btn btn-sm btn-danger" wire:click="delete({{ $role->id }})"
                                             href="javascript:void(0);"><i class="fas fa-check-circle text-withe"></i></a>
+                                            @endcan
                                             @else
+                                            @can('destroy_role')
                                             <a  class="btn btn-sm btn-warning" wire:click="confirmDelete({{ $role->id }})"
                                             href="javascript:void(0);"><i class="fas fa-trash-alt text-white"></i></a>
+                                            @endcan
                                             @endif
                                             
                                         </li>

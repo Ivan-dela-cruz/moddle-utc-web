@@ -50,7 +50,9 @@
                         @error('status')<span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
+                    @can('create_subject')
                     <button wire:click.prevent="store()" class="btn btn-success">Save</button>
+                    @endcan
                     <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal">Close</button>
                 </form>
             </div>
