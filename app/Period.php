@@ -1,7 +1,7 @@
 <?php
 
 namespace App;
-
+use App\Scopes\StatusScope;
 use Illuminate\Database\Eloquent\Model;
 
 class Period extends Model
@@ -11,5 +11,9 @@ class Period extends Model
     		'start_date',
             'end_date',
             'status']; 
+    protected static function booted()
+    {
+        static::addGlobalScope(new StatusScope);
+    }
         
 }
