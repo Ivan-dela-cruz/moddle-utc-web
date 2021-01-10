@@ -29,6 +29,12 @@
 <script src="{{asset('assets2/js/plugins/daterangepicker.js')}}"></script>
 <script src="{{asset('assets2/js/pages/ac-datepicker.js')}}"></script>
 
+<!-- minicolors Js -->
+<script src="{{asset('assets2/js/plugins/jquery.minicolors.min.js')}}"></script>
+<!-- form-picker-custom Js -->
+<script src="{{asset('assets2/js/pages/form-picker-custom.js')}}"></script>
+
+
  @livewireScripts
  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10">
  </script>

@@ -8,7 +8,7 @@ use Livewire\Component;
 
 class Period extends Component
 {
-    public  $periods, $name, $start_date, $end_date, $status, $data_id;
+    public  $periods, $name, $start_date, $end_date, $status = true, $data_id, $url_image, $color = "#ffffff";
 
     public function render()
     {
@@ -22,7 +22,9 @@ class Period extends Component
     	$this->name = '';
     	$this->start_date = '';
         $this->end_date = '';
-        $this->status = '';
+        $this->status = true;
+        $this->url_image = '';
+        $this->color = '#ffffff';
     }
 
     public function store()
@@ -31,10 +33,10 @@ class Period extends Component
     		'name'	=>	'required',
     		'start_date' => 'required',
             'end_date' => 'required',
-            'status' => 'required'
+            'status' => 'required',
     	]);
     	Periods::create($validation);
-    	session()->flash('message', 'Periodo creada con exíto.');
+    	$this->alert('success', 'Periodo creada con exíto.');
     	$this->resetInputFields();
 
     	$this->emit('periodStore');
@@ -48,6 +50,8 @@ class Period extends Component
         $this->end_date = $data->end_date;
         $this->status = $data->status;
         $this->data_id = $id;
+        $this->url_image = $data->url_image;
+        $this->color = $data->color;
     }
 
     public function update()
@@ -68,16 +72,14 @@ class Period extends Component
             'status' => $this->status
         ]);
 
-        session()->flash('message', 'Periodo actualizada con exíto.');
-
+        $this->alert('success', 'Periodo actualizada con exíto.');
         $this->resetInputFields();
-
         $this->emit('periodStore');
     }
 
     public function delete($id)
     {
         Periods::find($id)->delete();
-        session()->flash('message', 'Periodo eliminada con exíto.');
+        $this->alert('success', 'Periodo eliminada con exíto.');
     }
 }

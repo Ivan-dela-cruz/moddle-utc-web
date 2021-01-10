@@ -10,7 +10,9 @@ class Period extends Model
     protected $fillable = ['name',
     		'start_date',
             'end_date',
-            'status']; 
+            'status',
+            'url_image',
+            'color']; 
     protected static function booted()
     {
         static::addGlobalScope(new StatusScope);
