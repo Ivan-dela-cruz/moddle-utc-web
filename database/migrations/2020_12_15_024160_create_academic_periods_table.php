@@ -18,6 +18,8 @@ class CreateAcademicPeriodsTable extends Migration
             $table->string('name')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
+            $table->string('url_image')->nullable();
+            $table->string('color')->default('#ffffff');
             $table->boolean('status')->nullable()->default(true);
             $table->softDeletes();
             $table->timestamps();
