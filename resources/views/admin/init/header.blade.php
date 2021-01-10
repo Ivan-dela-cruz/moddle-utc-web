@@ -2,8 +2,8 @@
     <div class="m-header">
         <a class="mobile-menu" id="mobile-collapse" href="javascript:void(0);"><span></span></a>
         <a href="javascript: return void();" class="b-brand">
-            <img src="assets2/images/logo.png" alt="" class="logo">
-            <img src="assets2/images/logo-icon.png" alt="" class="logo-thumb">
+            <img height="70" width="140" src="{{asset('img/logo_pantallas.png')}}" alt="">
+          
         </a>
         <a href="javascript:void(0);" class="mob-toggler">
             <i class="feather icon-more-vertical"></i>
