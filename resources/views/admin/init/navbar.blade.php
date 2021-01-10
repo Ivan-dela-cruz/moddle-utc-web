@@ -155,9 +155,9 @@ class="{{request()->is('/ruta')?'active':''}}"
                         <span class="pcoded-mtext">Configuraciones</span>
                     </a>
                     <ul class="pcoded-submenu">
-                      
+                        @can('read_ac_period')
                         <li><a href="{{route('periods')}}">Periodos</a></li>
-                
+                        @endcan
                         @can('read_course')
                         <li><a href="{{route('courses')}}">Cursos</a></li>
                         @endcan

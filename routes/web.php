@@ -21,7 +21,7 @@ Auth::routes();
 Route::namespace('Admin')->group(function () {
     Route::group(['middleware' => ['auth']], function () {
         Route::group(['middleware' => 'role:Administrador'], function() {
-        Route::group(['middleware' => ['permission:create_period|update_period|destroy_period|read_period']], function () {
+        Route::group(['middleware' => ['permission:create_ac_period|update_ac_period|destroy_ac_period|read_ac_period']], function () {
         Route::get('dashboard/periods','DashboardController@periods')->name('periods');
         });
         Route::get('/home', 'HomeController@index')->name('home');

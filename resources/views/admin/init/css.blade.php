@@ -5,5 +5,8 @@
  <link rel="stylesheet" href="{{asset('assets2/css/plugins/select2.min.css')}}">
 <!-- vendor css -->
 <link rel="stylesheet" href="{{asset('assets2/css/style.css')}}">
+<!-- minicolors css -->
+<link rel="stylesheet" href="{{asset('assets2/css/plugins/jquery.minicolors.css')}}">
+
  @livewireStyles
 @yield('css')

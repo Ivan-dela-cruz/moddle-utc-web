@@ -41,23 +41,24 @@
                     @endif
                  
                     <div class="overlay-edit">
-                        @can('update_period')
-                        <button 
-                            class="btn btn-icon btn-warning" 
-                            wire:click="edit({{ $data->id }})"
-                            type="button" 
-                            data-toggle="modal" data-target="#updateModal">
-                            <i class="feather icon-edit-2"></i></button>
+                        @can('update_ac_period')
+                            <button 
+                                class="btn btn-icon btn-warning" 
+                                wire:click="edit({{ $data->id }})"
+                                type="button" 
+                                data-toggle="modal" data-target="#updateModal">
+                                <i class="feather icon-edit-2"></i>
+                            </button>
                          @endcan
-                            @can('destroy_period')    
-                        <button
-                            wire:click="delete({{ $data->id }})"
-                            data-toggle="tooltip" 
-                            title="Titulo"
-                            type="button"
-                            class="btn btn-icon btn-danger">
-                            <i class="feather icon-trash-2"></i>
-                        </button>
+                        @can('destroy_ac_period')    
+                            <button
+                                wire:click="delete({{ $data->id }})"
+                                data-toggle="tooltip" 
+                                title="Titulo"
+                                type="button"
+                                class="btn btn-icon btn-danger">
+                                <i class="feather icon-trash-2"></i>
+                            </button>
                         @endcan
                     </div>
                     

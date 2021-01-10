@@ -95,7 +95,7 @@ class AuthController extends Controller
     {
         $user = User::find(Auth::user()->id);
         $user->name = $request->name;
-        $user->last_name = $request->last_name;
+      //  $user->last_name = $request->last_name;
     
         if ($request->url_image) {
             if ($user->url_image != $request->url_image) {
