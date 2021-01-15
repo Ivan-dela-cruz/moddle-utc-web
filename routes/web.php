@@ -49,6 +49,7 @@ Route::namespace('Admin')->group(function () {
         });
         
         Route::get('dashboard/student-period-level','DashboardController@periodsStudent')->name('levelstudent');
+        Route::get('dashboard/student-level-course','DashboardController@courseStudent')->name('coursebystudent');
     });
     });
 });

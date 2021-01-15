@@ -12,6 +12,7 @@ class PeriodStudent extends Model
         'period_id',
         'level_id',
         'subject_id',
+        'parallel',
         'status'
     ];
 

@@ -11,11 +11,17 @@
                                 <option value="{{$period->id}}">{{$period->name}}</option>
                             @endforeach
                         </select>
-                        <select wire:model = "level_id" class="form-control col-md-4" name="level_id" id="" aria-label="" aria-describedby="basic-addon1" >
+                        <select wire:model = "level_id" class="form-control col-md-3" name="level_id" id="" aria-label="" aria-describedby="basic-addon1" >
                             <option value="">Nivel</option>
                             @foreach($levels as $level)
                                 <option value="{{$level->id}}">{{$level->name}}</option>
                             @endforeach
+                        </select>
+                        <select class="form-control col-md-1" wire:model="parallel" name="parallel">
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
                         </select>
                         <select  wire:model="subject_id" class="form-control col-md-4" name="subject_id" id="" aria-label="" aria-describedby="basic-addon1" >
                             <option value="">Materia</option>

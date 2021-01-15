@@ -11,7 +11,7 @@ use Livewire\Component;
 class PeriodStudent extends Component
 {
     public $data_id,$name, $last_name, $dni, $email,$status=true,$url_image,$passport,$instruction, $marital_status,$birth_date;
-    public $modal = false, $input_search='',$action='POST';
+    public $modal = false, $input_search='',$action='POST', $parallel="A";
     public $students, $periods, $levels, $subjects, $level_id='',$period_id='',$subject_id='';
 
     public function render()
@@ -84,13 +84,15 @@ class PeriodStudent extends Component
     		'period_id' => 'required',
             'level_id' => 'required',
             'subject_id' => 'required',
-            'data_id' => 'required'
+            'data_id' => 'required',
+            'parallel'=>'required'
             
         ]);
         $inscription = PeriodStudents::where('period_id' ,  $this->period_id)
         ->where('level_id' ,  $this->level_id)
         ->where('subject_id' ,  $this->subject_id)
         ->where('student_id' ,  $this->data_id)
+        //->where('parallel' ,  $this->parallel)
         ->where('status', $this->status)->first();
         
         if(is_null($inscription)){
@@ -100,6 +102,7 @@ class PeriodStudent extends Component
                 'level_id' => $this->level_id,
                 'subject_id' => $this->subject_id,
                 'student_id' => $this->data_id,
+                'parallel' => $this->parallel,
                 'status'=>$this->status
             ];
             PeriodStudents::create($data);

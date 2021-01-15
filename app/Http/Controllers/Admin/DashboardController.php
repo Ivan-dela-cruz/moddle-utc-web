@@ -65,10 +65,16 @@ class DashboardController extends Controller
         
     }
 
-    //MATRICULAR UN STUDIANTE EN UN CURSO
+    //MATRICULAR UN STUDIANTE EN UN nivel
     public function periodsStudent()
     {
         return view('admin.dashboard.periods_sudents.index');
         
     }
+     //MATRICULAR UN STUDIANTE EN UN CURSO
+     public function courseStudent()
+     {
+         return view('admin.dashboard.course_sudents.index');
+         
+     }
 }

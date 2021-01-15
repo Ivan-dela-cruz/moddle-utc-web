@@ -35,6 +35,7 @@
 <script src="{{asset('assets2/js/pages/form-picker-custom.js')}}"></script>
 
 
+
  @livewireScripts
  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10">
  </script>
