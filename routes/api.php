@@ -22,7 +22,9 @@ Route::namespace('Api')->group(function () {
     Route::post('change-password','AuthController@ChangePassword')->name('change-password')->middleware('jwtAuth');
 
     //RUTAS PARA EL HOME
-    Route::get('home-periods','IncriptionController@index')->name('home-periods');
+    Route::get('home-periods','IncriptionController@index')->middleware('jwtAuth');
+    Route::get('levels-by-student','IncriptionController@levelByStudentPeriod')->middleware('jwtAuth');
+    Route::get('subjects-by-student/{id}','IncriptionController@subjectsByStudentPeriod')->middleware('jwtAuth');
 });
 //Route::middleware('auth:api')->get('/user', function (Request $request) {
 //    return $request->user();
