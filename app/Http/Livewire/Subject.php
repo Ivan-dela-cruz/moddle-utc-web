@@ -8,7 +8,7 @@ use App\Level;
 
 class Subject extends Component
 {
-    public  $subjects,$levels, $name, $description, $slug, $status, $data_id,$level_id;
+    public  $subjects,$levels, $name, $description, $slug, $status=1, $data_id,$level_id;
 
     public function render()
     {

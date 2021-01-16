@@ -11,7 +11,7 @@
 			<div class="row align-items-center text-center">
 				<div class="col-md-12">
 					<div class="card-body">
-                       <img height="100" width="200" src="{{asset('assets2/images/auth/auth-logo-dark.png')}}" alt="" class="img-fluid mb-4">
+                        <img height="100" width="200" src="{{asset('img/logo_pantallas.png')}}" alt="" class="img-fluid mb-4">
                         <h4 class="mb-3 f-w-400">Restablecer contraseña</h4>
                     <form method="POST" action="{{ route('password.update') }}">
                         @csrf

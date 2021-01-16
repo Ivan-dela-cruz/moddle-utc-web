@@ -29,7 +29,7 @@
                 <tr>
                     <td>
                         <div class="d-inline-block align-middle">
-                            <img src="{{$teacher->url_image}}" alt="user image" class="img-radius align-top m-r-15" style="width:40px;">
+                            <img src="{{asset($teacher->url_image)}}" alt="user image" class="img-radius align-top m-r-15" style="width:40px;">
                             <div class="d-inline-block">
                                 <h6 class="m-b-0">{{$teacher->name}} {{$teacher->last_name}}</h6>
                                 <p class="m-b-0">{{$teacher->email}}</p>

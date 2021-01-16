@@ -2,7 +2,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="createModalLabel">Editar estudiante</h5>
+                <h5 class="modal-title" id="createModalLabel">Editar Ciclo</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                      <span aria-hidden="true close-btn">×</span>
                 </button>
@@ -10,10 +10,11 @@
             <div class="modal-body">
                 <form>
                     @include('admin.modals.levels.form')
-                    @can('update_level')
-                    <button wire:click.prevent="update()" class="btn btn-success">Editar</button>
-                    @endcan
-                    <button wire:click.prevent="resetInputFields()" type="button" class="btn btn-danger close-btn" data-dismiss="modal">Close</button>
+                    <div class="text-center p-r-20">
+                        <button wire:click.prevent="update()" class="btn btn-info float-right ml-3">Actualizar</button>
+                        <button wire:click.prevent="resetInputFields()" type="button" class="btn btn-danger close-btn float-right" data-dismiss="modal">Cancelar</button>
+
+                    </div>
                 </form>
             </div>
         </div>

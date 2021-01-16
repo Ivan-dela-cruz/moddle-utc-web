@@ -4,56 +4,18 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="createModalLabel">Add Data</h5>
+                <h5 class="modal-title" id="createModalLabel">Agregar Materia</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                      <span aria-hidden="true close-btn">×</span>
                 </button>
             </div>
             <div class="modal-body">
                 <form>
-                    <div class="form-group">
-                        <label for="exampleFormControlInput1">Nombre</label>
-                        <input type="text" id="exampleFormControlInput1" class="form-control"  placeholder="Enter First Name" wire:model="name" />
-                        @error('name')
-                        <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleFormControlInput2">Descripcion</label>
-                        <input type="text" id="exampleFormControlInput2" class="form-control" placeholder="Enter Last Name" wire:model="description" />
-                        @error('description')<span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                     <div class="form-group">
-                        <label for="exampleFormControlInput2">Slug</label>
-                        <input type="text" id="exampleFormControlInput2" class="form-control" placeholder="Enter Last Name" wire:model="slug" />
-                        @error('slug')<span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleFormControlInput3">Ciclo</label>
-                        <select class="form-control" id="exampleFormControlInput3" wire:model="level_id">
-                            <option value="">Seleccione</option>
-                            @foreach ($levels as $level)
-                            <option value="{{ $level->id }}">{{$level->name}}</option>
-                            @endforeach
-                        </select>
-                        @error('status')<span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleFormControlInput3">Estado</label>
-                        <select class="form-control" id="exampleFormControlInput3" wire:model="status">
-                            <option value="1">Activo</option>
-                            <option value="0">Inactivo</option>
-                        </select>
-                        @error('status')<span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    @can('create_subject')
-                    <button wire:click.prevent="store()" class="btn btn-success">Save</button>
-                    @endcan
-                    <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal">Close</button>
+                   @include('admin.modals.subjects.form')
+                   <div class="text-center p-r-20">
+                       <button wire:click.prevent="store()" class="btn btn-info float-right ml-3">Guardar</button>
+                       <button wire:click.prevent="resetInputFields()" type="button" class="btn btn-danger close-btn float-right" data-dismiss="modal">Cancelar</button>
+                   </div>
                 </form>
             </div>
         </div>

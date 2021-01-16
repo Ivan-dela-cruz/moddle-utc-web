@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>
-      Control Animal
+      UTC Virtual Classrooms
     </title>
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -69,7 +69,7 @@
         <!--Left Col-->
         <div class="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left">
           <h1 class="my-4 text-5xl font-bold leading-tight">
-            ENTORNO VIRTUAL DE APRENDIZAJE UTC
+            ENTORNO VIRTUAL DE APRENDIZAJE UTC VIRTUAL CLASSROOMS
           </h1>
           <p class="leading-normal text-2xl mb-8">
             Controla el acceso de tus actividades!

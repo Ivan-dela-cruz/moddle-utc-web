@@ -7,7 +7,7 @@ use Livewire\Component;
 
 class Levels extends Component
 {
-    public  $levels, $name,$status, $data_id;
+    public  $levels, $name,$status=1, $data_id;
     public function render()
     {
         $this->levels = Level::all();

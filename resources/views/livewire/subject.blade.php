@@ -16,6 +16,7 @@
             <tr>
                 <th>Nombre</th>
                 <th>Descripcion</th>
+                <th>Slug</th>
                 <th>Ciclo</th>
                 <th>Estado</th>
             </tr>
@@ -26,6 +27,7 @@
         	<tr>	
         		<td>{{ $data->name }}</td>
                 <td>{{ $data->description }}</td>
+                <td>{{ $data->slug }}</td>
                 <td>{{ $data->level->name}}</td>
         		<td>
                     @if ($data->status === 1)
