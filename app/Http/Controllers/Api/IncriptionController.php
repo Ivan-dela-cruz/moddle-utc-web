@@ -103,6 +103,7 @@ class IncriptionController extends Controller
         ->join('levels','period_students.level_id','=','levels.id')
         ->join('subjects','period_students.subject_id','=','subjects.id')
         ->select(
+            'academic_periods.id as period_id',
             'students.id as student_id','subjects.id as subject_id','subjects.name'
             )
         ->where('students.id',$student->id)
