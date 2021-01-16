@@ -5,10 +5,11 @@ use App\User;
 use App\Teacher;
 use Livewire\Component;
 use Illuminate\Validation\Rule;
-
+use Livewire\WithFileUploads;
 class Teachers extends Component
 {
-    public $teachers, $data_id, $user_id,$name, $last_name, $url_image, $email,$profession, $dni, $status;
+    use WithFileUploads;
+    public $teachers, $data_id, $user_id,$name, $last_name, $url_image, $email,$profession, $dni, $status=1;
     public function render()
     {
         $this->teachers = Teacher::all();
@@ -38,11 +39,13 @@ class Teachers extends Component
         ]);
         $password = bcrypt($this->dni);
         $user = User::create(['name'=>$this->name,'email'=>$this->email,'password'=>$password]);
+        $name = "file-" . time() . '.' .  $this->url_image->getClientOriginalExtension();
+        $path =  $this->url_image->storeAs('/',$name,'teachers');
         $data =  [
             'user_id'=>$user->id,
             'name'=>$this->name,
             'last_name'=>$this->last_name,
-            'url_image'=> $this->url_image,
+            'url_image'=> 'teachers/'.$path,
             'email'=> $this->email,
             'dni'=> $this->dni,
             'profession'=> $this->profession,
@@ -82,11 +85,12 @@ class Teachers extends Component
         ]);
 
         $data = Teacher::find($this->data_id);
-
+        $name = "file-" . time() . '.' .  $this->url_image->getClientOriginalExtension();
+        $path =  $this->url_image->storeAs('/',$name,'teachers');
         $data->update([
             'name'=>$this->name,
             'last_name'=>$this->last_name,
-            'url_image'=> $this->url_image,
+            'url_image'=>'teachers/'.$path,
             'email'=> $this->email,
             'dni'=> $this->dni,
             'profession'=> $this->profession,

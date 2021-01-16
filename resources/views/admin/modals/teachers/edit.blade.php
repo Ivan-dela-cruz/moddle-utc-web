@@ -10,10 +10,13 @@
             <div class="modal-body">
                 <form>
                     @include('admin.modals.teachers.form')
-                    @can('update_techier')
-                    <button wire:click.prevent="update()" class="btn btn-success">Editar</button>
-                    @endcan
-                    <button wire:click.prevent="resetInputFields()" type="button" class="btn btn-danger close-btn" data-dismiss="modal">Close</button>
+                    <div class="text-center p-r-20">
+                        @can('update_teacher')
+                        <button wire:click.prevent="update()" class="btn btn-info float-right ml-3">Actualizar</button>
+                        @endcan
+                        <button wire:click.prevent="resetInputFields()" type="button" class="btn btn-danger close-btn float-right" data-dismiss="modal">Cancelar</button>
+
+                    </div>
                 </form>
             </div>
         </div>

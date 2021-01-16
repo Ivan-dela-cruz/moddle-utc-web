@@ -5,9 +5,10 @@ namespace App\Http\Livewire;
 
 use App\Period as Periods;
 use Livewire\Component;
-
+use Livewire\WithFileUploads;
 class Period extends Component
 {
+    use WithFileUploads;
     public  $periods, $name, $start_date, $end_date, $status = true, $data_id, $url_image, $color = "#ffffff";
 
     public function render()
@@ -33,9 +34,19 @@ class Period extends Component
     		'name'	=>	'required',
     		'start_date' => 'required',
             'end_date' => 'required',
+            'url_image' => 'image|max:1024',
             'status' => 'required',
-    	]);
-    	Periods::create($validation);
+        ]);
+        $name = "file-" . time() . '.' .  $this->url_image->getClientOriginalExtension();
+        $path =  $this->url_image->storeAs('/',$name,'periods');
+        $data =  [
+            'name'=>$this->name,
+            'start_date'=>$this->start_date,
+            'url_image'=> 'periods/'.$path,
+            'end_date'=> $this->end_date,
+            'status'=> $this->status
+        ];
+    	Periods::create($data);
     	$this->alert('success', 'Periodo creada con exíto.');
     	$this->resetInputFields();
 
@@ -60,15 +71,18 @@ class Period extends Component
     		'name'	=>	'required',
     		'start_date' => 'required',
             'end_date' => 'required',
+            'url_image' => 'image|max:1024',
             'status' => 'required'
     	]);
 
         $data = Periods::find($this->data_id);
-
+        $name = "file-" . time() . '.' .  $this->url_image->getClientOriginalExtension();
+        $path =  $this->url_image->storeAs('/',$name,'periods');
         $data->update([
             'name'       =>   $this->name,
             'start_date' =>  $this->start_date,
             'end_date'  =>  $this->end_date,
+            'url_image'=>'periods/'.$path,
             'status' => $this->status
         ]);
 

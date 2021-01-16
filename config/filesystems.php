@@ -70,7 +70,19 @@ return [
             'url' => env('APP_URL').'public/students',
             'visibility' => 'public',
         ],
-
+        
+        'teachers' => [
+            'driver' => 'local',
+            'root' => public_path('teachers'),
+            'url' => env('APP_URL').'public/teachers',
+            'visibility' => 'public',
+        ],
+        'periods' => [
+            'driver' => 'local',
+            'root' => public_path('periods'),
+            'url' => env('APP_URL').'public/periods',
+            'visibility' => 'public',
+        ],
     ],
 
     /*

@@ -16,6 +16,7 @@
                 <th>Periodo</th>
                 <th>Inico</th>
                 <th>Fin</th>
+                <th>Image</th>
                 <th>Estado</th>
             </tr>
         </thead>
@@ -26,6 +27,7 @@
         		<td>{{ $data->name }}</td>
                 <td>{{ $data->start_date }}</td>
                 <td>{{ $data->end_date }}</td>
+                <td>   <img src="{{asset($data->url_image)}}" alt="user image" class="img-radius align-top m-r-15" style="width:40px;"> </td>
         		<td>
                     @if ($data->status === 1)
                          <span
