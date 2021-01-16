@@ -25,6 +25,9 @@ Route::namespace('Api')->group(function () {
     Route::get('home-periods','IncriptionController@index')->middleware('jwtAuth');
     Route::get('levels-by-student','IncriptionController@levelByStudentPeriod')->middleware('jwtAuth');
     Route::get('subjects-by-student/{id}','IncriptionController@subjectsByStudentPeriod')->middleware('jwtAuth');
+    //RUTAS DEL CURSO
+    
+    Route::get('courses-by-subject/{id}/{period_id}','CourseController@index')->middleware('jwtAuth');    
 });
 //Route::middleware('auth:api')->get('/user', function (Request $request) {
 //    return $request->user();

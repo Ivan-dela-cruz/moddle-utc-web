@@ -73,7 +73,6 @@ class Courses extends Component
             'subject_id'=> $this->subject_id,
         ];
         Course::create($data);
-    	Course::create($validation);
     	session()->flash('message', 'Curso creado con exíto.');
     	$this->resetInputFields();
     	$this->emit('courseStore');
