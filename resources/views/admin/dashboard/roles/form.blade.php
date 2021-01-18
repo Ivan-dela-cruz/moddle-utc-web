@@ -22,13 +22,15 @@
         
         <div class="col-sm-12">
             <div class="form-group fill">
-                <label class="floating-label" for="status">Estado</label>
-                <select class="form-control" name="status" id="exampleFormControlInput3" wire:model="status">
-                    <option value="">Seleciona estado</option>
-                    <option value="1">Activo</option>
-                    <option value="0">Inactivo</option>
-                </select>
+               
+                <div class="form-group">
+                    <small style="margin-left: 0px;"  class="mr-3 text-primary">Estado</small>
+                    <div class="switch switch-info d-inline m-r-10">
+                        <input  wire:model="status"  type="checkbox" id="switch-i-1" checked>
+                        <label for="switch-i-1" class="cr"></label>
+                    </div>
                 
+                </div> 
                 @error('status')
                 <span class="text-danger">{{ $message }}</span>
                 @enderror
@@ -54,7 +56,21 @@
                         <tr>
                             <td class="text-left">{{$k}}</td>
                             @foreach($v as $p)
-                                <td><input wire:model='select_permissions.{{ $p->id}}' type="checkbox" name="select_permissions[]" value="{{$p->id}}"></td>
+                                @if($action=='PUT')
+                                    <td>
+                                        <input wire:model='select_permissions.{{ $p->id}}' type="checkbox" 
+                                            @if ($role->id==1 || $p->id <= 4) onclick="this.checked=!this.checked;"@endif
+                                            name="select_permissions[]" 
+                                            value="{{$p->id}}">
+                                    </td>
+                                @else
+                                    <td>
+                                        <input wire:model='select_permissions.{{ $p->id}}' 
+                                        @if ($p->id<=4) onclick="this.checked=!this.checked;"@endif
+                                        type="checkbox" name="select_permissions[]" 
+                                        value="{{$p->id}}">
+                                    </td>
+                                @endif
                             @endforeach
                         </tr>
                     @endforeach
@@ -64,11 +80,11 @@
         <div class="col-sm-12">
          
             @if($action=='POST')
-            @can('create_role')
+                @can('create_role')
                 <button  wire:click.prevent="store()" class="btn btn-primary ">Guardar</button>
                 @endcan
             @else
-            @can('update_role')
+                 @can('update_role')
                 <button  wire:click.prevent="update()" class="btn btn-success ">Update</button>
                 @endcan
             @endif

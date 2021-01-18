@@ -83,34 +83,28 @@
             Permission::create(['name' => 'update_file', 'modulo' => 'Archivos', 'alias' => 'Modificar']);
             Permission::create(['name' => 'destroy_file', 'modulo' => 'Archivos', 'alias' => 'Eliminar']);
 
-    //permisos para el crud de los period
-            Permission::create(['name' => 'create_period', 'modulo' => 'Periodos', 'alias' => 'Crear']);
-            Permission::create(['name' => 'read_period', 'modulo' => 'Periodos', 'alias' => 'Leer']);
-            Permission::create(['name' => 'update_period', 'modulo' => 'Periodos', 'alias' => 'Modificar']);
-            Permission::create(['name' => 'destroy_period', 'modulo' => 'Periodos', 'alias' => 'Eliminar']);
+          
 
-            /// cramos los roles para que son admin, propietario, secretaria, medico
-            $role = Role::create(['name' => 'Administrador', 'description'=>'Rol de administrador','status' => true]);
-
-            //asignacion de los permisos al rol admin
+            /// role super admin
+            $role = Role::create(['name' => 'SuperAdmin', 'description'=>'Rol de superadmin','status' => true]);
+             //asignacion de los permisos al rol admin
             $role->givePermissionTo(Permission::all());
 
             $role = Role::create(['name' => 'Estudiante','description'=>'Rol de estudiante', 'status' => true]);
             $role = Role::create(['name' => 'Profesor','description'=>'Rol de profesor', 'status' => true]);
 
+            $role = Role::create(['name' => 'Administrador', 'description'=>'Rol de administrador','status' => true]);
+            //asignacion de los permisos al rol admin
+            $role->givePermissionTo(Permission::all());
 
             ///crearmos el usario por defecto
+            $user_password = Hash::make('superadmin');
+            $user = User::create(['name' => 'superadmin', 'email' => 'superadmin@gmail.com', 'password' => $user_password, ]);
+            $user->assignRole('SuperAdmin');
+
             $user_password = Hash::make('root1234');
-            $user = User::create([
-                
-                    'name' => 'admin',
-                    'email' => 'admin@gmail.com',
-                    'password' => $user_password,
-                
-                ]
+            $user2 = User::create(['name' => 'admin','email' => 'admin@gmail.com','password' => $user_password,]);
+            $user2->assignRole('Administrador');
 
-            );
-
-            $user->assignRole('Administrador');
         }
     }

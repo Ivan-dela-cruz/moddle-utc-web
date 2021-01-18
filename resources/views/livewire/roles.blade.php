@@ -55,25 +55,25 @@
                                         <li>
                                             @can('update_role')
                                             <a class="btn btn-sm btn-primary"  wire:click="edit({{ $role->id }})"
-                                            href="javascript:void(0);"><i class="fas fa-pencil-alt text-white "></i></a></li>
+                                            href="javascript:void(0);"><i class="fas fa-pencil-alt text-white "></i></a>
                                             @endcan
-                                        <li>
-                                            @if($confirming===$role->id)
-                                            @can('destroy_role')
-                                            <a class="btn btn-sm btn-danger" wire:click="delete({{ $role->id }})"
-                                            href="javascript:void(0);"><i class="fas fa-check-circle text-withe"></i></a>
-                                            @endcan
-                                            @else
-                                            @can('destroy_role')
-                                            <a  class="btn btn-sm btn-warning" wire:click="confirmDelete({{ $role->id }})"
-                                            href="javascript:void(0);"><i class="fas fa-trash-alt text-white"></i></a>
-                                            @endcan
-                                            @endif
-                                            
                                         </li>
-                                           
+                                        @if ($role->id > 3)
+                                            <li>
+                                                @if($confirming===$role->id)
+                                                @can('destroy_role')
+                                                <a class="btn btn-sm btn-danger" wire:click="delete({{ $role->id }})"
+                                                href="javascript:void(0);"><i class="fas fa-check-circle text-withe"></i></a>
+                                                @endcan
+                                                @else
+                                                @can('destroy_role')
+                                                <a  class="btn btn-sm btn-warning" wire:click="confirmDelete({{ $role->id }})"
+                                                href="javascript:void(0);"><i class="fas fa-trash-alt text-white"></i></a>
+                                                @endcan
+                                                @endif
+                                            </li>
+                                        @endif
                                     </ul>
-                                   
                                 </div>
                                 
                                 <div  class="d-inline-block ml-2">

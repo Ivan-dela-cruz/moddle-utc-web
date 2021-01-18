@@ -23,7 +23,7 @@ Route::namespace('Api')->group(function () {
 
     //RUTAS PARA EL HOME
     Route::get('home-periods','IncriptionController@index')->middleware('jwtAuth');
-    Route::get('levels-by-student','IncriptionController@levelByStudentPeriod')->middleware('jwtAuth');
+    Route::get('levels-by-student/{id}','IncriptionController@levelByStudentPeriod')->middleware('jwtAuth');
     Route::get('subjects-by-student/{id}','IncriptionController@subjectsByStudentPeriod')->middleware('jwtAuth');
     //RUTAS DEL CURSO
     

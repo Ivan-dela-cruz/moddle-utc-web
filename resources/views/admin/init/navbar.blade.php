@@ -63,8 +63,12 @@ class="{{request()->is('/ruta')?'active':''}}"
                         <span class="pcoded-mtext">Accesos</span>
                     </a>
                     <ul class="pcoded-submenu">
-                        <li><a href="{{route('roles')}}">Roles & Permisos</a></li>
-                        <li><a href="">Crear rol</a></li>
+                        @role('SuperAdmin')
+                            <li><a href="{{route('roles')}}">Roles & Permisos</a></li>
+                        @endrole
+                       @can('create_user')
+                            <li><a href="">Usuarios</a></li>
+                       @endcan 
                     </ul>
                 </li>
                 @endcan

@@ -8,9 +8,9 @@ use Spatie\Permission\Models\Role as HasRoles;
 
 class Roles extends Component
 {
-    public  $roles,$permissions,$name, $description, $status, $data_id;
+    public  $roles,$permissions,$name, $description, $status=true, $data_id;
     public $select_permissions  = [];
-    public $confirming, $action = 'POST';
+    public $confirming, $action = 'POST',$role = [];
     public function render()
     {
         $this->roles = HasRoles::all();
@@ -26,6 +26,7 @@ class Roles extends Component
         $this->status = '';
         $this->select_permissions  = [];
         $this->action = 'POST';
+        $this->role = [];
     
     }
 
@@ -54,6 +55,7 @@ class Roles extends Component
         $this->description = $data->description;
         $this->status = $data->status;
         $this->data_id = $id;
+        $this->role=$data;
         $permissions = $data->permissions->pluck('id');
         
         $data_list = [];

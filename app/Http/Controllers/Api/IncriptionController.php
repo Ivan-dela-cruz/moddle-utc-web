@@ -68,7 +68,7 @@ class IncriptionController extends Controller
         ],200);
     }
 
-    public function levelByStudentPeriod()
+    public function levelByStudentPeriod($id)
     {
         $user_id =  Auth::user()->id;
         $student = Student::where('user_id',$user_id)->first(['id']);
@@ -81,6 +81,7 @@ class IncriptionController extends Controller
             'students.id as student_id','levels.id as level_id','levels.name'
             )
         ->where('students.id',$student->id)
+        ->where('academic_periods.id',$id)
         ->orderBy('levels.name','DESC')
         ->groupBy('name')
         ->get();
@@ -104,7 +105,8 @@ class IncriptionController extends Controller
         ->join('subjects','period_students.subject_id','=','subjects.id')
         ->select(
             'academic_periods.id as period_id',
-            'students.id as student_id','subjects.id as subject_id','subjects.name'
+            'students.id as student_id','subjects.id as subject_id',
+            'subjects.name'
             )
         ->where('students.id',$student->id)
         ->where('levels.id',$id)
