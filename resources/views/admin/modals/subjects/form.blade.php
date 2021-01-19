@@ -7,7 +7,7 @@
         @enderror
     </div>
     <div class="col-md-6 form-group">
-        <small  class="text-primary" for="description">Description</small>
+        <small  class="text-primary" for="description">Descripción</small>
         <input type="text" id="description" class="form-control" placeholder="" wire:model="description" />
         @error('description')<span class="text-danger">{{ $message }}</span>
         @enderror
@@ -35,6 +35,6 @@
             <input  wire:model="status"  type="checkbox" id="switch-i-1" checked>
             <label for="switch-i-1" class="cr"></label>
         </div>
-    
+
     </div>
 </div>

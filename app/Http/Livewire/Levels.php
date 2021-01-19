@@ -4,14 +4,29 @@ namespace App\Http\Livewire;
 
 use App\Level;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Levels extends Component
 {
-    public  $levels, $name,$status=1, $data_id;
+
+    use WithPagination;
+
+    protected $paginationTheme = 'bootstrap';
+
+    protected $queryString = [
+        'search' => ['except' => ''],
+        'perPage' => ['except' => '5'],
+
+    ];
+    public $perPage = '10';
+    public $search = '';
+
+    public  $name,$status=1, $data_id;
     public function render()
     {
-        $this->levels = Level::all();
-        return view('livewire.levels');
+        $levels = Level::where('name', 'LIKE', "%{$this->search}%")
+            ->paginate($this->perPage);
+        return view('livewire.levels',compact('levels'));
     }
     public function resetInputFields()
     {
@@ -62,7 +77,14 @@ class Levels extends Component
 
     public function delete($id)
     {
-        Period::find($id)->delete();
+        Level::find($id)->delete();
         session()->flash('message', 'Ciclo eliminada con exíto.');
+    }
+
+    public function clear()
+    {
+        $this->search = '';
+        $this->page = 1;
+        $this->perPage = '10';
     }
 }

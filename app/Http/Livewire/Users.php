@@ -29,20 +29,6 @@ class Users extends Component
     public $url_image, $status = 1;
     public $user_id;
 
-   /* protected $rules = [
-        'name' => 'required',
-        'last_name' => 'required',
-        'email' => ['required', 'email', 'unique:users,email'],
-        //'url_image' => 'required|image',
-
-    ];
-    protected $messages = [
-        'name.required' => 'Compa obligatorio.',
-        'last_name.required' => 'Compa obligatorio.',
-        'email.required' => 'Compa obligatorio.',
-        'email.email' => 'El correo no es valido.',
-        'email.unique' => 'El correo ya esta en uso, intente con otro.',
-    ];*/
 
     public function render()
     {
@@ -76,10 +62,7 @@ class Users extends Component
         $path = 'img/user.jpg';
         if ($this->url_image != '') {
             $this->validate(['url_image' => 'image'], ['url_image.image' => 'La imagen debe ser de formato: .jpg,.jpeg ó .png']);
-
-         /*   $this->rules = array_merge($this->rules, ['url_image' => 'image']);
-            $this->messages = array_merge($this->messages, ['url_image.image' => 'La imagen debe ser de formato: .jpg,.jpeg ó .png']);
-         */   //save image
+            //save image
             $name = "file-" . time() . '.' . $this->url_image->getClientOriginalExtension();
             $path = 'users/' . $this->url_image->storeAs('/', $name, 'users');
         }

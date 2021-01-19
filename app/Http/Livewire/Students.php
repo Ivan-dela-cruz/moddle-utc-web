@@ -7,16 +7,37 @@ use App\Student;
 use Livewire\Component;
 use Illuminate\Validation\Rule;
 use Livewire\WithFileUploads;
+use Livewire\WithPagination;
+
 class Students extends Component
 {
+    use WithPagination;
     use WithFileUploads;
-    public $students, $data_id, $user_id,$name, $last_name, $url_image, $email, $dni, $status = 1;
+
+    protected $paginationTheme = 'bootstrap';
+
+    protected $queryString = [
+        'search' => ['except' => ''],
+        'perPage' => ['except' => '5'],
+
+    ];
+    public $perPage = '10';
+    public $search = '';
+
+    public  $data_id, $user_id,$name, $last_name, $url_image, $email, $dni, $status = 1;
     public $passport,$instruction, $marital_status,$birth_date,$phone;
     public function render()
     {
-        $this->students = Student::all();
-        return view('livewire.students');
+        $students = Student::where('name', 'LIKE', "%{$this->search}%")
+            ->orWhere('last_name', 'LIKE', "%{$this->search}%")
+            ->orWhere('email', 'LIKE', "%{$this->search}%")
+            ->orWhere('dni', 'LIKE', "%{$this->search}%")
+            ->orWhere('passport', 'LIKE', "%{$this->search}%")
+            ->orWhere('created_at', 'LIKE', "%{$this->search}%")
+            ->paginate($this->perPage);
+        return view('livewire.students',compact('students'));
     }
+
     public function resetInputFields()
     {
     	$this->name = '';
@@ -128,6 +149,13 @@ class Students extends Component
     {
         Student::find($id)->delete();
         $this->alert('success', 'Estudiante eliminado con exíto.');
+    }
+
+    public function clear()
+    {
+        $this->search = '';
+        $this->page = 1;
+        $this->perPage = '10';
     }
 
 }
