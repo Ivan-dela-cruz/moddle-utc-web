@@ -64,13 +64,20 @@ return [
             'url' => env('AWS_URL'),
         ],
 
+        'users' => [
+            'driver' => 'local',
+            'root' => public_path('users'),
+            'url' => env('APP_URL').'public/users',
+            'visibility' => 'public',
+        ],
+
         'students' => [
             'driver' => 'local',
             'root' => public_path('students'),
             'url' => env('APP_URL').'public/students',
             'visibility' => 'public',
         ],
-        
+
         'teachers' => [
             'driver' => 'local',
             'root' => public_path('teachers'),

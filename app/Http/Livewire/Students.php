@@ -61,11 +61,11 @@ class Students extends Component
             'phone' => $this->phone,
             'status'=> $this->status
         ];
-        
+
         Student::create($data);
-        
+
         $this->alert('success', 'Estudiante creado con exíto.');
-        
+
     	$this->resetInputFields();
 
     	$this->emit('studentStore');
@@ -129,5 +129,5 @@ class Students extends Component
         Student::find($id)->delete();
         $this->alert('success', 'Estudiante eliminado con exíto.');
     }
-    
+
 }

@@ -96,7 +96,7 @@ class AuthController extends Controller
         $user = User::find(Auth::user()->id);
         $user->name = $request->name;
       //  $user->last_name = $request->last_name;
-    
+
         if ($request->url_image) {
             if ($user->url_image != $request->url_image) {
                 $this->destroyFile($user->url_image);
@@ -137,7 +137,7 @@ class AuthController extends Controller
             }
         }catch(Exception $e){
             return response()->json([
-               
+
                 'success' => false,
                 'code' => 'ERROR_PROFILE',
                 'status' => 500,
@@ -172,9 +172,9 @@ class AuthController extends Controller
                 'status' => 500,
             ],500);
         }
-        
+
     }
-    
+
     public function generatePassword($password)
     {
         $user_password = Hash::make($password);
