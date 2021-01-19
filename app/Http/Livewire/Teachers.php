@@ -6,14 +6,35 @@ use App\Teacher;
 use Livewire\Component;
 use Illuminate\Validation\Rule;
 use Livewire\WithFileUploads;
+use Livewire\WithPagination;
+
 class Teachers extends Component
 {
     use WithFileUploads;
-    public $teachers, $data_id, $user_id,$name, $last_name, $url_image, $email,$profession, $dni, $status=1;
+
+    use WithPagination;
+
+    protected $paginationTheme = 'bootstrap';
+
+    protected $queryString = [
+        'search' => ['except' => ''],
+        'perPage' => ['except' => '5'],
+
+    ];
+    public $perPage = '10';
+    public $search = '';
+
+    public  $data_id, $user_id,$name, $last_name, $url_image, $email,$profession, $dni, $status=1;
     public function render()
     {
-        $this->teachers = Teacher::all();
-        return view('livewire.teachers');
+        $teachers = Teacher::where('name', 'LIKE', "%{$this->search}%")
+            ->orWhere('last_name', 'LIKE', "%{$this->search}%")
+            ->orWhere('email', 'LIKE', "%{$this->search}%")
+            ->orWhere('dni', 'LIKE', "%{$this->search}%")
+            ->orWhere('profession', 'LIKE', "%{$this->search}%")
+            ->orWhere('created_at', 'LIKE', "%{$this->search}%")
+            ->paginate($this->perPage);
+        return view('livewire.teachers', compact('teachers'));
     }
     public function resetInputFields()
     {
@@ -52,9 +73,9 @@ class Teachers extends Component
             'status'=> $this->status
         ];
         Teacher::create($data);
-        
+
         session()->flash('message', 'Profesor creado con exíto.');
-        
+
     	$this->resetInputFields();
 
     	$this->emit('teacherStore');
@@ -109,5 +130,12 @@ class Teachers extends Component
         Teacher::find($id)->delete();
         session()->flash('message', 'Profesor eliminado con exíto.');
     }
-} 
+
+    public function clear()
+    {
+        $this->search = '';
+        $this->page = 1;
+        $this->perPage = '10';
+    }
+}
 

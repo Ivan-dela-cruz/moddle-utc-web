@@ -31,11 +31,13 @@
                         @if($search !='')
                             <button wire:click="clear" class="btn btn-outline-danger ml-6">X</button>
                         @endif
+                        @can('create_user')
                             <button class="btn btn-success btn-sm btn-round has-ripple float-lg-right"
                                     data-toggle="modal" data-target="#createModal">
                                 <i class="feather icon-plus"></i>
                                 Agregar
                             </button>
+                        @endcan
                     </div>
                 </div>
             </div>
@@ -61,7 +63,8 @@
                             <td>
                                 <div class="d-inline-block align-middle">
 
-                                    <img src="{{asset($user->url_image)}}" alt="user image" class="img-radius align-top m-r-15" style="width:40px;">
+                                    <img src="{{asset($user->url_image)}}" alt="user image"
+                                         class="img-radius align-top m-r-15" style="width:40px;">
 
 
                                     <div class="d-inline-block">
@@ -72,7 +75,7 @@
                             </td>
                             <td>{{$user->email}}</td>
                             <td>{{ implode(" ",$user->getRoleNames()->toArray() )}}</td>
-                            <td>{{$user->created_at}}</td>
+                            <td>{{$user->created_at->format('Y-m-d')}}</td>
                             <td>
                                 @if ($user->status === 1)
                                     <span
@@ -86,21 +89,24 @@
                             </span>
                                 @endif
                                 <div class="overlay-edit">
-                                    <button
-                                        class="btn btn-icon btn-warning"
-                                        wire:click="edit({{ $user->id }})"
-                                        type="button"
-                                        data-toggle="modal" data-target="#updateModal">
-                                        <i class="feather icon-edit-2"></i></button>
-
-                                    <button
-                                        wire:click="delete({{ $user->id }})"
-                                        data-toggle="tooltip"
-                                        title="Titulo"
-                                        type="button"
-                                        class="btn btn-icon btn-danger">
-                                        <i class="feather icon-trash-2"></i>
-                                    </button>
+                                    @can('update_user')
+                                        <button
+                                            class="btn btn-icon btn-warning"
+                                            wire:click="edit({{ $user->id }})"
+                                            type="button"
+                                            data-toggle="modal" data-target="#updateModal">
+                                            <i class="feather icon-edit-2"></i></button>
+                                    @endcan
+                                    @can('destroy_user')
+                                        <button
+                                            wire:click="delete({{ $user->id }})"
+                                            data-toggle="tooltip"
+                                            title="Titulo"
+                                            type="button"
+                                            class="btn btn-icon btn-danger">
+                                            <i class="feather icon-trash-2"></i>
+                                        </button>
+                                    @endcan
                                 </div>
                             </td>
                         </tr>

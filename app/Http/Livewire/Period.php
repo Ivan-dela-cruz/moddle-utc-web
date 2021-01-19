@@ -6,16 +6,32 @@ namespace App\Http\Livewire;
 use App\Period as Periods;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Livewire\WithPagination;
+
 class Period extends Component
 {
     use WithFileUploads;
-    public  $periods, $name, $start_date, $end_date, $status = true, $data_id, $url_image, $color = "#ffffff";
+    use WithPagination;
+
+    protected $paginationTheme = 'bootstrap';
+
+    protected $queryString = [
+        'search' => ['except' => ''],
+        'perPage' => ['except' => '5'],
+
+    ];
+    public $perPage = '10';
+    public $search = '';
+
+    public   $name, $start_date, $end_date, $status = true, $data_id, $url_image, $color = "#ffffff";
 
     public function render()
     {
-    	$this->periods = Periods::all();
-    	
-        return view('livewire.period');
+    	$periods = Periods::where('start_date', 'LIKE', "%{$this->search}%")
+            ->orWhere('end_date', 'LIKE', "%{$this->search}%")
+            ->orWhere('name', 'LIKE', "%{$this->search}%")
+            ->paginate($this->perPage);
+        return view('livewire.period',compact('periods'));
     }
 
     public function resetInputFields()
@@ -26,6 +42,13 @@ class Period extends Component
         $this->status = true;
         $this->url_image = '';
         $this->color = '#ffffff';
+    }
+
+    public function clear()
+    {
+        $this->search = '';
+        $this->page = 1;
+        $this->perPage = '10';
     }
 
     public function store()
