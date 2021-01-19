@@ -37,12 +37,12 @@ Route::namespace('Admin')->group(function () {
         Route::group(['middleware' => ['permission:create_student|update_student|destroy_student|read_student']], function () {
 
             Route::get('dashboard/students','DashboardController@students')->name('students');
-            
+
         });
         Route::group(['middleware' => ['permission:create_techier|update_techier|destroy_techier|read_techier']], function () {
             Route::get('dashboard/teachers','DashboardController@teachers')->name('teachers');
         });
-       
+
         Route::group(['middleware' => ['permission:create_level|update_level|destroy_level|read_level']], function () {
             Route::get('dashboard/levels','DashboardController@levels')->name('levels');
         });
@@ -52,9 +52,17 @@ Route::namespace('Admin')->group(function () {
         Route::group(['middleware' => ['permission:create_file|update_file|destroy_file|read_file']], function () {
             Route::get('dashboard/files','DashboardController@files')->name('files');
         });
-        
+
         Route::get('dashboard/student-period-level','DashboardController@periodsStudent')->name('levelstudent');
         Route::get('dashboard/student-level-course','DashboardController@courseStudent')->name('coursebystudent');
+
+        //Code
+        Route::group(['middleware' => ['permission:create_user|update_user|destroy_user|read_user']], function () {
+
+            Route::get('dashboard/users','DashboardController@users')->name('users');
+
+        });
+
     //});
     });
 });

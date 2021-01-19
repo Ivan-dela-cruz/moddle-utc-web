@@ -50,10 +50,10 @@ class="{{request()->is('/ruta')?'active':''}}"
                     <a href="" class="nav-link ">
                         <label>Panel de control</label>
                     </a>
-                    
+
                 </li>
-              
-               
+
+
                 @can('read_role')
                 <li class="nav-item pcoded-hasmenu">
                     <a href="javascript: return void();" class="nav-link ">
@@ -67,8 +67,8 @@ class="{{request()->is('/ruta')?'active':''}}"
                             <li><a href="{{route('roles')}}">Roles & Permisos</a></li>
                         @endrole
                        @can('create_user')
-                            <li><a href="">Usuarios</a></li>
-                       @endcan 
+                            <li><a href="{{route('users')}}">Usuarios</a></li>
+                       @endcan
                     </ul>
                 </li>
                 @endcan
@@ -166,10 +166,10 @@ class="{{request()->is('/ruta')?'active':''}}"
                         @can('read_course')
                         <li><a href="{{route('courses')}}">Cursos</a></li>
                         @endcan
-                       
+
                     </ul>
                 </li>
-              
+
             </ul>
         </div>
     </div>
