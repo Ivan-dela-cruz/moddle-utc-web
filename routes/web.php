@@ -58,9 +58,13 @@ Route::namespace('Admin')->group(function () {
 
         //Code
         Route::group(['middleware' => ['permission:create_user|update_user|destroy_user|read_user']], function () {
-
             Route::get('dashboard/users','DashboardController@users')->name('users');
-
+        });
+        Route::group(['middleware' => ['permission:create_file|update_file|destroy_file|read_file']], function () {
+            Route::get('dashboard/practices','DashboardController@practices')->name('practices');
+        });
+        Route::group(['middleware' => ['permission:create_file|update_file|destroy_file|read_file']], function () {
+            Route::get('dashboard/cs_activities','DashboardController@cs_activities')->name('cs_activities');
         });
 
     //});

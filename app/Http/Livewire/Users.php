@@ -18,7 +18,7 @@ class Users extends Component
 
     protected $queryString = [
         'search' => ['except' => ''],
-        'perPage' => ['except' => '5'],
+        'perPage' => ['except' => '10'],
 
     ];
     public $perPage = '10';
@@ -33,6 +33,7 @@ class Users extends Component
     public function render()
     {
         $users = User::where('name', 'LIKE', "%{$this->search}%")
+            ->orWhere('last_name', 'LIKE', "%{$this->search}%")
             ->orWhere('email', 'LIKE', "%{$this->search}%")
             ->orWhere('created_at', 'LIKE', "%{$this->search}%")
             ->paginate($this->perPage);

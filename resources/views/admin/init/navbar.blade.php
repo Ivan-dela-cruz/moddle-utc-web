@@ -152,6 +152,21 @@ class="{{request()->is('/ruta')?'active':''}}"
                     </ul>
                 </li>
                 @endcan
+                @can('read_file') <!-- CAMBIAR PERMISOS -->
+                    <li class="nav-item pcoded-hasmenu">
+                        <a href="javascript: return void();" class="nav-link ">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-layout"></i>
+                        </span>
+                            <span class="pcoded-mtext">Vinculación</span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li><a href="{{route('practices')}}">P.P.P</a></li>
+                            <li><a href="{{route('cs_activities')}}">A.S.C</a></li>
+                        </ul>
+                    </li>
+                @endcan
+
                  <li class="nav-item pcoded-hasmenu">
                     <a href="javascript: return void();" class="nav-link ">
                         <span class="pcoded-micon">
