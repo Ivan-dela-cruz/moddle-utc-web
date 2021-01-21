@@ -65,6 +65,17 @@ class DashboardController extends Controller
 
     }
 
+    public function practices()
+    {
+        return view('admin.dashboard.practices.index');
+
+    }
+    public function cs_activities()
+    {
+        return view('admin.dashboard.cs_activities.index');
+
+    }
+
     //MATRICULAR UN STUDIANTE EN UN nivel
     public function periodsStudent()
     {
