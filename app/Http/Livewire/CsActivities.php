@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Level;
 use App\Period;
 use App\Subject;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -22,14 +23,23 @@ class CsActivities extends Component
     public $perPage = '10';
     public $search = '';
 
-    public $periods, $levels, $subjects, $level_id = '', $period_id = '', $subject_id = '';
-    public $parallel;
+    public $students, $periods, $levels, $subjects, $level_id = '', $period_id = '', $subject_id = '';
+    public $parallel = '', $status = true;
 
     public function render()
     {
         $this->periods = Period::all();
-        $this->levels = Level::all();
         $this->SubjectsByLevel();
+
+        $this->students = DB::table('students')
+            ->join('period_students', 'students.id', 'period_students.student_id')
+            ->where('period_students.period_id', $this->period_id)
+            ->where('period_students.level_id', $this->level_id)
+            ->where('period_students.subject_id', $this->subject_id)
+            ->where('period_students.status', $this->status)
+            ->where('period_students.parallel', $this->parallel)
+            ->select('students.*')
+            ->get();
         return view('livewire.cs-activities');
     }
 
