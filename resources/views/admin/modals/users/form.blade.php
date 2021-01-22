@@ -63,13 +63,24 @@
     </div>
     <div class="col-md-6 form-group" wire:ignore>
         <small class="text-primary" for="password_confirmation">Roles</small>
-        <select id="role" class="select2 form-control" multiple data-placeholder="{{__('Seleccione...')}}" >
+        <select id="role" class="select2 form-control" multiple data-placeholder="{{__('Seleccione...')}}">
             @foreach($roles as $role)
-                <option value="{{$role->id}}">{{$role->name}}</option>
+                @if(!is_null($uRoles))
+                    <option value="{{$role->id}}"
+                            @foreach($uRoles as $role_id)
+                            @if($role->id == $role_id) selected="selected"@endif
+                        @endforeach>
+                        {{$role->name}}
+                    </option>
+                @else
+                    <option value="{{$role->id}}">{{$role->name}}</option>
+                @endif
             @endforeach
         </select>
         @error('roles')<span class="text-danger">{{ $message }}</span>@enderror
     </div>
+
+
     <div class="col-md-6 form-group">
         <small style="margin-left: 0px;" class="mr-3 text-primary">Estado</small>
         <div class="switch switch-info m-r-10">

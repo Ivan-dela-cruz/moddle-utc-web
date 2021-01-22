@@ -140,6 +140,13 @@
                     })
                 });
             });
+            window.livewire.on('loadRoles', () => {
+               /* $('#role').on('change', function (e) {
+                    console.log('load roles');
+                    var data = $(this).select2("val");
+                @this.get('roles_selected', data);
+                });*/
+            });
         </script>
     @endsection
 </div>
