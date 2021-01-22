@@ -8,6 +8,8 @@
 <!-- minicolors css -->
 <link rel="stylesheet" href="{{asset('assets2/css/plugins/jquery.minicolors.css')}}">
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
- 
+
+<link rel="stylesheet" href="{{asset('plugins/select2/dist/css/select2.css')}}">
+
  @livewireStyles
 @yield('css')
