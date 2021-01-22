@@ -3,12 +3,14 @@
 namespace App\Http\Livewire;
 
 use App\User;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use Spatie\Permission\Models\Role;
+use function Symfony\Component\String\u;
 
 class Users extends Component
 {
@@ -28,7 +30,7 @@ class Users extends Component
     //from data
     public $name, $last_name, $email, $password, $password_confirmation;
     public $url_image, $status = 1;
-    public $user_id;
+    public $user_id, $uRoles = null;
     public $roles, $roles_selected;
     public $view = 'create', $select_id = 'roles_create';
 
@@ -104,10 +106,11 @@ class Users extends Component
         $this->email = $user->email;
         $this->url_image = $user->url_image;
         $this->status = $user->status;
+        $this->uRoles = $user->roles->pluck('id');
+       // dd($this->uRoles);
+        //$roles = $user->roles->pluck('id');
 
-        $roles = Role::where('status', 1)->get(['id']);
-      //  $this->roles_selected  = $user->roles;
-
+           //dd($this->roles_selected);
     }
 
     public function update()
@@ -125,7 +128,21 @@ class Users extends Component
         ]);
 
         $user = User::find($this->user_id);
+        if($this->password != ''){
+            $this->validate([
+                'password' => 'required|confirmed|min:8',
+                'password_confirmation' => 'required'
+            ],[
+                'password.required' => 'Campo obligatorio.',
+                'password_confirmation.required' => 'Campo obligatorio.',
+                'password.min' => 'Contraseña demasiado corta.',
+                'password.confirmed' => 'No se ha confirmado la contraseña.',
+            ]);
 
+            $pass = Hash::make($this->password);
+        }else{
+            $pass = $user->password;
+        }
         if ($this->url_image != $user->url_image) {
             $this->validate(['url_image' => 'image'], ['url_image.image' => 'La imagen debe ser de formato: .jpg,.jpeg ó .png']);
             //save image
@@ -135,18 +152,20 @@ class Users extends Component
             $path = $user->url_image;
         }
 
+       // dd($this->roles_selected);
         $user->update([
             'name' => $this->name,
             'last_name' => $this->last_name,
             'email' => $this->email,
             'url_image' => $path,
-            'password' => Hash::make($this->password),
+            'password' => $pass,
             'status' => $this->status,
         ]);
+        if($this->roles_selected != null){
+            $user->roles()->detach();
+            $user->syncRoles($this->roles_selected);
+        }
 
-        $user->roles()->detach();
-     //   dd($this->roles_selected);
-        $user->syncRoles($this->roles_selected);
 
         $this->alert('success', 'Usuario actualizado con exíto.');
         $this->emit('studentStore');
@@ -179,5 +198,6 @@ class Users extends Component
         $this->password_confirmation = '';
         $this->status = 1;
         $this->roles_selected ;
+        $this->uRoles = null;
     }
 }
