@@ -1,6 +1,5 @@
 <div class="col-sm-12">
-    @include('admin.modals.users.create')
-    @include('admin.modals.users.edit')
+    @include('admin.modals.users.'.$view)
 
     <div class="card">
         <div class="card-body">
@@ -32,7 +31,8 @@
                             <button wire:click="clear" class="btn btn-outline-danger ml-6">X</button>
                         @endif
                         @can('create_user')
-                            <button class="btn btn-success btn-sm btn-round has-ripple float-lg-right"
+                            <button wire:click="create()"
+                                    class="btn btn-success btn-sm btn-round has-ripple float-lg-right"
                                     data-toggle="modal" data-target="#createModal">
                                 <i class="feather icon-plus"></i>
                                 Agregar
@@ -43,7 +43,6 @@
             </div>
         </div>
     </div>
-
     <div class=" card user-profile-list">
         <div class="card-body">
             <div class="dt-responsive table-responsive">
@@ -74,7 +73,11 @@
                                 </div>
                             </td>
                             <td>{{$user->email}}</td>
-                            <td>{{ implode(" ",$user->getRoleNames()->toArray() )}}</td>
+                            <td>
+                                @foreach($user->roles as $rol)
+                                    <span class="badge badge-info"> {{$rol->name}}</span>
+                                @endforeach
+                            </td>
                             <td>{{$user->created_at->format('Y-m-d')}}</td>
                             <td>
                                 @if ($user->status === 1)
@@ -119,6 +122,26 @@
         </div>
 
     </div>
+    @section('scripts')
+        <script>
+            $('#role').each(function () {
+                $(this).select2({
+                    dropdownParent: $(this).parent()
+                });
+            });
+            $('#role').on('change', function (e) {
+                var data = $(this).select2("val");
+            @this.set('roles_selected', data);
+            });
+            document.addEventListener("livewire:load", () => {
+                Livewire.hook('message.processed', (message, component) => {
+                    $('#role').each(function () {
+                        $(this).select2({dropdownParent: $(this).parent()});
+                    })
+                });
+            });
+        </script>
+    @endsection
 </div>
 
 

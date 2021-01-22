@@ -8,6 +8,7 @@ use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+use Spatie\Permission\Models\Role;
 
 class Users extends Component
 {
@@ -28,6 +29,8 @@ class Users extends Component
     public $name, $last_name, $email, $password, $password_confirmation;
     public $url_image, $status = 1;
     public $user_id;
+    public $roles, $roles_selected;
+    public $view = 'create', $select_id = 'roles_create';
 
 
     public function render()
@@ -37,7 +40,13 @@ class Users extends Component
             ->orWhere('email', 'LIKE', "%{$this->search}%")
             ->orWhere('created_at', 'LIKE', "%{$this->search}%")
             ->paginate($this->perPage);
+        $this->roles = Role::where('status', 1)->get(["name", "id"]);
+        //dd($roles);
         return view('livewire.users', compact('users'));
+    }
+
+    public function create(){
+        $this->resetInputFields();
     }
 
     public function store()
@@ -48,14 +57,14 @@ class Users extends Component
             'email' => ['required', 'email', 'unique:users,email'],
             'password' => 'required|confirmed|min:8',
             'password_confirmation' => 'required'
-        ],[
-            'name.required' => 'Compa obligatorio.',
-            'last_name.required' => 'Compa obligatorio.',
-            'email.required' => 'Compa obligatorio.',
+        ], [
+            'name.required' => 'Campo obligatorio.',
+            'last_name.required' => 'Campo obligatorio.',
+            'email.required' => 'Campo obligatorio.',
             'email.email' => 'El correo no es valido.',
             'email.unique' => 'El correo ya esta en uso, intente con otro.',
-            'password.required' => 'Compa obligatorio.',
-            'password_confirmation.required' => 'Compa obligatorio.',
+            'password.required' => 'Campo obligatorio.',
+            'password_confirmation.required' => 'Campo obligatorio.',
             'password.min' => 'Contraseña demasiado corta.',
             'password.confirmed' => 'No se ha confirmado la contraseña.',
         ]);
@@ -67,7 +76,7 @@ class Users extends Component
             $name = "file-" . time() . '.' . $this->url_image->getClientOriginalExtension();
             $path = 'users/' . $this->url_image->storeAs('/', $name, 'users');
         }
-       // $this->validate();
+        // $this->validate();
         $data = [
             'name' => $this->name,
             'last_name' => $this->last_name,
@@ -76,8 +85,9 @@ class Users extends Component
             'password' => Hash::make($this->password),
             'status' => $this->status,
         ];
-
+       // dd($this->roles_selected);
         $user = User::create($data);
+        $user->roles()->sync($this->roles_selected);
         $this->alert('success', 'Usuario creado con exíto.');
         $this->resetInputFields();
         $this->emit('studentStore');
@@ -85,6 +95,8 @@ class Users extends Component
 
     public function edit($id)
     {
+        $this->view = 'edit';
+        $this->select_id = 'roles_edit';
         $user = User::find($id);
         $this->user_id = $user->id;
         $this->name = $user->name;
@@ -92,6 +104,10 @@ class Users extends Component
         $this->email = $user->email;
         $this->url_image = $user->url_image;
         $this->status = $user->status;
+
+        $roles = Role::where('status', 1)->get(['id']);
+      //  $this->roles_selected  = $user->roles;
+
     }
 
     public function update()
@@ -100,10 +116,10 @@ class Users extends Component
             'name' => 'required',
             'last_name' => 'required',
             'email' => ['required', 'email', Rule::unique('users')->ignore($this->user_id)],
-        ],[
-            'name.required' => 'Compa obligatorio.',
-            'last_name.required' => 'Compa obligatorio.',
-            'email.required' => 'Compa obligatorio.',
+        ], [
+            'name.required' => 'Campo obligatorio.',
+            'last_name.required' => 'Campo obligatorio.',
+            'email.required' => 'Campo obligatorio.',
             'email.email' => 'El correo no es valido.',
             'email.unique' => 'El correo ya esta en uso, intente con otro.',
         ]);
@@ -128,12 +144,13 @@ class Users extends Component
             'status' => $this->status,
         ]);
 
+        $user->roles()->detach();
+     //   dd($this->roles_selected);
+        $user->syncRoles($this->roles_selected);
+
         $this->alert('success', 'Usuario actualizado con exíto.');
-
-        $this->resetInputFields();
-
         $this->emit('studentStore');
-
+       // $this->resetInputFields();
     }
 
     public function delete($id)
@@ -152,6 +169,8 @@ class Users extends Component
 
     public function resetInputFields()
     {
+        $this->view = 'create';
+        $this->select_id = 'roles_create';
         $this->name = '';
         $this->last_name = '';
         $this->url_image = '';
@@ -159,5 +178,6 @@ class Users extends Component
         $this->password = '';
         $this->password_confirmation = '';
         $this->status = 1;
+        $this->roles_selected ;
     }
 }
