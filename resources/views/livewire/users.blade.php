@@ -1,5 +1,6 @@
 <div class="col-sm-12">
-    @include('admin.modals.users.'.$view)
+        @include('admin.modals.users.'.$view)
+
 
     <div class="card">
         <div class="card-body">
@@ -32,8 +33,7 @@
                         @endif
                         @can('create_user')
                             <button wire:click="create()"
-                                    class="btn btn-success btn-sm btn-round has-ripple float-lg-right"
-                                    data-toggle="modal" data-target="#createModal">
+                                    class="btn btn-success btn-sm btn-round has-ripple float-lg-right">
                                 <i class="feather icon-plus"></i>
                                 Agregar
                             </button>
@@ -64,8 +64,6 @@
 
                                     <img src="{{asset($user->url_image)}}" alt="user image"
                                          class="img-radius align-top m-r-15" style="width:40px;">
-
-
                                     <div class="d-inline-block">
                                         <h6 class="m-b-0">{{$user->name}} {{$user->last_name}}</h6>
                                         <p class="m-b-0">{{$user->email}}</p>
@@ -96,8 +94,7 @@
                                         <button
                                             class="btn btn-icon btn-warning"
                                             wire:click="edit({{ $user->id }})"
-                                            type="button"
-                                            data-toggle="modal" data-target="#updateModal">
+                                            type="button">
                                             <i class="feather icon-edit-2"></i></button>
                                     @endcan
                                     @can('destroy_user')
@@ -126,6 +123,7 @@
         <script>
             $('#role').each(function () {
                 $(this).select2({
+                    placeholder: "{{__('Seleccione...')}}",
                     dropdownParent: $(this).parent()
                 });
             });
@@ -140,12 +138,16 @@
                     })
                 });
             });
-            window.livewire.on('loadRoles', () => {
-               /* $('#role').on('change', function (e) {
-                    console.log('load roles');
-                    var data = $(this).select2("val");
-                @this.get('roles_selected', data);
-                });*/
+            window.livewire.on('showUpdate', () => {
+                $('#updateModal').modal('show');
+            });
+            window.livewire.on('showCreate', () => {
+                $('#createModal').modal('show');
+            });
+            window.livewire.on('modal', () => {
+                $('#updateModal').modal('hide');
+              //  $('#createModal').remove();
+                //data-dismiss="modal"
             });
         </script>
     @endsection
