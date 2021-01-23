@@ -31,8 +31,8 @@ class Users extends Component
     public $name, $last_name, $email, $password, $password_confirmation;
     public $url_image, $status = 1;
     public $user_id, $uRoles = null;
-    public $roles, $roles_selected;
-    public $view = 'create', $select_id = 'roles_create';
+    public $roles, $roles_selected = null;
+    public $view = 'create';
 
 
     public function render()
@@ -47,7 +47,13 @@ class Users extends Component
         return view('livewire.users', compact('users'));
     }
 
+    public function mount(){
+        $this->uRoles =  null;
+    }
+
     public function create(){
+        $this->view = 'create';
+        $this->emit('showCreate');//IMPORTANT!
         $this->resetInputFields();
     }
 
@@ -98,7 +104,6 @@ class Users extends Component
     public function edit($id)
     {
         $this->view = 'edit';
-        $this->select_id = 'roles_edit';
         $user = User::find($id);
         $this->user_id = $user->id;
         $this->name = $user->name;
@@ -106,11 +111,9 @@ class Users extends Component
         $this->email = $user->email;
         $this->url_image = $user->url_image;
         $this->status = $user->status;
-        $this->uRoles = $user->roles->pluck('id');
-       // dd($this->uRoles);
-        //$roles = $user->roles->pluck('id');
-
-           //dd($this->roles_selected);
+        $this->uRoles = $user;
+        $this->roles_selected = null;
+        $this->emit('showUpdate');//IMPORTANT!
     }
 
     public function update()
@@ -128,21 +131,6 @@ class Users extends Component
         ]);
 
         $user = User::find($this->user_id);
-        if($this->password != ''){
-            $this->validate([
-                'password' => 'required|confirmed|min:8',
-                'password_confirmation' => 'required'
-            ],[
-                'password.required' => 'Campo obligatorio.',
-                'password_confirmation.required' => 'Campo obligatorio.',
-                'password.min' => 'Contraseña demasiado corta.',
-                'password.confirmed' => 'No se ha confirmado la contraseña.',
-            ]);
-
-            $pass = Hash::make($this->password);
-        }else{
-            $pass = $user->password;
-        }
         if ($this->url_image != $user->url_image) {
             $this->validate(['url_image' => 'image'], ['url_image.image' => 'La imagen debe ser de formato: .jpg,.jpeg ó .png']);
             //save image
@@ -151,25 +139,21 @@ class Users extends Component
         } else {
             $path = $user->url_image;
         }
-
        // dd($this->roles_selected);
         $user->update([
             'name' => $this->name,
             'last_name' => $this->last_name,
             'email' => $this->email,
             'url_image' => $path,
-            'password' => $pass,
             'status' => $this->status,
         ]);
         if($this->roles_selected != null){
             $user->roles()->detach();
             $user->syncRoles($this->roles_selected);
         }
-
-
+        $this->emit('modal');
         $this->alert('success', 'Usuario actualizado con exíto.');
-        $this->emit('studentStore');
-       // $this->resetInputFields();
+        return redirect()->route('users');
     }
 
     public function delete($id)
@@ -189,7 +173,6 @@ class Users extends Component
     public function resetInputFields()
     {
         $this->view = 'create';
-        $this->select_id = 'roles_create';
         $this->name = '';
         $this->last_name = '';
         $this->url_image = '';
@@ -197,7 +180,7 @@ class Users extends Component
         $this->password = '';
         $this->password_confirmation = '';
         $this->status = 1;
-        $this->roles_selected ;
+        $this->roles_selected = null ;
         $this->uRoles = null;
     }
 }
