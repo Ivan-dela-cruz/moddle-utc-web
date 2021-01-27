@@ -32,20 +32,20 @@
     </div>
     <div class="col-md-6 form-group">
         <div class="input-group mb-3">
-                                                    
+
             <div class="input-group-prepend">
-                
+
                 @if($url_image =='')
-                    <img src="{{asset('img/user.jpg')}}" alt="user image" class="img-radius align-top m-r-15" style="width:40px;">
+                    <img wire:ignore src="{{asset('img/user.jpg')}}" alt="user image" class="img-radius align-top m-r-15" style="width:40px;">
                 @else
-                    <img src="{{asset($url_image)}}" alt="user image" class="img-radius align-top m-r-15" style="width:40px;">
+                    <img wire:ignore src="{{asset($url_image)}}" alt="user image" class="img-radius align-top m-r-15" style="width:40px;">
                 @endif
             </div>
             <div class="custom-file">
                 <input type="file" class="custom-file-input" id="inputGroupFile01" wire:model="url_image">
                 <label class="custom-file-label" for="inputGroupFile01" >Subir imagen</label>
             </div>
-        
+
         </div>
         @error('url_image')<span class="text-danger">{{ $message }}</span>
         @enderror
@@ -57,6 +57,6 @@
             <input  wire:model="status"  type="checkbox" id="switch-i-1" checked>
             <label for="switch-i-1" class="cr"></label>
         </div>
-    
+
     </div>
 </div>

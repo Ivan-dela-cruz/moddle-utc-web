@@ -13,7 +13,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-7">
+                    <div class="col-sm-7">
                         <div class="form-group">
                             <input
                                 wire:model="search"
@@ -22,9 +22,9 @@
                                 placeholder="Buscar...">
                         </div>
                     </div>
-                    <div class="col-3">
-                        <div class="form-group">
-                            <select wire:model="perPage" class="form-control text-gray-500 text-sm my-border">
+                    <div class="col-sm-3">
+                        <div class="form-group d-flex justify-content-between">
+                            <select wire:model="perPage" class="form-control text-gray-500 text-sm my-border mr-4">
                                 <option value="5">5 por página</option>
                                 <option value="10">10 por página</option>
                                 <option value="15">15 por página</option>
@@ -32,13 +32,14 @@
                                 <option value="50">50 por página</option>
                                 <option value="100">100 por página</option>
                             </select>
+                            @if($search !='')
+                                <button wire:click="clear" class="btn btn-outline-danger ">X</button>
+                            @endif
                         </div>
                     </div>
-                    <div class="col-2">
+                    <div class="col-sm-2">
                         <div class="form-group">
-                            @if($search !='')
-                                <button wire:click="clear" class="btn btn-outline-danger ml-6">X</button>
-                            @endif
+
                             @can('create_level')
                                 <button class="btn btn-success btn-sm btn-round has-ripple float-lg-right"
                                         data-toggle="modal" data-target="#createModal">
@@ -55,7 +56,7 @@
     <div class="card user-profile-list">
         <div class="card-body">
             <div class="dt-responsive table-responsive">
-                <table class="table nowrap mb-2 dataTable">
+                <table class="table table-sm nowrap mb-2 dataTable">
                     <thead>
                     <tr>
                         <th>Ciclo</th>

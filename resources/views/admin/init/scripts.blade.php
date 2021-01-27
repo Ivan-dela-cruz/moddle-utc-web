@@ -35,12 +35,12 @@
 
 <script src="{{asset('plugins/select2/dist/js/select2.full.min.js')}}"></script>
 <script src="{{asset('plugins/select2/dist/js/select2.min.js')}}"></script>
-
+<!-- custom-chart js -->
+<script src="{{asset('assets2/js/pages/dashboard-sale.js')}}"></script>
 
 @livewireScripts
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10">
-</script>
-<x-livewire-alert::scripts/>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<x-livewire-alert::scripts />
 
 
 <script type="text/javascript">

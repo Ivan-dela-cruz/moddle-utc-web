@@ -16,7 +16,7 @@ class Subject extends Component
 
     protected $queryString = [
         'search' => ['except' => ''],
-        'perPage' => ['except' => '5'],
+        'perPage' => ['except' => '10'],
 
     ];
     public $perPage = '10';
@@ -52,10 +52,15 @@ class Subject extends Component
             'slug' => 'required',
             'status' => 'required',
             'level_id' => 'required'
-
-    	]);
+    	],[
+    	    'name.required' => 'Campo obligatorio.',
+    	    'description.required' => 'Campo obligatorio.',
+    	    'slug.required' => 'Campo obligatorio.',
+    	    'status.required' => 'Campo obligatorio.',
+    	    'level_id.required' => 'Campo obligatorio.',
+        ]);
     	Subjects::create($validation);
-    	session()->flash('message', 'Materia creada con exíto.');
+    	$this->alert('success', 'Materia registrada con exíto.',[ 'showCancelButton' =>  false, ]);
     	$this->resetInputFields();
 
     	$this->emit('subjectStore');
@@ -80,6 +85,12 @@ class Subject extends Component
             'slug' => 'required',
             'status' => 'required',
             'level_id' => 'required'
+        ],[
+            'name.required' => 'Campo obligatorio.',
+            'description.required' => 'Campo obligatorio.',
+            'slug.required' => 'Campo obligatorio.',
+            'status.required' => 'Campo obligatorio.',
+            'level_id.required' => 'Campo obligatorio.',
         ]);
 
         $data = Subjects::find($this->data_id);
@@ -92,7 +103,7 @@ class Subject extends Component
             'level_id'            =>  $this->level_id
         ]);
 
-        session()->flash('message', 'Materia actualizada con exíto.');
+        $this->alert('success', 'Materia actualizada con exíto.',[ 'showCancelButton' =>  false, ]);
 
         $this->resetInputFields();
 
@@ -102,7 +113,7 @@ class Subject extends Component
     public function delete($id)
     {
         Subjects::find($id)->delete();
-        session()->flash('message', 'Materia eliminada con exíto.');
+        $this->alert('success', 'Materia eliminada con exíto.',[ 'showCancelButton' =>  false, ]);
     }
     public function clear()
     {

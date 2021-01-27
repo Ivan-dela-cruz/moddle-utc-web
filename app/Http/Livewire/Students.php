@@ -18,14 +18,15 @@ class Students extends Component
 
     protected $queryString = [
         'search' => ['except' => ''],
-        'perPage' => ['except' => '5'],
+        'perPage' => ['except' => '10'],
 
     ];
     public $perPage = '10';
     public $search = '';
 
-    public  $data_id, $user_id,$name, $last_name, $url_image, $email, $dni, $status = 1;
-    public $passport,$instruction, $marital_status,$birth_date,$phone;
+    public $data_id, $user_id, $name, $last_name, $url_image, $email, $dni, $status = 1;
+    public $passport, $instruction, $marital_status, $birth_date, $phone;
+
     public function render()
     {
         $students = Student::where('name', 'LIKE', "%{$this->search}%")
@@ -35,13 +36,13 @@ class Students extends Component
             ->orWhere('passport', 'LIKE', "%{$this->search}%")
             ->orWhere('created_at', 'LIKE', "%{$this->search}%")
             ->paginate($this->perPage);
-        return view('livewire.students',compact('students'));
+        return view('livewire.students', compact('students'));
     }
 
     public function resetInputFields()
     {
-    	$this->name = '';
-    	$this->last_name = '';
+        $this->name = '';
+        $this->last_name = '';
         $this->url_image = '';
         $this->email = '';
         $this->dni = '';
@@ -56,47 +57,76 @@ class Students extends Component
 
     public function store()
     {
-    	$validation = $this->validate([
-    		'name'	=>	'required',
-            'last_name' => 'required',
-            'url_image' => 'image|max:1024',
+        $validation = $this->validate([
+            'name' => 'required|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u|max:255',
+            'last_name' => 'required|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u|max:255',
             'email' => 'required|email|unique:students',
-            'dni' => 'required|unique:students',
-            'status' => 'required'
+            'dni' => 'required|unique:students|numeric|digits:10',
+            'status' => 'required',
+        ], [
+            'name.required' => 'Campo obligatorio.',
+            'last_name.required' => 'Campo obligatorio.',
+            'name.regex' => 'Nombre incorrecto.',
+            'last_name.regex' => 'Nombre incorrecto.',
+            'email.required' => 'Campo obligatorio.',
+            'dni.required' => 'Campo obligatorio.',
+            'dni.numeric' => 'DNI incorrecto.',
+            'dni.digits' => 'DNI incorrecto.',
+            'email.unique' => 'Correo en uso, intente con otro',
+            'dni.unique' => 'DNI en uso.',
+            'status.required' => 'Campo obligatorio.',
         ]);
         $password = bcrypt($this->dni);
-        $user = User::create(['name'=>$this->name,'email'=>$this->email,'password'=>$password]);
-        $name = "file-" . time() . '.' .  $this->url_image->getClientOriginalExtension();
-        $path =  $this->url_image->storeAs('/',$name,'students');
-        $data =  [
-            'user_id'=>$user->id,
-            'name'=>$this->name,
-            'last_name'=>$this->last_name,
-            'url_image'=> 'students/'.$path,
-            'email'=> $this->email,
-            'dni'=> $this->dni,
+
+
+        $path = 'img/user.jpg';
+        if ($this->url_image != '') {
+            $this->validate(['url_image' => 'image'], ['url_image.image' => 'La imagen debe ser de formato: .jpg,.jpeg ó .png']);
+            //save image
+            $name = "file-" . time() . '.' . $this->url_image->getClientOriginalExtension();
+            $path = 'students/' . $this->url_image->storeAs('/', $name, 'students');
+        }
+
+        $user = User::create([
+            'name' => $this->name,
+            'last_name' => $this->last_name,
+            'url_image' => $path,
+            'email' => $this->email,
+            'password' => $password
+        ]);
+
+
+        $data = [
+            'user_id' => $user->id,
+            'name' => $this->name,
+            'last_name' => $this->last_name,
+            'url_image' => $path,
+            'email' => $this->email,
+            'dni' => $this->dni,
             'passport' => $this->passport,
             'instruction' => $this->instruction,
             'marital_status' => $this->marital_status,
             'birth_date' => $this->birth_date,
             'phone' => $this->phone,
-            'status'=> $this->status
+            'status' => $this->status
         ];
 
         Student::create($data);
 
-        $this->alert('success', 'Estudiante creado con exíto.');
+        $user->assignRole('Estudiante');
 
-    	$this->resetInputFields();
+        $this->alert('success', 'Estudiante registrado con exíto.', ['showCancelButton' => false,]);
 
-    	$this->emit('studentStore');
+        $this->resetInputFields();
+
+        $this->emit('studentStore');
     }
 
     public function edit($id)
     {
         $student = Student::findOrFail($id);
         $this->name = $student->name;
-    	$this->last_name = $student->last_name;
+        $this->last_name = $student->last_name;
         $this->url_image = $student->url_image;
         $this->email = $student->email;
         $this->dni = $student->dni;
@@ -107,48 +137,81 @@ class Students extends Component
         $this->marital_status = $student->marital_status;
         $this->birth_date = $student->birth_date;
         $this->phone = $student->phone;
+        $this->user_id = $student->user_id;
     }
 
     public function update()
     {
         $validation = $this->validate([
-    		'name'	=>	'required',
-            'last_name' => 'required',
-            'url_image' => 'image|max:1024',
-            'email' => ['required',Rule::unique('students')->ignore($this->data_id)],
-            'dni' => ['required',Rule::unique('students')->ignore($this->data_id)],
+            'name' => 'required|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u|max:255',
+            'last_name' => 'required|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u|max:255',
+            // 'url_image' => 'image|max:1024',
+            'email' => ['required', Rule::unique('students')->ignore($this->data_id)],
+            'dni' => ['required', Rule::unique('students')->ignore($this->data_id), 'numeric', 'digits:10'],
             'status' => 'required'
+        ], [
+            'name.required' => 'Campo obligatorio.',
+            'last_name.required' => 'Campo obligatorio.',
+            'name.regex' => 'Nombre incorrecto.',
+            'last_name.regex' => 'Nombre incorrecto.',
+            'email.required' => 'Campo obligatorio.',
+            'dni.required' => 'Campo obligatorio.',
+            'email.unique' => 'Correo en uso, intente con otro',
+            'dni.unique' => 'DNI en uso.',
+            'dni.numeric' => 'DNI incorrecto.',
+            'dni.digits' => 'DNI incorrecto.',
+            'status.required' => 'Campo obligatorio.',
         ]);
 
+        $user = User::find($this->user_id);
         $data = Student::find($this->data_id);
-        $name = "file-" . time() . '.' .  $this->url_image->getClientOriginalExtension();
-        $path =  $this->url_image->storeAs('/',$name,'students');
+
+        if ($this->url_image != $data->url_image) {
+            $this->validate(['url_image' => 'image'], ['url_image.image' => 'La imagen debe ser de formato: .jpg,.jpeg ó .png']);
+            //save image
+            $name = "file-" . time() . '.' . $this->url_image->getClientOriginalExtension();
+            $path = 'students/' . $this->url_image->storeAs('/', $name, 'students');
+        } else {
+            $path = $data->url_image;
+        }
+
+        $user->update([
+            'name' => $this->name,
+            'last_name'=>$this->last_name,
+            'email'=> $this->email,
+            'url_image' => $path,
+            'status' => $this->status
+        ]);
 
         $data->update([
-            'name'=>$this->name,
-            'last_name'=>$this->last_name,
-            'url_image'=>'students/'.$path,
-            'email'=> $this->email,
-            'dni'=> $this->dni,
+            'name' => $this->name,
+            'last_name' => $this->last_name,
+            'url_image' => $path,
+            'email' => $this->email,
+            'dni' => $this->dni,
             'passport' => $this->passport,
             'instruction' => $this->instruction,
             'marital_status' => $this->marital_status,
             'birth_date' => $this->birth_date,
             'phone' => $this->phone,
-            'status'=> $this->status
+            'status' => $this->status
         ]);
 
-        $this->alert('success', 'Estudante actualizado con exíto.');
+        $this->alert('success', 'Estudante actualizado con exíto.', ['showCancelButton' => false,]);
 
         $this->resetInputFields();
 
         $this->emit('studentStore');
     }
 
-    public function delete($id)
+    public function delete($id, $user_id)
     {
         Student::find($id)->delete();
-        $this->alert('success', 'Estudiante eliminado con exíto.');
+        $user = User::find($user_id);
+        $user->update([
+           'status' => 0,
+        ]);
+        $this->alert('success', 'Estudiante eliminado con exíto.', ['showCancelButton' => false,]);
     }
 
     public function clear()
