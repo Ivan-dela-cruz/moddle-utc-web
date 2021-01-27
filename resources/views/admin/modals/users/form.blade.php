@@ -52,6 +52,7 @@
     </div>
 </div>
 
+@if($view == 'create')
 <div class="row p-l-20 p-r-20">
     <div class="col-md-6">
         <div class="form-group">
@@ -79,6 +80,7 @@
         </div>
     </div>
 </div>
+@endif
 
 <div class="row p-l-20 p-r-20">
     <div class="col-md-6">

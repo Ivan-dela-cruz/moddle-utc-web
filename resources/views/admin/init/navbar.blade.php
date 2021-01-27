@@ -9,10 +9,10 @@ class="{{request()->is('/ruta')?'active':''}}"
                 <div class="main-menu-header">
                     @if(\Illuminate\Support\Facades\Auth::user()->url_image==='#')
                         <img class="img-radius" src="{{asset('img/user.jpg')}}"
-                             alt="User-Profile-Image">
+                             alt="User-Profile-Image" style="width: 50px; height: 50px">
                     @else
-                        <img class="img-radius" src="{{\Illuminate\Support\Facades\Auth::user()->url_image}}"
-                             alt="User-Profile-Image">
+                        <img class="img-radius" src="{{asset(\Illuminate\Support\Facades\Auth::user()->url_image)}}"
+                             alt="User-Profile-Image" style="height: 50px; width: 50px;">
                     @endif
                     <div class="user-details">
                         <div id="more-details">{{\Illuminate\Support\Facades\Auth::user()->name}} <i
@@ -46,11 +46,13 @@ class="{{request()->is('/ruta')?'active':''}}"
             </div>
 
             <ul class="nav pcoded-inner-navbar ">
-                <li class="nav-item pcoded-menu-caption">
-                    <a href="" class="nav-link ">
-                        <label>Panel de control</label>
+                <li class="nav-item ">
+                    <a href="{{route('dashboard')}}" class="nav-link ">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-home"></i>
+                        </span>
+                        <span class="pcoded-mtext">Panel de Control</span>
                     </a>
-
                 </li>
 
 
@@ -58,7 +60,7 @@ class="{{request()->is('/ruta')?'active':''}}"
                 <li class="nav-item pcoded-hasmenu">
                     <a href="javascript: return void();" class="nav-link ">
                         <span class="pcoded-micon">
-                            <i class="feather icon-home"></i>
+                            <i class="feather icon-layout"></i>
                         </span>
                         <span class="pcoded-mtext">Accesos</span>
                     </a>

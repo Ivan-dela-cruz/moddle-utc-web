@@ -15,36 +15,41 @@ class Levels extends Component
 
     protected $queryString = [
         'search' => ['except' => ''],
-        'perPage' => ['except' => '5'],
+        'perPage' => ['except' => '10'],
 
     ];
     public $perPage = '10';
     public $search = '';
 
-    public  $name,$status=1, $data_id;
+    public $name, $status = 1, $data_id;
+
     public function render()
     {
         $levels = Level::where('name', 'LIKE', "%{$this->search}%")
             ->paginate($this->perPage);
-        return view('livewire.levels',compact('levels'));
+        return view('livewire.levels', compact('levels'));
     }
+
     public function resetInputFields()
     {
-    	$this->name = '';
-        $this->status = '';
+        $this->name = '';
+        $this->status = 1;
     }
 
     public function store()
     {
-    	$validation = $this->validate([
-    		'name'	=>	'required',
+        $validation = $this->validate([
+            'name' => 'required',
             'status' => 'required'
-    	]);
-    	Level::create($validation);
-    	session()->flash('message', 'Ciclo creada con exíto.');
-    	$this->resetInputFields();
+        ], [
+            'name.required' => 'Campo obligatorio.',
+            'status.required' => 'Campo obligatorio.',
+        ]);
+        Level::create($validation);
+        $this->alert('success', 'Ciclo creada con exíto.',[ 'showCancelButton' =>  false, ]);
+        $this->resetInputFields();
 
-    	$this->emit('levelStore');
+        $this->emit('levelStore');
     }
 
     public function edit($id)
@@ -58,17 +63,20 @@ class Levels extends Component
     public function update()
     {
         $validation = $this->validate([
-    		'name'	=>	'required',
+            'name' => 'required',
             'status' => 'required'
-    	]);
+        ], [
+            'name.required' => 'Campo obligatorio.',
+            'status.required' => 'Campo obligatorio.',
+        ]);
 
         $data = Level::find($this->data_id);
         $data->update([
-            'name'       =>$this->name,
+            'name' => $this->name,
             'status' => $this->status
         ]);
 
-        session()->flash('message', 'Ciclo actualizada con exíto.');
+        $this->alert('success', 'Ciclo actualizada con exíto.',[ 'showCancelButton' =>  false, ]);
 
         $this->resetInputFields();
 
@@ -78,7 +86,7 @@ class Levels extends Component
     public function delete($id)
     {
         Level::find($id)->delete();
-        session()->flash('message', 'Ciclo eliminada con exíto.');
+        $this->alert('success', 'Ciclo eliminada con exíto.',[ 'showCancelButton' =>  false, ]);
     }
 
     public function clear()

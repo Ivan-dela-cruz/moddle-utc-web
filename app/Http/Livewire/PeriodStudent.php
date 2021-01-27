@@ -11,7 +11,7 @@ use Livewire\Component;
 class PeriodStudent extends Component
 {
     public $data_id,$name, $last_name, $dni, $email,$status=true,$url_image,$passport,$instruction, $marital_status,$birth_date;
-    public $modal = false, $input_search='',$action='POST', $parallel="A";
+    public $modal = false, $input_search='',$action='POST', $parallel="";
     public $students, $periods, $levels, $subjects, $level_id='',$period_id='',$subject_id='';
 
     public function render()
@@ -21,7 +21,7 @@ class PeriodStudent extends Component
         $this->SubjectsByLevel();
         return view('livewire.period-student');
     }
-   
+
     public function SubjectsByLevel()
     {
         $this->subjects = Subject::where('level_id',$this->level_id)->get();
@@ -41,19 +41,19 @@ class PeriodStudent extends Component
     }
     public function findMember()
     {
-        
+
         $student = Student::where('dni',$this->input_search)->first();
         if(!is_null($student)){
             $this->loadData($student);
             $this->alert('success','Registro recuperado satisfactoriamente',[
-                'showCancelButton' =>  false, 
-                'showConfirmButton' =>  false, 
-            ]);  
+                'showCancelButton' =>  false,
+                'showConfirmButton' =>  false,
+            ]);
         }else{
             $this->resetInputFields();
             $this->alert('warning','No se encontrarón registros asociados',[
-                'showCancelButton' =>  false, 
-                'showConfirmButton' =>  false, 
+                'showCancelButton' =>  false,
+                'showConfirmButton' =>  false,
             ]);
         }
     }
@@ -67,26 +67,30 @@ class PeriodStudent extends Component
         $this->status = false;
         $this->url_image = '';
 
-       
+
         $this->action='POST';
     }
 
     public function OpenList()
     {
-        
+
 
     }
     public function store()
     {
-       
+
         $validation = $this->validate([
-    	
     		'period_id' => 'required',
             'level_id' => 'required',
             'subject_id' => 'required',
             'data_id' => 'required',
             'parallel'=>'required'
-            
+        ],[
+            'period_id.required' => 'Campo obligatorio.',
+            'level_id.required' => 'Campo obligatorio.',
+            'subject_id.required' => 'Campo obligatorio.',
+            'data_id.required' => 'Campo obligatorio.',
+            'parallel.required' => 'Campo obligatorio.',
         ]);
         $inscription = PeriodStudents::where('period_id' ,  $this->period_id)
         ->where('level_id' ,  $this->level_id)
@@ -94,9 +98,9 @@ class PeriodStudent extends Component
         ->where('student_id' ,  $this->data_id)
         //->where('parallel' ,  $this->parallel)
         ->where('status', $this->status)->first();
-        
+
         if(is_null($inscription)){
-           
+
             $data = [
                 'period_id' => $this->period_id,
                 'level_id' => $this->level_id,
@@ -106,45 +110,45 @@ class PeriodStudent extends Component
                 'status'=>$this->status
             ];
             PeriodStudents::create($data);
-          
+
             $this->alert('success','¡Registro ingresado exitosamente!',[
-                'showCancelButton' =>  false, 
-                'showConfirmButton' =>  false, 
-            ]); 
+                'showCancelButton' =>  false,
+                'showConfirmButton' =>  false,
+            ]);
             $this->resetInputFields();
         }else{
             $this->alert('warning','¡Actualmente el estudiante ya se encuentra registrado!',[
-                'showCancelButton' =>  false, 
-                'showConfirmButton' =>  false, 
-            ]); 
+                'showCancelButton' =>  false,
+                'showConfirmButton' =>  false,
+            ]);
         }
-        
-       
-    }
-   
 
-   
+
+    }
+
+
+
     public function edit($id)
     {
-       
+
     }
 
     public function update()
     {
-             
+
         $this->alert('success', 'Registro actualizado con exíto!',[
-            'showCancelButton' =>  false, 
-            'showConfirmButton' =>  false, 
-        ]); 
+            'showCancelButton' =>  false,
+            'showConfirmButton' =>  false,
+        ]);
         $this->resetInputFields();
     }
 
     public function delete($id)
     {
-      
+
         $this->alert('success', 'Registro eliminado con exíto!',[
-            'showCancelButton' =>  false, 
-            'showConfirmButton' =>  false, 
-        ]); 
+            'showCancelButton' =>  false,
+            'showConfirmButton' =>  false,
+        ]);
     }
 }
