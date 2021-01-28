@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire;
 
+use App\Student;
+use App\Teacher;
 use App\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
@@ -60,14 +62,16 @@ class Users extends Component
     public function store()
     {
         $this->validate([
-            'name' => 'required',
-            'last_name' => 'required',
+            'name' => 'required|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u|max:255',
+            'last_name' => 'required|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u|max:255',
             'email' => ['required', 'email', 'unique:users,email'],
             'password' => 'required|confirmed|min:8',
             'password_confirmation' => 'required'
         ], [
             'name.required' => 'Campo obligatorio.',
             'last_name.required' => 'Campo obligatorio.',
+            'name.regex' => 'Nombre incorrecto.',
+            'last_name.regex' => 'Nombre incorrecto.',
             'email.required' => 'Campo obligatorio.',
             'email.email' => 'El correo no es valido.',
             'email.unique' => 'El correo ya esta en uso, intente con otro.',
@@ -96,7 +100,7 @@ class Users extends Component
        // dd($this->roles_selected);
         $user = User::create($data);
         $user->roles()->sync($this->roles_selected);
-        $this->alert('success', 'Usuario creado con exíto.');
+        $this->alert('success', 'Usuario creado con exíto.',[ 'showCancelButton' =>  false, ]);
         $this->resetInputFields();
         $this->emit('studentStore');
     }
@@ -119,12 +123,14 @@ class Users extends Component
     public function update()
     {
         $this->validate([
-            'name' => 'required',
-            'last_name' => 'required',
+            'name' => 'required|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u|max:255',
+            'last_name' => 'required|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u|max:255',
             'email' => ['required', 'email', Rule::unique('users')->ignore($this->user_id)],
         ], [
             'name.required' => 'Campo obligatorio.',
             'last_name.required' => 'Campo obligatorio.',
+            'name.regex' => 'Nombre incorrecto.',
+            'last_name.regex' => 'Nombre incorrecto.',
             'email.required' => 'Campo obligatorio.',
             'email.email' => 'El correo no es valido.',
             'email.unique' => 'El correo ya esta en uso, intente con otro.',
@@ -151,15 +157,40 @@ class Users extends Component
             $user->roles()->detach();
             $user->syncRoles($this->roles_selected);
         }
-        $this->emit('modal');
-        $this->alert('success', 'Usuario actualizado con exíto.');
-        return redirect()->route('users');
+        $this->resetInputFields();
+        $this->alert('success', 'Usuario actualizado con exíto.',[ 'showCancelButton' =>  false, ]);
+        $this->emit('forceCloseModal');
+        //return redirect()->route('users');
     }
 
     public function delete($id)
     {
         User::find($id)->delete();
-        $this->alert('success', 'Usuario eliminado con exíto.');
+        $this->alert('success', 'Usuario eliminado con exíto.',[ 'showCancelButton' =>  false, ]);
+    }
+
+    public function activate($id){
+        $data = '';
+        $user = User::find($id);
+       $student = Student::where('user_id',$user->id)
+           ->withTrashed()->first();
+        $teacher = Teacher::where('user_id',$user->id)
+            ->withTrashed()->first();
+       if($student) {
+           $student->restore();
+           $student->update(['status' => 1]);
+           $data = 'Estudiante';
+       } else if($teacher){
+           $teacher->restore();
+           $teacher->update(['status' => 1]);
+           $data = 'Profesor';
+       }
+        $user->update([
+            'status' => 1,
+        ]);
+
+        $this->alert('success', $data.' activado con exíto.',[ 'showCancelButton' =>  false, ]);
+
     }
 
 

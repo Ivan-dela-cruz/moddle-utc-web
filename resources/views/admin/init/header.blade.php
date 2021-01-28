@@ -3,7 +3,7 @@
         <a class="mobile-menu" id="mobile-collapse" href="javascript:void(0);"><span></span></a>
         <a href="javascript: return void();" class="b-brand">
             <img height="70" width="140" src="{{asset('img/logo_pantallas.png')}}" alt="">
-          
+
         </a>
         <a href="javascript:void(0);" class="mob-toggler">
             <i class="feather icon-more-vertical"></i>
@@ -31,10 +31,10 @@
                         <div class="pro-head">
                             @if(\Illuminate\Support\Facades\Auth::user()->url_image==='#')
                                 <img src="{{asset('img/user.jpg')}}" class="img-radius"
-                                     alt="User-Profile-Image">
+                                     alt="User-Profile-Image" style="width: 40px; height: 40px;">
                             @else
-                                <img src="{{\Illuminate\Support\Facades\Auth::user()->url_image}}" class="img-radius"
-                                     alt="User-Profile-Image">
+                                <img src="{{asset(\Illuminate\Support\Facades\Auth::user()->url_image)}}" class="img-radius"
+                                     alt="User-Profile-Image" style="width: 40px; height: 40px;">
                             @endif
 
                             <span>{{\Illuminate\Support\Facades\Auth::user()->name}} {{\Illuminate\Support\Facades\Auth::user()->last_name}}</span>

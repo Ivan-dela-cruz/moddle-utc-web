@@ -19,18 +19,18 @@
                 @enderror
             </div>
         </div>
-        
+
         <div class="col-sm-12">
             <div class="form-group fill">
-               
+
                 <div class="form-group">
                     <small style="margin-left: 0px;"  class="mr-3 text-primary">Estado</small>
                     <div class="switch switch-info d-inline m-r-10">
                         <input  wire:model="status"  type="checkbox" id="switch-i-1" checked>
                         <label for="switch-i-1" class="cr"></label>
                     </div>
-                
-                </div> 
+
+                </div>
                 @error('status')
                 <span class="text-danger">{{ $message }}</span>
                 @enderror
@@ -40,7 +40,7 @@
              <div class="form-group">
                 <h6>Permisos</h6>
              </div>
-           <table class="table table-hover table-striped text-center">
+           <table class="table table-sm table-hover table-striped text-center">
                 <thead>
                     <tr>
                         <th class="text-left">Módulo</th>
@@ -51,23 +51,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                   
+
                     @foreach($permissions->groupBy('modulo') as $k => $v)
                         <tr>
                             <td class="text-left">{{$k}}</td>
                             @foreach($v as $p)
                                 @if($action=='PUT')
                                     <td>
-                                        <input wire:model='select_permissions.{{ $p->id}}' type="checkbox" 
+                                        <input wire:model='select_permissions.{{ $p->id}}' type="checkbox"
                                             @if ($role->id==1 || $p->id <= 4) onclick="this.checked=!this.checked;"@endif
-                                            name="select_permissions[]" 
+                                            name="select_permissions[]"
                                             value="{{$p->id}}">
                                     </td>
                                 @else
                                     <td>
-                                        <input wire:model='select_permissions.{{ $p->id}}' 
+                                        <input wire:model='select_permissions.{{ $p->id}}'
                                         @if ($p->id<=4) onclick="this.checked=!this.checked;"@endif
-                                        type="checkbox" name="select_permissions[]" 
+                                        type="checkbox" name="select_permissions[]"
                                         value="{{$p->id}}">
                                     </td>
                                 @endif
@@ -78,17 +78,17 @@
            </table>
         </div>
         <div class="col-sm-12">
-         
+
             @if($action=='POST')
                 @can('create_role')
-                <button  wire:click.prevent="store()" class="btn btn-primary ">Guardar</button>
+                <button  wire:click.prevent="store()" class="btn btn-sm btn-primary ">Guardar</button>
                 @endcan
             @else
                  @can('update_role')
-                <button  wire:click.prevent="update()" class="btn btn-success ">Update</button>
+                <button  wire:click.prevent="update()" class="btn btn-sm btn-success ">Update</button>
                 @endcan
             @endif
-            <button wire:click.prevent="resetInputFields()" class="btn btn-danger">Cancelar</button>
+            <button wire:click.prevent="resetInputFields()" class="btn btn-sm btn-danger">Cancelar</button>
         </div>
     </div>
 </form>

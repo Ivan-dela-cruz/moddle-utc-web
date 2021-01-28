@@ -18,7 +18,7 @@ class Teachers extends Component
 
     protected $queryString = [
         'search' => ['except' => ''],
-        'perPage' => ['except' => '5'],
+        'perPage' => ['except' => '10'],
 
     ];
     public $perPage = '10';
@@ -51,22 +51,50 @@ class Teachers extends Component
     public function store()
     {
     	$validation = $this->validate([
-    		'name'	=>	'required',
-    		'last_name' => 'required',
+    		'name'	=>	'required|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u|max:255',
+    		'last_name' => 'required|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u|max:255',
             'email' => 'required|email|unique:users',
-            'dni' => 'required|unique:teachers',
+            'dni' => 'required|unique:teachers|numeric|digits:10',
             'status' => 'required',
             'profession' => 'required'
+        ],[
+            'name.required' => 'Campo obligatorio.',
+            'last_name.required' => 'Campo obligatorio.',
+            'name.regex' => 'Nombre incorrecto.',
+            'last_name.regex' => 'Nombre incorrecto.',
+            'email.required' => 'Campo obligatorio.',
+            'email.email' => 'El correo no es valido.',
+            'email.unique' => 'Correo en uso, intente con otro.',
+            'dni.required' => 'Campo obligatorio.',
+            'dni.numeric' => 'DNI incorrecto.',
+            'dni.digits' => 'DNI incorrecto.',
+            'dni.unique' => 'DNI en uso.',
+            'status.required' => 'Campo obligatorio.',
+            'profession.required' => 'Campo obligatorio.',
         ]);
         $password = bcrypt($this->dni);
-        $user = User::create(['name'=>$this->name,'email'=>$this->email,'password'=>$password]);
-        $name = "file-" . time() . '.' .  $this->url_image->getClientOriginalExtension();
-        $path =  $this->url_image->storeAs('/',$name,'teachers');
+
+        $path = 'img/user.jpg';
+        if ($this->url_image != '') {
+            $this->validate(['url_image' => 'image'], ['url_image.image' => 'La imagen debe ser de formato: .jpg,.jpeg ó .png']);
+            //save image
+            $name = "file-" . time() . '.' . $this->url_image->getClientOriginalExtension();
+            $path = 'teachers/' . $this->url_image->storeAs('/', $name, 'teachers');
+        }
+
+        $user = User::create([
+            'name'=>$this->name,
+            'last_name'=>$this->last_name,
+            'url_image' => $path,
+            'email'=>$this->email,
+            'password'=>$password
+        ]);
+
         $data =  [
             'user_id'=>$user->id,
             'name'=>$this->name,
             'last_name'=>$this->last_name,
-            'url_image'=> 'teachers/'.$path,
+            'url_image'=> $path,
             'email'=> $this->email,
             'dni'=> $this->dni,
             'profession'=> $this->profession,
@@ -74,7 +102,9 @@ class Teachers extends Component
         ];
         Teacher::create($data);
 
-        session()->flash('message', 'Profesor creado con exíto.');
+        $user->assignRole('Profesor');
+
+        $this->alert('success', 'Profesor creado con exíto.',[ 'showCancelButton' =>  false, ]);
 
     	$this->resetInputFields();
 
@@ -92,43 +122,80 @@ class Teachers extends Component
         $this->profession = $teacher->profession;
         $this->status = $teacher->status;
         $this->data_id = $id;
+        $this->user_id = $teacher->user_id;
     }
 
     public function update()
     {
         $validation = $this->validate([
-    		'name'	=>	'required',
-    		'last_name' => 'required',
-            'email' => ['required',Rule::unique('users')->ignore($this->data_id)],
-            'dni' => ['required',Rule::unique('teachers')->ignore($this->data_id)],
+    		'name'	=>	'required|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u|max:255',
+    		'last_name' => 'required|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u|max:255',
+            'email' => ['required',Rule::unique('users')->ignore($this->user_id),'email'],
+            'dni' => ['required',Rule::unique('teachers')->ignore($this->data_id),'numeric','digits:10'],
             'profession' =>'required',
             'status' => 'required'
+        ],[
+            'name.required' => 'Campo obligatorio.',
+            'last_name.required' => 'Campo obligatorio.',
+            'name.regex' => 'Nombre incorrecto.',
+            'last_name.regex' => 'Nombre incorrecto.',
+            'email.required' => 'Campo obligatorio.',
+            'email.email' => 'El correo no es valido.',
+            'email.unique' => 'Correo en uso, intente con otro.',
+            'dni.required' => 'Campo obligatorio.',
+            'dni.numeric' => 'DNI incorrecto.',
+            'dni.digits' => 'DNI incorrecto.',
+            'dni.unique' => 'DNI en uso.',
+            'status.required' => 'Campo obligatorio.',
+            'profession.required' => 'Campo obligatorio.',
         ]);
 
+        $user = User::find($this->user_id);
         $data = Teacher::find($this->data_id);
-        $name = "file-" . time() . '.' .  $this->url_image->getClientOriginalExtension();
-        $path =  $this->url_image->storeAs('/',$name,'teachers');
+
+        if ($this->url_image != $data->url_image) {
+            $this->validate(['url_image' => 'image'], ['url_image.image' => 'La imagen debe ser de formato: .jpg,.jpeg ó .png']);
+            //save image
+            $name = "file-" . time() . '.' . $this->url_image->getClientOriginalExtension();
+            $path = 'teachers/' . $this->url_image->storeAs('/', $name, 'teachers');
+        } else {
+            $path = $data->url_image;
+        }
+
+        $user->update([
+            'name' => $this->name,
+            'last_name'=>$this->last_name,
+            'email'=> $this->email,
+            'url_image' => $path,
+            'status' => $this->status
+        ]);
+
         $data->update([
             'name'=>$this->name,
             'last_name'=>$this->last_name,
-            'url_image'=>'teachers/'.$path,
+            'url_image'=>$path,
             'email'=> $this->email,
             'dni'=> $this->dni,
             'profession'=> $this->profession,
             'status'=> $this->status
         ]);
 
-        session()->flash('message', 'Profesor actualizado con exíto.');
+
+        $this->alert('success', 'Profesor actualizado con exíto.',[ 'showCancelButton' =>  false, ]);
 
         $this->resetInputFields();
 
         $this->emit('studentStore');
     }
 
-    public function delete($id)
+    public function delete($id, $user_id)
     {
-        Teacher::find($id)->delete();
-        session()->flash('message', 'Profesor eliminado con exíto.');
+        $teacher = Teacher::find($id)->delete();
+        $user = User::find($user_id);
+        $user->update([
+            'status' => 0,
+        ]);
+        $this->alert('success', 'Profesor eliminado con exíto.',[ 'showCancelButton' =>  false, ]);
     }
 
     public function clear()

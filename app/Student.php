@@ -22,7 +22,7 @@ class Student extends Model
         'birth_date',
         'phone'
     ];
-            
+
 
     public function user()
     {
