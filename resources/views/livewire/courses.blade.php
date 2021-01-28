@@ -1,86 +1,278 @@
 <div>
-    @if(session()->has('message'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>{{session('message')}}</strong>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+    <div class="row help-desk">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row pl-2 pr-2">
+                        <select wire:model="period_id" class="form-control col-md-4" name="period_id" id="" aria-label="" aria-describedby="basic-addon1" >
+                            <option  value="">Periodo académico</option>
+                            @foreach($periods as $period)
+                                <option value="{{$period->id}}">{{$period->name}}</option>
+                            @endforeach
+                        </select>
+                        <select wire:model = "level_id" class="form-control col-md-3" name="level_id" id="" aria-label="" aria-describedby="basic-addon1" >
+                            <option value="">Nivel</option>
+                            @foreach($levels as $level)
+                                <option value="{{$level->id}}">{{$level->name}}</option>
+                            @endforeach
+                        </select>
+                        <select class="form-control col-md-1" wire:model="parallel" name="parallel">
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                        </select>
+                        <select  wire:model="subject_id" class="form-control col-md-4" name="subject_id" id="" aria-label="" aria-describedby="basic-addon1" >
+                            <option value="">Materia</option>
+                            @foreach($subjects as $subject)
+                                <option value="{{$subject->id}}">{{$subject->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
         </div>
-    @endif
+        <div class="col-xl-8 col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <nav class="navbar justify-content-between p-0 align-items-center">
+                        <h5>Mis cursos</h5>
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            @can('create_ac_period')
+                                <button class="btn waves-effect waves-light btn-success"
+                                        data-toggle="modal" data-target="#createModal">
+                                    <i class="feather icon-plus"></i>
+                                </button>
+                            @endcan
+                            <label onclick="$('.help-desk').removeClass('md-view').removeClass('large-view').addClass('sm-view')" class="btn waves-effect waves-light btn-primary">
+                                <input type="radio" name="options" id="option1" checked> <i class="feather icon-align-justify m-0"></i>
+                            </label>
+                            <label onclick="$('.help-desk').removeClass('sm-view').removeClass('large-view').addClass('md-view')" class="btn waves-effect waves-light btn-primary">
+                                <input type="radio" name="options" id="option2"> <i class="feather icon-menu m-0"></i>
+                            </label>
+                            <label onclick="$('.help-desk').removeClass('md-view').removeClass('sm-view').addClass('large-view')" class="btn waves-effect waves-light btn-primary active">
+                                <input type="radio" name="options" id="option3"> <i class="feather icon-grid m-0"></i>
+                            </label>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+           <div hidden>  {{\Carbon\Carbon::setLocale('es')}} </div>
+            @foreach($courses as $data)
+                <div  class="ticket-block">
+                    <div class="row">
+                        <div class="col-auto">
+                            <img  wire:click="taskByCourse({{ $data->id }})" class="media-object wid-100" src="{{asset($data->url_image)}}" alt="Generic placeholder image ">
+                        </div>
+                        <div class="col">
+                            <div wire:click="taskByCourse({{ $data->id }})" class="card hd-body">
+                                <div class="row align-items-center">
+                                    <div class="col border-right pr-0">
+                                        <div class="card-body inner-center">
+                                            <div class="ticket-customer font-weight-bold">{{ $data->name }}</div>
+                                            <div class="ticket-type-icon private mt-1 mb-1"><i class="feather icon-lock mr-1 f-14"></i>{{ $data->teacher->name}} {{ $data->teacher->last_name}}</div>
+                                            <div class="excerpt mt-4">
+                                                {{ $data->description }}
+                                            </div>
+                                            <ul class="list-inline mt-2 mb-0">
+                                                <li class="list-inline-item"><i class="feather icon-message-square mr-1 f-14"></i>{{ $data->level->name }}</li>
+                                                <li class="list-inline-item"><i class="feather icon-message-square mr-1 f-14"></i>{{ $data->subject->name }}</li>
+                                                <li class="list-inline-item"><i class="feather icon-calendar mr-1 f-14"></i>{{ \Carbon\Carbon::parse($data->created_at)->diffForHumans()  }}</li>
+                                          
+                                            </ul>
+                                           
+                                            <div class="mt-2">
+                                                
+                                                <a href="javascript:void(0);" 
+                                                    wire:click="openformtask({{ $data->id }})"
+                                                    data-toggle="tooltip" 
+                                                    title="Eliminar"
+                                                    class="text-info">
+                                                    <i class="feather icon-trash-2 mr-1"></i>Nueva tarea
+                                                </a>
+                                                @can('update_course')
+                                                    <a href="javascript:void(0);"  wire:click="edit({{ $data->id }})" class="mr-3 text-muted"
+                                                        type="button" 
+                                                        data-toggle="modal" data-target="#createModal">
+                                                        <i class="feather icon-edit-2"></i>
+                                                        Editar
+                                                    </a>
+                                                @endcan
+                                                @can('destroy_course')
+                                                    <a href="javascript:void(0);" 
+                                                        wire:click="delete({{ $data->id }})"
+                                                        data-toggle="tooltip" 
+                                                        title="Eliminar"
+                                                        class="text-danger">
+                                                        <i class="feather icon-trash-2 mr-1"></i>Eliminar
+                                                    </a>
+                                                @endcan
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto pl-0 right-icon">
+                                        <div class="card-body">
+                                            <ul class="list-unstyled mb-0">
+                                                <li><a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="tooltip on top" class="active"><i class="feather icon-star text-warning"></i></a></li>
+                                                <li><a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="tooltip on top"><i class="feather icon-circle text-info"></i></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+        <div class="col-xl-4 col-lg-12">
+            <div class="right-side">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5>Tareas por curso</h5>
+                    </div>
+                    <div class="card-body p-3">
+                        <div class="cat-list">
+                            @foreach($tasks as $task)
+                                <div class="border-bottom pb-3 ">
+                                    <div class="d-inline-block">
+                                        <img src="{{asset($task->url_image)}}" alt="" class="wid-20 rounded mr-1 img-fluid">
+                                        <a href="javascript:void(0);">{{$task->name}}</a>
+                                    </div>
+                                    <div class="float-right span-content">
+                                       
+                                        <a  href="javascript:void(0);" 
+                                            class="btn waves-effect waves-light btn-default {{$task->status == 1 ? 'badge-success':'badge-danger'}} rounded-circle mr-0 " 
+                                            data-toggle="tooltip" 
+                                            data-placement="top" 
+                                            title="Entrega {{$task->end_date}}" 
+                                            data-original-title="{{$task->start_date}} - {{$task->end_date}}" >
+                                            <i style="width: 15px; height: 15px;" class="{{$task->status == 1 ? 'feather icon-check':'feather icon-x'}}"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header pt-4 pb-4">
+                        <h5>Estudiantes por materia</h5>
+                    </div>
+                    <div class="card-body p-3">
+                        <div class="cat-list">
+                            @foreach($students as $student)
+                                <div class="border-bottom pb-3 ">
+                                    <div class="d-inline-block">
+                                        <img src="{{asset($student->url_image)}}" alt="" class="wid-20 rounded mr-1 img-fluid">
+                                        <a href="javascript:void(0);">{{$student->name}} {{$student->last_name}}</a>
+                                    </div>
+                                    <div class="float-right span-content">
+                                        <a href="#" class="btn waves-effect waves-light btn-default badge-danger rounded-circle mr-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="tooltip on top">1</a>
+                                        <a href="#" class="btn waves-effect waves-light btn-default badge-secondary rounded-circle mr-0 " data-toggle="tooltip" data-placement="top" title="" data-original-title="tooltip on top">3</a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div wire:ignore  class="q-view">
+        <div  class="overlay"></div>
+        <div class="content">
+            <div class="card-body">
+                <h4>Añadir tarea <span class="badge badge-success text-uppercase ml-2 f-12">nuevo</span></h4>
+                <div class="border-bottom pb-3 pt-3">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <p class="list-inline-item mb-0">
+                                <img src="{{asset('assets2/images/ticket/p1.jpg')}}" alt="" class="wid-20 rounded mr-1 img-fluid">
+                               MAteria
+                            </p>
+                        </div>
+                        <div class="col-md-5 text-right">
+                            <p class="d-inline-block mb-0"><i class="feather icon-calendar mr-1"></i><label class="mb-0">Jan,1st,2019</label></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- [ tinymce editor ] start -->
+            <div class="col-sm-12">
+                <div class="card border-0 shadow-none">
+                    <div class="card-body pr-0 pl-0 pt-0">
+                        <form>
+                            <div class="row m-3">
+                                <div class="col-sm-12 form-group">
+                                    <small class="text-primary">Título</small>
+                                    <input type="text" id="exampleFormControlInput1" class="form-control"  placeholder="" wire:model="title_t" />
+                                    @error('title_t')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-sm-12 form-group">
+                                    <small class="text-primary">Descripcion</small>
+                                    <textarea type="text" id="exampleFormControlInput2" class="form-control" placeholder="" wire:model="description_t" ></textarea>
+                                    @error('description_t')<span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                
+                                <div class="col-md-12 form-group">
+                                    
+                                    <div class="input-group mb-3">
+                                                                                
+                                        <div class="input-group-prepend">
+                                            
+                                            @if($url_image_t =='')
+                                                <img src="{{asset('img/user.jpg')}}" alt="user image" class="img-radius align-top m-r-15" style="width:40px;">
+                                            @else
+                                                <img src="{{asset($url_image_t)}}" alt="user image" class="img-radius align-top m-r-15" style="width:40px;">
+                                            @endif
+                                        </div>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="inputGroupFile01" wire:model="url_image_t">
+                                            <label class="custom-file-label" for="inputGroupFile01" >Subir imagen</label>
+                                        </div>
+                                    
+                                    </div>
+                                    @error('url_image_t')<span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-sm-4 form-group">
+                                    <small class="text-primary">Inicia</small>
+                                    <input type="date" id="exampleFormControlInput2" class="form-control" placeholder="" wire:model="start_date_t" />
+                                    @error('start_date_t')<span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-sm-4 form-group">
+                                    <small class="text-primary">Finaliza</small>
+                                    <input type="date" id="exampleFormControlInput2" class="form-control" placeholder="" wire:model="end_date_t" />
+                                    @error('end_date_t')<span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-sm-4 form-group">
+                                    <small class="text-primary">Hora límite</small>
+                                    <input type="time" id="exampleFormControlInput2" class="form-control" placeholder="" wire:model="hour_t" />
+                                    @error('hour_t')<span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-sm-12 form-group text-right">
+                                    <button wire:click.prevent="resetInputFieldsTask()" type="button" class="btn btn-md btn-danger close-btn float-right ml-3" data-dismiss="modal">Cancelar</button>
+                                    <button wire:click.prevent="storeTask()" class="btn btn-md btn-info float-right ">Guardar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     @include('admin.modals.courses.create')
     @include('admin.modals.courses.edit')
-    <br />
-    <table class="table nowrap mb-2 dataTable">
-        <thead>
-            <tr>
-                <th>Image</th>
-                <th>Nombre</th>
-                <th>Descripciòn</th>
-                <th>Carrera</th>
-                <th>content</th>
-                <th>Profesor</th>
-                <th>Periodo Acàdemico</th>
-                <th>Ciclo</th>
-                <th>Materia</th>
-                <th>Estado</th>
-            </tr>
-        </thead>
-        <tbody>
-        	@foreach($courses as $data)
-        	<tr>	
-                <td>
-                    <div class="d-inline-block align-middle">
-                        <img src="{{$data->url_image}}" alt="user image" class="img-radius align-top m-r-15" style="width:40px;">
-                    </div>
-                </td>
-        		<td>{{ $data->name }}</td>
-                <td>{{ $data->description }}</td>
-                <td>{{ $data->career }}</td>
-                <td>{{ $data->content }}</td>
-                <td>{{ $data->teacher->name}}</td>
-                <td>{{ $data->academic_period->name }}</td>
-                <td>{{ $data->level->name }}</td>
-                <td>{{ $data->subject->name}}</td>
-        		<td>
-                    @if ($data->status === 1)
-                         <span
-                            class="badge badge-light-success">
-                            Activo
-                         </span>
-                    @else
-                        <span
-                            class="badge badge-light-danger">
-                            Inactivo
-                         </span>
-                        
-                    @endif
-                    @can('update_course')
-                    <div class="overlay-edit">
-                        <button 
-                            class="btn btn-icon btn-warning" 
-                            wire:click="edit({{ $data->id }})"
-                            type="button" 
-                            data-toggle="modal" data-target="#updateModal">
-                            <i class="feather icon-edit-2"></i></button>
-                             @endcan
-
-                            @can('destroy_course')
-                        <button
-                            wire:click="delete({{ $data->id }})"
-                            data-toggle="tooltip" 
-                            title="Titulo"
-                            type="button"
-                            class="btn btn-icon btn-danger">
-                            <i class="feather icon-trash-2"></i>
-                        </button>
-
-                        @endcan
-                    </div>
-                    
-                </td>
-        	</tr>
-        	@endforeach
-        </tbody>
-
-    </table>
+   
+   
 </div>

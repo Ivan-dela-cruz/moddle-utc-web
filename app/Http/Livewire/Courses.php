@@ -6,26 +6,70 @@ use App\Level;
 use App\Course;
 use App\Teacher;
 use App\Subject;
+use App\Task;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use phpDocumentor\Reflection\Types\This;
+use Livewire\WithFileUploads;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class Courses extends Component
 {
+    use WithFileUploads;
+
+   //VARIABLES DE ESTUDIANTES
+    public  $courses ,$levels,$subjects,$teachers,$periods, $name,$description,$career='' ,$url_image,$content,$status = true, $data_id;
+
+    //VARIABLES PARA LAS TAREAS
+    public $tasks, $title_t,$description_t,$url_image_t, $start_date_t, $end_date_t, $hour_t, $action_t, $course_id_t = null;
+
+    //VARIABLES DEL SELECT 
+    public $teacher_id,$period_id,$level_id,$subject_id,$parallel="A", $action = 'POST';
+
+
+    //variables para estudiantes metirulados en una materia
+    public $students = [];
    
-    public  $courses ,$levels,$subjects,$teachers,$periods, $name,$description,$career ,$url_image,$content,$status,$teacher_id,$academic_period_id,$level_id,$subject_id, $data_id;
 
     public function render()
     {
-        $this->levels = Level::all();
-        $this->courses = Course::all();
-        $this->subjects = Subject::all();
+        $this->periods = Period::where('status',1)->get();
+        $this->levels = Level::where('status',1)->get();
+        $this->SubjectsByLevel();
+        $this->StudentsByCourse();
+        $this->courses = Course::where('subject_id',$this->subject_id)
+        ->where('academic_period_id',$this->period_id)
+        ->where('level_id',$this->level_id)
+        //->where('teacher_id',$this->teacher_id)
+        ->get();
+        if(count($this->courses)==0){
+            $this->course_id_t = '';
+        }
+        $this->tasks = Task::where('course_id',$this->course_id_t)->get();
+        
+        //paar quitar
         $this->teachers = Teacher::all();
-        $this->periods = Period::all();
-    	
+        $this->emit('startEditor');
         return view('livewire.courses');
     }
+    public function SubjectsByLevel()
+    {
+        $this->subjects = Subject::where('level_id',$this->level_id)->get();
+    }
 
+    public function StudentsByCourse()
+    {
+        $this->students = DB::table('students')
+            ->join('period_students', 'students.id', 'period_students.student_id')
+            ->where('period_students.period_id', $this->period_id)
+            ->where('period_students.level_id', $this->level_id)
+            ->where('period_students.subject_id', $this->subject_id)
+            ->where('period_students.status', $this->status)
+            ->where('period_students.parallel', $this->parallel)
+            ->select('students.*')
+            ->get();
+    }
     public function resetInputFields()
     {
     	$this->name = '';
@@ -33,25 +77,22 @@ class Courses extends Component
         $this->career = '';
         $this->url_image = '';
         $this->content = '';
-        $this->status = '';
-        $this->teacher_id = '';
-        $this->academic_period_id = '';
-        $this->level_id = '';
-        $this->subject_id = '';
-       
+        $this->status = true;
+        $this->action = 'POST';
     }
 
-    public function store()
+    public function store($content)
     { 
+        $this->content = $content;
+        $this->teacher_id = 1;
     	$validation = $this->validate([
     		'name'	=>	'required',
     		'description' => 'required',
-            'career' => 'required',
             'url_image' => 'required',
             'content' => 'required',
             'status' => 'required',
             'teacher_id' => 'required',
-            'academic_period_id' => 'required',
+            'period_id' => 'required',
             'level_id' => 'required',
             'subject_id' => 'required'
         ]);
@@ -59,23 +100,26 @@ class Courses extends Component
         $id = Auth::user()->id;
                  
         $teacher = Teacher::find($id);
+        $name = "file-" . time() . '.' .  $this->url_image->getClientOriginalExtension();
+        $path =  $this->url_image->storeAs('/',$name,'courses');
         $data =  [
-            'teacher_id'=>$teacher->id,
+            'teacher_id'=>$this->teacher_id,
             'name'=>$this->name,
             'description'=>$this->description,
             'career'=> $this->career,
-            'url_image'=> $this->url_image,
+            'url_image'=> 'courses/'.$path,
             'content'=> $this->content,
             'status'=> $this->status,
-            'teacher_id'=> $this->teacher_id,
-            'academic_period_id'=> $this->academic_period_id,
+            'academic_period_id'=> $this->period_id,
             'level_id'=> $this->level_id,
             'subject_id'=> $this->subject_id,
         ];
+    
         Course::create($data);
-    	session()->flash('message', 'Curso creado con exíto.');
+    	$this->alert('success', 'Curso creado con exíto.');
     	$this->resetInputFields();
     	$this->emit('courseStore');
+    	
     }
 
     public function edit($id)
@@ -92,37 +136,45 @@ class Courses extends Component
         $this->level_id = $data->level_id;
         $this->subject_id = $data->subject_id;
         $this->data_id = $id;
+        $this->action = 'PUT';
+       
+       
     }
 
-    public function update()
+    public function update( $content)
     {
+        $this->content = $content;
+        $this->teacher_id = 1;
         $validation = $this->validate([
             'name'	=>	'required',
     		'description' => 'required',
-            'career' => 'required',
             'url_image' => 'required',
             'content' => 'required',
             'status' => 'required',
             'teacher_id' => 'required',
-            'academic_period_id' => 'required',
+            'period_id' => 'required',
             'level_id' => 'required',
             'subject_id' => 'required'
         ]);
 
         $data = Course::find($this->data_id);
+        $name = "file-" . time() . '.' .  $this->url_image->getClientOriginalExtension();
+        $path =  $this->url_image->storeAs('/',$name,'courses');
 
         $data->update([
-            'name'       =>   $this->name,
-            'start_date' =>  $this->start_date,
-            'end_date'  =>  $this->end_date,
-            'status' => $this->status,
-            'teacher_id' => $this->teacher_id,
-            'academic_period_id'=> $this->academic_period_id,
+            'teacher_id'=>$this->teacher_id,
+            'name'=>$this->name,
+            'description'=>$this->description,
+            'career'=> $this->career,
+            'url_image'=> 'courses/'.$path,
+            'content'=> $this->content,
+            'status'=> $this->status,
+            'academic_period_id'=> $this->period_id,
             'level_id'=> $this->level_id,
             'subject_id'=> $this->subject_id,
         ]);
 
-        session()->flash('message', 'Curso actualizada con exíto.');
+        $this->alert('success', 'Curso actualizada con exíto.');
 
         $this->resetInputFields();
 
@@ -133,5 +185,63 @@ class Courses extends Component
     {
         Course::find($id)->delete();
         session()->flash('message', 'Curso eliminada con exíto.');
+    }
+
+    public function openformtask($id)
+    {
+        $this->course_id_t = $id;
+        $this->emit('taskStore');
+    }
+    public function taskByCourse($id)
+    {
+        if($this->subject_id != ""){
+            $this->course_id_t = $id;
+        }else{
+            $this->course_id_t = "";
+        }
+      
+    }
+    public function resetInputFieldsTask()
+    {
+        $this->title_t = "";
+        $this->description_t = "";
+        $this->url_image_t = ""; 
+        $this->start_date_t = "";
+        $this->end_date_t = ""; 
+        $this->hour_t = ""; 
+        $this->action_t = "";
+        $this->course_id_t = "";
+        $this->emit('taskHide');
+    	
+    }
+    public function storeTask()
+    { 
+    	$validation = $this->validate([
+    		'title_t'	=>	'required',
+    		'description_t' => 'required',
+            'url_image_t' => 'required|image',
+            'start_date_t' => 'required',
+            'end_date_t' => 'required',
+            'hour_t' => 'required',
+            'course_id_t' => 'required',
+        ]);
+
+        $name = "file-" . time() . '.' .  $this->url_image_t->getClientOriginalExtension();
+        $path =  $this->url_image_t->storeAs('/',$name,'tasks');
+
+        $data =  [
+            'name'=>$this->title_t,
+            'description'=>$this->description_t,
+            'start_date'=> $this->start_date_t,
+            'end_date'=> $this->end_date_t,
+            'end_time'=> $this->hour_t,
+            'url_image'=> 'tasks/'.$path,
+            'course_id'=>  $this->course_id_t ,
+        ];
+       
+        Task::create($data);
+    	$this->alert('success', 'Tarea creada con exíto.');
+    	$this->resetInputFieldsTask();
+    	$this->emit('taskHide');
     }
 }

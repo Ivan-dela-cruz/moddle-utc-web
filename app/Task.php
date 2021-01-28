@@ -16,6 +16,9 @@ class Task extends Model
         'end_date',
         'url_file',
         'end_time',
-        'status'
+        'status',
+        'course_id'
     ];
+
+    
 }
