@@ -77,6 +77,18 @@ return [
             'url' => env('APP_URL').'public/students',
             'visibility' => 'public',
         ],
+        'tasks' => [
+            'driver' => 'local',
+            'root' => public_path('tasks'),
+            'url' => env('APP_URL').'public/tasks',
+            'visibility' => 'public',
+        ],
+        'courses' => [
+            'driver' => 'local',
+            'root' => public_path('courses'),
+            'url' => env('APP_URL').'public/courses',
+            'visibility' => 'public',
+        ],
 
         'teachers' => [
             'driver' => 'local',

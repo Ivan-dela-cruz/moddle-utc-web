@@ -1,10 +1,10 @@
 
 
 <div wire:ignore.self id="createModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="createModalLabel">Crear curso </h5>
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-white" id="createModalLabel">Añadir un nuevo curso </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                      <span aria-hidden="true close-btn">×</span>
                 </button>
@@ -12,10 +12,19 @@
             <div class="modal-body">
                 <form>
                     @include('admin.modals.courses.form')
-                    @can('create_course')
-                    <button wire:click.prevent="store()" class="btn btn-success">Save</button>
-                    @endcan
-                    <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal">Close</button>
+                    <div class="text-right">
+                        @if ($action =='POST')
+                            @can('create_course')
+                            <button wire:click.prevent="store(document.querySelector('#content').value)" class="btn btn-primary">Guardar</button>
+                            @endcan
+                        @else
+                            @can('update_course')
+                            <button wire:click.prevent="update(document.querySelector('#content').value)" class="btn btn-success">Actualizar</button>
+                            @endcan    
+                        @endif
+                        <button wire:click.prevent="resetInputFields()" type="button" class="btn btn-danger close-btn bl-3" data-dismiss="modal">Cancelar</button>
+                    </div>
+                   
                 </form>
             </div>
         </div>

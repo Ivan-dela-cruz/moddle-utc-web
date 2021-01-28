@@ -10,6 +10,7 @@
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 
 <link rel="stylesheet" href="{{asset('plugins/select2/dist/css/select2.css')}}">
+<link rel="stylesheet" href="{{asset('assets2/css/plugins/trumbowyg.min.css')}}">
 
  @livewireStyles
 @yield('css')
