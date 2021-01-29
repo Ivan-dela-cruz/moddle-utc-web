@@ -25,12 +25,21 @@ class Courses extends Component
     public $tasks, $title_t,$description_t,$url_image_t, $start_date_t, $end_date_t, $hour_t, $action_t, $course_id_t = null;
 
     //VARIABLES DEL SELECT 
-    public $teacher_id,$period_id,$level_id,$subject_id,$parallel="A", $action = 'POST';
+    public $period_id,$level_id,$subject_id,$parallel="A", $action = 'POST';
 
 
     //variables para estudiantes metirulados en una materia
     public $students = [];
    
+    private $teacher_id = null;
+
+    public function __construct()
+    {
+        $teacher = Auth::user()->teacher;
+        if(!is_null($teacher)){
+            $this->teacher_id = $teacher->id;
+        }
+    }
 
     public function render()
     {
@@ -41,8 +50,9 @@ class Courses extends Component
         $this->courses = Course::where('subject_id',$this->subject_id)
         ->where('academic_period_id',$this->period_id)
         ->where('level_id',$this->level_id)
-        //->where('teacher_id',$this->teacher_id)
+        ->where('teacher_id',$this->teacher_id)
         ->get();
+
         if(count($this->courses)==0){
             $this->course_id_t = '';
         }
@@ -51,6 +61,7 @@ class Courses extends Component
         //paar quitar
         $this->teachers = Teacher::all();
         $this->emit('startEditor');
+       
         return view('livewire.courses');
     }
     public function SubjectsByLevel()
@@ -83,42 +94,45 @@ class Courses extends Component
 
     public function store($content)
     { 
-        $this->content = $content;
-        $this->teacher_id = 1;
-    	$validation = $this->validate([
-    		'name'	=>	'required',
-    		'description' => 'required',
-            'url_image' => 'required',
-            'content' => 'required',
-            'status' => 'required',
-            'teacher_id' => 'required',
-            'period_id' => 'required',
-            'level_id' => 'required',
-            'subject_id' => 'required'
-        ]);
+        if(!is_null($this->teacher_id)){
+            $this->content = $content; 
+            $validation = $this->validate([
+                'name'	=>	'required',
+                'description' => 'required',
+                'url_image' => 'required',
+                'content' => 'required',
+                'status' => 'required',
+                'period_id' => 'required',
+                'teacher_id' => 'required',
+                'level_id' => 'required',
+                'subject_id' => 'required'
+            ]);
+            
+           
+            $name = "file-" . time() . '.' .  $this->url_image->getClientOriginalExtension();
+            $path =  $this->url_image->storeAs('/',$name,'courses');
+            $data =  [
+                'teacher_id'=>$this->teacher_id,
+                'name'=>$this->name,
+                'description'=>$this->description,
+                'career'=> $this->career,
+                'url_image'=> 'courses/'.$path,
+                'content'=> $this->content,
+                'status'=> $this->status,
+                'academic_period_id'=> $this->period_id,
+                'level_id'=> $this->level_id,
+                'subject_id'=> $this->subject_id,
+            ];
         
-        $id = Auth::user()->id;
-                 
-        $teacher = Teacher::find($id);
-        $name = "file-" . time() . '.' .  $this->url_image->getClientOriginalExtension();
-        $path =  $this->url_image->storeAs('/',$name,'courses');
-        $data =  [
-            'teacher_id'=>$this->teacher_id,
-            'name'=>$this->name,
-            'description'=>$this->description,
-            'career'=> $this->career,
-            'url_image'=> 'courses/'.$path,
-            'content'=> $this->content,
-            'status'=> $this->status,
-            'academic_period_id'=> $this->period_id,
-            'level_id'=> $this->level_id,
-            'subject_id'=> $this->subject_id,
-        ];
-    
-        Course::create($data);
-    	$this->alert('success', 'Curso creado con exíto.');
-    	$this->resetInputFields();
-    	$this->emit('courseStore');
+            Course::create($data);
+            $this->alert('success', 'Curso creado con exíto.');
+            $this->resetInputFields();
+            $this->emit('courseStore');
+        }else{
+            $this->emit('courseStore');
+            $this->alert('warning', 'Su usuario no esta registrado como profesor.');
+        }
+        
     	
     }
 
@@ -143,42 +157,47 @@ class Courses extends Component
 
     public function update( $content)
     {
-        $this->content = $content;
-        $this->teacher_id = 1;
-        $validation = $this->validate([
-            'name'	=>	'required',
-    		'description' => 'required',
-            'url_image' => 'required',
-            'content' => 'required',
-            'status' => 'required',
-            'teacher_id' => 'required',
-            'period_id' => 'required',
-            'level_id' => 'required',
-            'subject_id' => 'required'
-        ]);
+        if(!is_null($this->teacher_id)){
+            $this->content = $content;
+        
+            $validation = $this->validate([
+                'name'	=>	'required',
+                'description' => 'required',
+                'url_image' => 'required',
+                'content' => 'required',
+                'status' => 'required',
+                'teacher_id' => 'required',
+                'period_id' => 'required',
+                'level_id' => 'required',
+                'subject_id' => 'required'
+            ]);
 
-        $data = Course::find($this->data_id);
-        $name = "file-" . time() . '.' .  $this->url_image->getClientOriginalExtension();
-        $path =  $this->url_image->storeAs('/',$name,'courses');
+            $data = Course::find($this->data_id);
+            $name = "file-" . time() . '.' .  $this->url_image->getClientOriginalExtension();
+            $path =  $this->url_image->storeAs('/',$name,'courses');
 
-        $data->update([
-            'teacher_id'=>$this->teacher_id,
-            'name'=>$this->name,
-            'description'=>$this->description,
-            'career'=> $this->career,
-            'url_image'=> 'courses/'.$path,
-            'content'=> $this->content,
-            'status'=> $this->status,
-            'academic_period_id'=> $this->period_id,
-            'level_id'=> $this->level_id,
-            'subject_id'=> $this->subject_id,
-        ]);
+            $data->update([
+                'teacher_id'=>$this->teacher_id,
+                'name'=>$this->name,
+                'description'=>$this->description,
+                'career'=> $this->career,
+                'url_image'=> 'courses/'.$path,
+                'content'=> $this->content,
+                'status'=> $this->status,
+                'academic_period_id'=> $this->period_id,
+                'level_id'=> $this->level_id,
+                'subject_id'=> $this->subject_id,
+            ]);
 
-        $this->alert('success', 'Curso actualizada con exíto.');
+            $this->alert('success', 'Curso actualizada con exíto.');
 
-        $this->resetInputFields();
+            $this->resetInputFields();
 
-        $this->emit('courseStore');
+            $this->emit('courseStore');
+        }else{
+            $this->emit('courseStore');
+            $this->alert('warning', 'Su usuario no esta registrado como profesor.');
+        }
     }
 
     public function delete($id)
@@ -216,32 +235,36 @@ class Courses extends Component
     }
     public function storeTask()
     { 
-    	$validation = $this->validate([
-    		'title_t'	=>	'required',
-    		'description_t' => 'required',
-            'url_image_t' => 'required|image',
-            'start_date_t' => 'required',
-            'end_date_t' => 'required',
-            'hour_t' => 'required',
-            'course_id_t' => 'required',
-        ]);
+        if(!is_null($this->teacher_id)){
+            $validation = $this->validate([
+                'title_t'	=>	'required',
+                'description_t' => 'required',
+                'url_image_t' => 'required|image',
+                'start_date_t' => 'required',
+                'end_date_t' => 'required',
+                'hour_t' => 'required',
+                'course_id_t' => 'required',
+            ]);
 
-        $name = "file-" . time() . '.' .  $this->url_image_t->getClientOriginalExtension();
-        $path =  $this->url_image_t->storeAs('/',$name,'tasks');
+            $name = "file-" . time() . '.' .  $this->url_image_t->getClientOriginalExtension();
+            $path =  $this->url_image_t->storeAs('/',$name,'tasks');
 
-        $data =  [
-            'name'=>$this->title_t,
-            'description'=>$this->description_t,
-            'start_date'=> $this->start_date_t,
-            'end_date'=> $this->end_date_t,
-            'end_time'=> $this->hour_t,
-            'url_image'=> 'tasks/'.$path,
-            'course_id'=>  $this->course_id_t ,
-        ];
-       
-        Task::create($data);
-    	$this->alert('success', 'Tarea creada con exíto.');
-    	$this->resetInputFieldsTask();
-    	$this->emit('taskHide');
+            $data =  [
+                'name'=>$this->title_t,
+                'description'=>$this->description_t,
+                'start_date'=> $this->start_date_t,
+                'end_date'=> $this->end_date_t,
+                'end_time'=> $this->hour_t,
+                'url_image'=> 'tasks/'.$path,
+                'course_id'=>  $this->course_id_t ,
+            ];
+        
+            Task::create($data);
+            $this->alert('success', 'Tarea creada con exíto.');
+            $this->resetInputFieldsTask();
+            $this->emit('taskHide');
+        }else{
+            $this->alert('warning', 'Su usuario no esta registrado como profesor.');
+        }
     }
 }

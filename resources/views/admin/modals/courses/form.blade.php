@@ -7,7 +7,8 @@
 </div>
 <div class="form-group">
     <small style="margin-left: 0px;"  class="mr-3 text-primary">Descripción</small>
-    <input type="text" id="exampleFormControlInput2" class="form-control" placeholder="" wire:model.defer="description" />
+    <textarea type="text" id="exampleFormControlInput2" class="form-control" placeholder="" wire:model.defer="description">
+    </textarea>
     @error('description')<span class="text-danger">{{ $message }}</span>
     @enderror
 </div>
@@ -35,7 +36,7 @@
 </div>
 <div class="form-group">
     <small style="margin-left: 0px;"  class="mr-3 text-primary">Contenido</small>
-    <div wire:model.defer="content"  wire:key="MyKey">
+    <div   wire:key="MyKey">
         <textarea id="classic-editor">
             {!! $content !!}
         </textarea>
@@ -59,6 +60,7 @@
 </div>
 <div class="form-group">
     @error('period_id')<span class="text-danger">{{ $message }}</span><br>@enderror
+    @error('teacher_id')<span class="text-danger">{{ $message }}</span><br>@enderror
     @error('teacher_id')<span class="text-danger">{{ $message }}</span><br>@enderror
     @error('subject_id')<span class="text-danger">{{ $message }}</span><br>@enderror
     @error('level_id')<span class="text-danger">{{ $message }}</span><br>@enderror

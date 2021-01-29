@@ -1,6 +1,13 @@
 /node_modules
 /public/hot
 /public/storage
+/public/courses
+/public/image
+/public/img
+/public/periods
+/public/students
+/public/teachers
+/public/tasks
 /storage/*.key
 /vendor
 .env
