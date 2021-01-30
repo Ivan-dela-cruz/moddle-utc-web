@@ -14,22 +14,22 @@
 </div>
 
 <div class="form-group">
-    <small style="margin-left: 0px;"  class="mr-3 text-primary">Imagen</small>                   
+    <small style="margin-left: 0px;"  class="mr-3 text-primary">Imagen</small>
     <div class="input-group mb-3">
-                                                
+
         <div class="input-group-prepend">
-            
+
             @if($url_image =='')
-                <img src="{{asset('img/user.jpg')}}" alt="user image" class="img-radius align-top m-r-15" style="width:40px;">
+                <img wire:ignore src="{{asset('img/user.jpg')}}" alt="user image" class="img-radius align-top m-r-15" style="width:40px;">
             @else
-                <img src="{{asset($url_image_t)}}" alt="user image" class="img-radius align-top m-r-15" style="width:40px;">
+                <img wire:ignore src="{{asset($url_image)}}" alt="user image" class="img-radius align-top m-r-15" style="width:40px;">
             @endif
         </div>
         <div class="custom-file">
             <input type="file" class="custom-file-input" id="inputGroupFile01" wire:model.defer="url_image">
             <label class="custom-file-label" for="inputGroupFile01" >Subir imagen</label>
         </div>
-    
+
     </div>
     @error('url_image')<span class="text-danger">{{ $message }}</span>
     @enderror
@@ -41,11 +41,11 @@
             {!! $content !!}
         </textarea>
     </div>
-   
-    <textarea hidden wire:model.defer="content"  id="content">   
-        {!! $content !!}   
+
+    <textarea hidden wire:model.defer="content"  id="content">
+        {!! $content !!}
     </textarea>
-  
+
 </div>
 <div class="form-group">
     @error('content')<span class="text-danger">{{ $message }}</span>

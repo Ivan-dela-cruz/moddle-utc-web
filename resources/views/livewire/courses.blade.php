@@ -3,31 +3,47 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="row pl-2 pr-2">
-                        <select wire:model="period_id" class="form-control col-md-4" name="period_id" id="" aria-label="" aria-describedby="basic-addon1" >
-                            <option  value="">Periodo académico</option>
-                            @foreach($periods as $period)
-                                <option value="{{$period->id}}">{{$period->name}}</option>
-                            @endforeach
-                        </select>
-                        <select wire:model = "level_id" class="form-control col-md-3" name="level_id" id="" aria-label="" aria-describedby="basic-addon1" >
-                            <option value="">Nivel</option>
-                            @foreach($levels as $level)
-                                <option value="{{$level->id}}">{{$level->name}}</option>
-                            @endforeach
-                        </select>
-                        <select class="form-control col-md-1" wire:model="parallel" name="parallel">
-                            <option value="A">A</option>
-                            <option value="B">B</option>
-                            <option value="C">C</option>
-                            <option value="D">D</option>
-                        </select>
-                        <select  wire:model="subject_id" class="form-control col-md-4" name="subject_id" id="" aria-label="" aria-describedby="basic-addon1" >
-                            <option value="">Materia</option>
-                            @foreach($subjects as $subject)
-                                <option value="{{$subject->id}}">{{$subject->name}}</option>
-                            @endforeach
-                        </select>
+                    <div class="row ">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <select wire:model="period_id" class="form-control" name="period_id" id="" aria-label="" aria-describedby="basic-addon1" >
+                                    <option  value="">Periodo académico</option>
+                                    @foreach($periods as $period)
+                                        <option value="{{$period->id}}">{{$period->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <select wire:model = "level_id" class="form-control" name="level_id" id="" aria-label="" aria-describedby="basic-addon1" >
+                                    <option value="">Nivel</option>
+                                    @foreach($levels as $level)
+                                        <option value="{{$level->id}}">{{$level->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <div class="form-group">
+                                <select class="form-control " wire:model="parallel" name="parallel">
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="C">C</option>
+                                    <option value="D">D</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <select  wire:model="subject_id" class="form-control" name="subject_id" id="" aria-label="" aria-describedby="basic-addon1" >
+                                    <option value="">Materia</option>
+                                    @foreach($subjects as $subject)
+                                        <option value="{{$subject->id}}">{{$subject->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -76,32 +92,32 @@
                                             </div>
                                             <ul class="list-inline mt-2 mb-0">
                                                 <li class="list-inline-item"><i class="feather icon-message-square mr-1 f-14"></i>{{ $data->level->name }}</li>
-                                                <li class="list-inline-item"><i class="feather icon-message-square mr-1 f-14"></i>{{ $data->subject->name }}</li>
-                                                <li class="list-inline-item"><i class="feather icon-calendar mr-1 f-14"></i>{{ \Carbon\Carbon::parse($data->created_at)->diffForHumans()  }}</li>
-                                          
+                                                <li class="list-inline-item"><i class="feather icon-file-text mr-1 f-14"></i>{{ $data->subject->name }}</li>
+                                                <li class="list-inline-item"><i class="feather icon-clock mr-1 f-14"></i>{{ \Carbon\Carbon::parse($data->created_at)->diffForHumans()  }}</li>
+
                                             </ul>
-                                           
+
                                             <div class="mt-2">
-                                                
-                                                <a href="javascript:void(0);" 
+
+                                                <a href="javascript:void(0);"
                                                     wire:click="openformtask({{ $data->id }})"
-                                                    data-toggle="tooltip" 
+                                                    data-toggle="tooltip"
                                                     title="Eliminar"
                                                     class="text-info">
                                                     <i class="feather icon-trash-2 mr-1"></i>Nueva tarea
                                                 </a>
                                                 @can('update_course')
                                                     <a href="javascript:void(0);"  wire:click="edit({{ $data->id }})" class="mr-3 text-muted"
-                                                        type="button" 
+                                                        type="button"
                                                         data-toggle="modal" data-target="#createModal">
                                                         <i class="feather icon-edit-2"></i>
                                                         Editar
                                                     </a>
                                                 @endcan
                                                 @can('destroy_course')
-                                                    <a href="javascript:void(0);" 
+                                                    <a href="javascript:void(0);"
                                                         wire:click="delete({{ $data->id }})"
-                                                        data-toggle="tooltip" 
+                                                        data-toggle="tooltip"
                                                         title="Eliminar"
                                                         class="text-danger">
                                                         <i class="feather icon-trash-2 mr-1"></i>Eliminar
@@ -140,12 +156,12 @@
                                         <a href="javascript:void(0);">{{$task->name}}</a>
                                     </div>
                                     <div class="float-right span-content">
-                                       
-                                        <a  href="javascript:void(0);" 
-                                            class="btn waves-effect waves-light btn-default {{$task->status == 1 ? 'badge-success':'badge-danger'}} rounded-circle mr-0 " 
-                                            data-toggle="tooltip" 
-                                            data-placement="top" 
-                                            title="Entrega {{$task->end_date}}" 
+
+                                        <a  href="javascript:void(0);"
+                                            class="btn waves-effect waves-light btn-default {{$task->status == 1 ? 'badge-success':'badge-danger'}} rounded-circle mr-0 "
+                                            data-toggle="tooltip"
+                                            data-placement="top"
+                                            title="Entrega {{$task->end_date}}"
                                             data-original-title="{{$task->start_date}} - {{$task->end_date}}" >
                                             <i style="width: 15px; height: 15px;" class="{{$task->status == 1 ? 'feather icon-check':'feather icon-x'}}"></i>
                                         </a>
@@ -198,7 +214,7 @@
                     </div>
                 </div>
             </div>
-    
+
             <!-- [ tinymce editor ] start -->
             <div class="col-sm-12">
                 <div class="card border-0 shadow-none">
@@ -218,13 +234,13 @@
                                     @error('description_t')<span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                
+
                                 <div class="col-md-12 form-group">
-                                    
+
                                     <div class="input-group mb-3">
-                                                                                
+
                                         <div class="input-group-prepend">
-                                            
+
                                             @if($url_image_t =='')
                                                 <img src="{{asset('img/user.jpg')}}" alt="user image" class="img-radius align-top m-r-15" style="width:40px;">
                                             @else
@@ -235,7 +251,7 @@
                                             <input type="file" class="custom-file-input" id="inputGroupFile01" wire:model="url_image_t">
                                             <label class="custom-file-label" for="inputGroupFile01" >Subir imagen</label>
                                         </div>
-                                    
+
                                     </div>
                                     @error('url_image_t')<span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -273,6 +289,6 @@
 
     @include('admin.modals.courses.create')
     @include('admin.modals.courses.edit')
-   
-   
+
+
 </div>

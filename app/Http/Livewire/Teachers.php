@@ -43,7 +43,7 @@ class Teachers extends Component
         $this->url_image = '';
         $this->email = '';
         $this->dni = '';
-        $this->status = '';
+        $this->status = 1;
         $this->profession = '';
         $this->user_id = '';
     }

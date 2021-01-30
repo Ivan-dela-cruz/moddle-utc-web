@@ -76,6 +76,12 @@ class Students extends Component
             'dni.unique' => 'DNI en uso.',
             'status.required' => 'Campo obligatorio.',
         ]);
+
+        $passport = null;
+        if($this->passport != ''){
+            $this->validate(['passport' => 'numeric|unique:students,passport'], ['passport.numeric' => 'Pasaporte incorrecto.','passport.unique' => 'PAsaporte en uso.']);
+            $passport = $this->passport;
+        }
         $password = bcrypt($this->dni);
 
 
@@ -103,7 +109,7 @@ class Students extends Component
             'url_image' => $path,
             'email' => $this->email,
             'dni' => $this->dni,
-            'passport' => $this->passport,
+            'passport' => $passport,
             'instruction' => $this->instruction,
             'marital_status' => $this->marital_status,
             'birth_date' => $this->birth_date,
@@ -165,6 +171,12 @@ class Students extends Component
 
         $user = User::find($this->user_id);
         $data = Student::find($this->data_id);
+
+        $passport = null;
+        if($this->passport != ''){
+            $this->validate(['passport' => ['numeric', Rule::unique('students')->ignore($this->data_id),]], ['passport.numeric' => 'Pasaporte incorrecto.','passport.unique' => 'Pasaporte en uso.']);
+            $passport = $this->passport;
+        }
 
         if ($this->url_image != $data->url_image) {
             $this->validate(['url_image' => 'image'], ['url_image.image' => 'La imagen debe ser de formato: .jpg,.jpeg ó .png']);
