@@ -85,7 +85,7 @@
                 @endcan
             @else
                  @can('update_role')
-                <button  wire:click.prevent="update()" class="btn btn-sm btn-success ">Update</button>
+                <button  wire:click.prevent="update()" class="btn btn-sm btn-success ">Actualizar</button>
                 @endcan
             @endif
             <button wire:click.prevent="resetInputFields()" class="btn btn-sm btn-danger">Cancelar</button>

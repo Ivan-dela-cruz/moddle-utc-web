@@ -134,9 +134,12 @@ class="{{request()->is('/ruta')?'active':''}}"
                         <span class="pcoded-micon">
                             <i class="feather icon-layout"></i>
                         </span>
-                        <span class="pcoded-mtext">Tareas</span>
+                        <span class="pcoded-mtext">Cursos</span>
                     </a>
                     <ul class="pcoded-submenu">
+                        @can('read_course')
+                            <li><a href="{{route('courses')}}">Cursos</a></li>
+                        @endcan
                         <li><a href="{{route('tasks')}}">Tareas</a></li>
                     </ul>
                 </li>
