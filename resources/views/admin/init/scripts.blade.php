@@ -46,17 +46,17 @@
 
 <script src="{{asset('assets2/js/plugins/ckeditor.js')}}"></script>
 <script src="{{asset('js/uploadFileAdpter.js')}}"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 <script type="text/javascript">
 
 
 
-    function MyCustomUploadAdapterPlugin( editor ) {
+  /*  function MyCustomUploadAdapterPlugin( editor ) {
         editor.plugins.get( 'FileRepository' ).createUploadAdapter = ( loader ) => {
             return new MyUploadAdapter( loader );
         };
     }
-    
+
 
     $(window).on('load', function() {
         ClassicEditor.create(document.querySelector('#classic-editor'))
@@ -69,7 +69,7 @@
             .catch(error => {
                 console.error(error);
             });
-    });
+    });*/
 </script>
 
 
@@ -77,15 +77,15 @@
 
 
 <script type="text/javascript">
-    
 
-    function MyCustomUploadAdapterPlugin( editor ) {
+
+   /* function MyCustomUploadAdapterPlugin( editor ) {
         editor.plugins.get( 'FileRepository' ).createUploadAdapter = ( loader ) => {
             return new MyUploadAdapter( loader );
         };
     }
 
-    window.livewire.on('startEditor', () => {
+   window.livewire.on('startEditor', () => {
         ClassicEditor.create(document.querySelector('#classic-editor'))
             .then(editor=>{
                 editor.model.document.on('change:data',()=>{
@@ -96,12 +96,12 @@
             .catch(error => {
                 console.error(error);
             });
-    });
+    });*/
 
     window.livewire.on('taskStore', () => {
-       
+
         $(".q-view").addClass("active");
-       
+
         $(".overlay").click(function() {
             $(".q-view").removeClass("active");
         });
@@ -109,7 +109,7 @@
     window.livewire.on('taskHide', () => {
         $(".q-view").removeClass("active");
     });
-   
+
 
     window.livewire.on('courseStore', () => {
         $('#createModal').modal('hide');

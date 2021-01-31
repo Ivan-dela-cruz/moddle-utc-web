@@ -13,18 +13,12 @@
                 <form>
                     @include('admin.modals.courses.form')
                     <div class="text-right">
-                        @if ($action =='POST')
                             @can('create_course')
-                            <button wire:click.prevent="store(document.querySelector('#content').value)" class="btn btn-primary">Guardar</button>
+                            <button wire:click.prevent="store()" class="btn btn-sm btn-info">Guardar</button>
                             @endcan
-                        @else
-                            @can('update_course')
-                            <button wire:click.prevent="update(document.querySelector('#content').value)" class="btn btn-success">Actualizar</button>
-                            @endcan    
-                        @endif
-                        <button wire:click.prevent="resetInputFields()" type="button" class="btn btn-danger close-btn bl-3" data-dismiss="modal">Cancelar</button>
+                        <button wire:click.prevent="resetInputFields()" type="button" class="btn btn-sm btn-danger close-btn bl-3" data-dismiss="modal">Cancelar</button>
                     </div>
-                   
+
                 </form>
             </div>
         </div>

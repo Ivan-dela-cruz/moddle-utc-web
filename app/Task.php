@@ -46,5 +46,9 @@ class Task extends Model
         return new Date($end_time);
     }
 
+    public function course(){
+        return $this->belongsTo(Course::class, 'course_id');
+    }
+
 
 }
