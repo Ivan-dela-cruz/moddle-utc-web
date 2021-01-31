@@ -9,6 +9,7 @@ use App\Subject;
 use App\Task;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+use Livewire\WithPagination;
 use phpDocumentor\Reflection\Types\This;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Collection;
@@ -17,9 +18,11 @@ use Illuminate\Support\Facades\DB;
 class Courses extends Component
 {
     use WithFileUploads;
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
 
    //VARIABLES DE ESTUDIANTES
-    public  $courses ,$levels,$subjects,$teachers,$periods, $name,$description,$career='' ,$url_image,$content,$status = true, $data_id;
+    public  $levels,$subjects,$teachers,$periods, $name,$description,$career='' ,$url_image,$content,$status = true, $data_id;
 
     //VARIABLES PARA LAS TAREAS
     public $tasks, $title_t,$description_t,$url_image_t, $start_date_t, $end_date_t, $hour_t, $action_t, $course_id_t = null;
@@ -27,33 +30,30 @@ class Courses extends Component
     //VARIABLES DEL SELECT
     public $period_id,$level_id,$subject_id,$parallel="A", $action = 'POST';
 
-
     //variables para estudiantes metirulados en una materia
     public $students = [];
 
     private $teacher_id = null;
 
-    public function __construct()
-    {
-        $teacher = Auth::user()->teacher;
-        if(!is_null($teacher)){
-            $this->teacher_id = $teacher->id;
-        }
-    }
-
     public function render()
     {
+        $teacher = Auth::user()->teacher;
+        if($teacher){
+            $this->teacher_id = $teacher->id;
+        }
+
         $this->periods = Period::where('status',1)->get();
         $this->levels = Level::where('status',1)->get();
         $this->SubjectsByLevel();
         $this->StudentsByCourse();
-        $this->courses = Course::where('subject_id',$this->subject_id)
+        $courses = Course::where('subject_id',$this->subject_id)
         ->where('academic_period_id',$this->period_id)
         ->where('level_id',$this->level_id)
         ->where('teacher_id',$this->teacher_id)
-        ->get();
+        ->paginate(2);
 
-        if(count($this->courses)==0){
+
+        if(count($courses)==0){
             $this->course_id_t = '';
         }
         $this->tasks = Task::where('course_id',$this->course_id_t)->get();
@@ -62,8 +62,9 @@ class Courses extends Component
         $this->teachers = Teacher::all();
         $this->emit('startEditor');
 
-        return view('livewire.courses');
+        return view('livewire.courses',compact('courses'));
     }
+
     public function SubjectsByLevel()
     {
         $this->subjects = Subject::where('level_id',$this->level_id)->get();
@@ -81,6 +82,7 @@ class Courses extends Component
             ->select('students.*')
             ->get();
     }
+
     public function resetInputFields()
     {
     	$this->name = '';
@@ -92,31 +94,49 @@ class Courses extends Component
         $this->action = 'POST';
     }
 
-    public function store($content)
-    {
+    public function create(){
+        $this->resetInputFields();
+    }
+
+    public function store(){
+        $teacher = Auth::user()->teacher;
+        if($teacher){
+            $this->teacher_id = $teacher->id;
+        }
         if(!is_null($this->teacher_id)){
-            $this->content = $content;
             $validation = $this->validate([
                 'name'	=>	'required',
                 'description' => 'required',
-                'url_image' => 'required',
                 'content' => 'required',
                 'status' => 'required',
                 'period_id' => 'required',
-              //  'teacher_id' => 'required',
                 'level_id' => 'required',
                 'subject_id' => 'required'
+            ],[
+                'name.required' => 'Campo obligatorio.',
+                'description.required' => 'Campo obligatorio.',
+                'content.required' => 'Campo obligatorio.',
+                'status.required' => 'Campo obligatorio.',
+                'period_id.required' => 'Seleccione un Periodo Academico.',
+                'level_id.required' => 'Seleccione un Nivel.',
+                'subject_id.required' => 'Seleccione una Materia.',
             ]);
 
 
-            $name = "file-" . time() . '.' .  $this->url_image->getClientOriginalExtension();
-            $path =  $this->url_image->storeAs('/',$name,'courses');
+            $path = 'img/user.jpg';
+            if ($this->url_image != '') {
+                $this->validate(['url_image' => 'image'], ['url_image.image' => 'La imagen debe ser de formato: .jpg,.jpeg ó .png']);
+                //save image
+                $name = "file-" . time() . '.' . $this->url_image->getClientOriginalExtension();
+                $path = 'courses/' . $this->url_image->storeAs('/', $name, 'courses');
+            }
+
             $data =  [
                 'teacher_id'=>$this->teacher_id,
                 'name'=>$this->name,
                 'description'=>$this->description,
                 'career'=> $this->career,
-                'url_image'=> 'courses/'.$path,
+                'url_image'=> $path,
                 'content'=> $this->content,
                 'status'=> $this->status,
                 'academic_period_id'=> $this->period_id,
@@ -132,7 +152,6 @@ class Courses extends Component
             $this->emit('courseStore');
             $this->alert('warning', 'Su usuario no esta registrado como profesor.',[ 'showCancelButton' =>  false, ]);
         }
-
 
     }
 
@@ -150,31 +169,38 @@ class Courses extends Component
         $this->level_id = $data->level_id;
         $this->subject_id = $data->subject_id;
         $this->data_id = $id;
-        $this->action = 'PUT';
-
-
+      //  $this->action = 'PUT';
+        $this->emit('loadData');
     }
 
-    public function update( $content)
+    public function update( )
     {
+        $teacher = Auth::user()->teacher;
+        if($teacher){
+            $this->teacher_id = $teacher->id;
+        }
         if(!is_null($this->teacher_id)){
-            $this->content = $content;
+        //    $this->content = $content;
 
             $validation = $this->validate([
                 'name'	=>	'required',
                 'description' => 'required',
-               // 'url_image' => 'required',
                 'content' => 'required',
                 'status' => 'required',
-                //'teacher_id' => 'required',
                 'period_id' => 'required',
                 'level_id' => 'required',
                 'subject_id' => 'required',
+            ],[
+                'name.required' => 'Campo obligatorio.',
+                'description.required' => 'Campo obligatorio.',
+                'content.required' => 'Campo obligatorio.',
+                'status.required' => 'Campo obligatorio.',
+                'period_id.required' => 'Seleccione un Periodo Academico.',
+                'level_id.required' => 'Seleccione un Nivel.',
+                'subject_id.required' => 'Seleccione una Materia.',
             ]);
 
             $data = Course::find($this->data_id);
-            /*$name = "file-" . time() . '.' .  $this->url_image->getClientOriginalExtension();
-            $path =  $this->url_image->storeAs('/',$name,'courses');*/
             if ($this->url_image != $data->url_image) {
                 $this->validate(['url_image' => 'image'], ['url_image.image' => 'La imagen debe ser de formato: .jpg,.jpeg ó .png']);
                 //save image
@@ -210,8 +236,14 @@ class Courses extends Component
 
     public function delete($id)
     {
-        Course::find($id)->delete();
-        session()->flash('message', 'Curso eliminada con exíto.');
+        $course = Course::find($id);
+        if($course->tasks->count() <= 0){
+            $course->delete();
+            $this->alert('success', 'Curso eliminada con exíto.',[ 'showCancelButton' =>  false, ]);
+        }else{
+            $this->alert('warning', 'No se puede eliminar el curso.',[ 'showCancelButton' =>  false, ]);
+        }
+
     }
 
     public function openformtask($id)
@@ -219,6 +251,7 @@ class Courses extends Component
         $this->course_id_t = $id;
         $this->emit('taskStore');
     }
+
     public function taskByCourse($id)
     {
         if($this->subject_id != ""){
@@ -226,8 +259,8 @@ class Courses extends Component
         }else{
             $this->course_id_t = "";
         }
-
     }
+
     public function resetInputFieldsTask()
     {
         $this->title_t = "";
@@ -241,8 +274,13 @@ class Courses extends Component
         $this->emit('taskHide');
 
     }
+
     public function storeTask()
     {
+        $teacher = Auth::user()->teacher;
+        if($teacher){
+            $this->teacher_id = $teacher->id;
+        }
         if(!is_null($this->teacher_id)){
             $validation = $this->validate([
                 'title_t'	=>	'required',
@@ -252,6 +290,13 @@ class Courses extends Component
                 'end_date_t' => 'required',
                 'hour_t' => 'required',
                 'course_id_t' => 'required',
+            ],[
+                'title_t.required' => 'Campo obligatorio.',
+                'description_t.required' => 'Campo obligatorio.',
+                'start_date_t.required' => 'Campo obligatorio.',
+                'end_date_t.required' => 'Campo obligatorio.',
+                'hour_t.required' => 'Campo obligatorio.',
+                'course_id_t.required' => 'Campo obligatorio.',
             ]);
 
             $name = "file-" . time() . '.' .  $this->url_image_t->getClientOriginalExtension();
