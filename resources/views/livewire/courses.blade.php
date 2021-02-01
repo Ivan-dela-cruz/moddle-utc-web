@@ -252,111 +252,7 @@
             </div>
         </div>
     </div>
-    <div wire:ignore class="q-view">
-        <div class="overlay"></div>
-        <div class="content">
-            <div class="card-body">
-                <h4>Añadir tarea <span class="badge badge-success text-uppercase ml-2 f-12">nuevo</span></h4>
-                <div class="border-bottom pb-3 pt-3">
-                    <div class="row">
-                        <div class="col-md-7">
-                            <p class="list-inline-item mb-0">
-                                <img src="{{asset('assets2/images/ticket/p1.jpg')}}" alt=""
-                                     class="wid-20 rounded mr-1 img-fluid">
-                                Materia
-                            </p>
-                        </div>
-                        <div class="col-md-5 text-right">
-                            <p class="d-inline-block mb-0"><i class="feather icon-calendar mr-1"></i><label
-                                    class="mb-0">Jan,1st,2019</label></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- [ tinymce editor ] start -->
-            <div class="col-sm-12">
-                <div class="card border-0 shadow-none">
-                    <div class="card-body pr-0 pl-0 pt-0">
-                        <form>
-                            <div class="row m-3">
-                                <div class="col-sm-12 form-group">
-                                    <small class="text-primary">Título</small>
-                                    <input type="text" id="exampleFormControlInput1" class="form-control" placeholder=""
-                                           wire:model="title_t"/>
-                                    @error('title_t')
-                                    <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="col-sm-12 form-group">
-                                    <small class="text-primary">Descripcion</small>
-                                    <textarea type="text" id="exampleFormControlInput2" class="form-control"
-                                              placeholder="" wire:model="description_t"></textarea>
-                                    @error('description_t')<span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-
-                                <div class="col-md-12 form-group">
-
-                                    <div class="input-group mb-3">
-
-                                        <div class="input-group-prepend">
-
-                                            @if($url_image_t =='')
-                                                <img src="{{asset('img/user.jpg')}}" alt="user image"
-                                                     class="img-radius align-top m-r-15" style="width:40px;">
-                                            @else
-                                                <img src="{{asset($url_image_t)}}" alt="user image"
-                                                     class="img-radius align-top m-r-15" style="width:40px;">
-                                            @endif
-                                        </div>
-                                        <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="inputGroupFile01"
-                                                   wire:model="url_image_t">
-                                            <label class="custom-file-label" for="inputGroupFile01">Subir imagen</label>
-                                        </div>
-
-                                    </div>
-                                    @error('url_image_t')<span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="col-sm-4 form-group">
-                                    <small class="text-primary">Inicia</small>
-                                    <input type="date" id="exampleFormControlInput2" class="form-control" placeholder=""
-                                           wire:model="start_date_t"/>
-                                    @error('start_date_t')<span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="col-sm-4 form-group">
-                                    <small class="text-primary">Finaliza</small>
-                                    <input type="date" id="exampleFormControlInput2" class="form-control" placeholder=""
-                                           wire:model="end_date_t"/>
-                                    @error('end_date_t')<span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="col-sm-4 form-group">
-                                    <small class="text-primary">Hora límite</small>
-                                    <input type="time" id="exampleFormControlInput2" class="form-control" placeholder=""
-                                           wire:model="hour_t"/>
-                                    @error('hour_t')<span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="col-sm-12 form-group text-right">
-                                    <button wire:click.prevent="resetInputFieldsTask()" type="button"
-                                            class="btn btn-sm btn-md btn-danger close-btn float-right ml-3"
-                                            data-dismiss="modal">Cancelar
-                                    </button>
-                                    <button wire:click.prevent="storeTask()" class="btn btn-sm btn-md btn-info float-right ">
-                                        Guardar
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('admin.modals.courses.new-task')
 
     @section('scripts')
         <script>
@@ -408,6 +304,123 @@
                 var popoverId = $(event.target).attr("aria-describedby");
                 $("#" + popoverId).css("z-index", zIndex);
             });
+
+        </script>
+
+        <script>
+            let task_id;
+            window.addEventListener('data', event => {
+                task_id = event.detail.task_id
+            });
+            let destroyRoute = document.getElementById('destroyFileFrm').getAttribute('action');
+            // var loadRoute = document.getElementById('frmLoadBill').getAttribute('action');
+            let storeRoute = document.getElementById('storeFileFrm').getAttribute('action');
+            let csrf = document.getElementsByName('token').values();
+
+            Dropzone.autoDiscover = false;
+            $('#dropzone').dropzone({
+                url: storeRoute,
+                maxFilesize: 2,
+                addRemoveLinks: true,
+                init: function () {
+                    let thisDropzone = this;
+                    thisDropzone.on('sending', function (file, xhr, formData) {
+                        formData.append("_token", "{{ csrf_token() }}");
+                        formData.append('name', file.name);
+                        formData.append('task_id', task_id);
+                    });
+                    thisDropzone.on("uploadprogress", function () {
+                        $('.dz-message').hide();
+                    });
+                },
+                success: function (file, response) {
+                    console.log('archivo guardado')
+                   /* toastr.success('La imágen se ha subido correctamente.', '¡Genial!', {
+                        positionClass: 'toastr toast-top-right',
+                        containerId: 'toast-top-right',
+                    });*/
+                },
+                error: function (file, response) {
+                    console.log(response);
+                    console.log('error al subir');
+                    file.previewElement.remove();
+                    $.notify({
+                        message:'El archivo es demasiado grande. Tamaño máximo de archivo: 2MB.'
+                    }, {
+                        type: 'danger',
+                        allow_dismiss: false,
+                        label: 'Cancel',
+                        className: 'btn-xs btn-inverse',
+                        placement: {
+                            from: 'bottom',
+                            align: 'left'
+                        },
+                        delay: 6000,
+                        animate: {
+                            enter: 'animated fadeInRight',
+                            exit: 'animated fadeOutLeft'
+                        },
+                        offset: {
+                            x: 30,
+                            y: 30
+                        }
+                    });
+                    return false;
+                },
+                renameFile: function (file) {
+                    let dt = new Date();
+                    var time = dt.getTime();
+                    return time + " - "+file.name;
+                },
+                removedfile: function (file) {
+                    //console.log(file);
+                    let name = '';
+                    if (file.upload) {
+                        name = file.upload.filename;
+                    } else {
+                        name = file.fullname;
+                    }
+
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        type: 'POST',
+                        url: destroyRoute,
+                        data: {filename: name},
+                        success: function (data) {
+                            console.log('archivo eliminado');
+                            /*    toastr.info('La imágen se ha eliminado correctamente.', 'Aviso', {
+                                positionClass: 'toastr toast-top-right',
+                                containerId: 'toast-top-right',
+                            });*/
+                        },
+                        error: function (e) {
+                            console.log('error al eliminar el archivo');
+                            /*toastr.error('No se pudo eliminar la imágen.', 'Error', {
+                                positionClass: 'toastr toast-top-right',
+                                containerId: 'toast-top-right',
+                            });*/
+                        }
+                    });
+                    var fileRef;
+                    return (fileRef = file.previewElement) != null ?
+                        fileRef.parentNode.removeChild(file.previewElement) : void 0;
+                },
+
+                ///messages
+                dictFallbackMessage: "Su navegador no admite la carga de archivos mediante la función de arrastrar y soltar.",
+                dictFallbackText: "Utilice el formulario de respaldo a continuación para cargar sus archivos como en los viejos tiempos.",
+                dictInvalidFileType: "No puedes subir archivos de este tipo.",
+                dictResponseError: "Server responded with {{--statusCode--}} code.",
+                dictCancelUpload: "Cancelar carga",
+                dictUploadCanceled: "Subida Cancelada.",
+                dictCancelUploadConfirmation: "¿Está seguro de que deseas cancelar esta carga?",
+                dictRemoveFile: "Eliminar archivo",
+                dictRemoveFileConfirmation: null,
+                dictMaxFilesExceeded: "No puedes subir más archivos.",
+            });
+
 
         </script>
     @endsection

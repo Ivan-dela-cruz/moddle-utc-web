@@ -39,6 +39,13 @@
 <!-- custom-chart js -->
 <script src="{{asset('assets2/js/pages/dashboard-sale.js')}}"></script>
 
+<!-- file-upload Js -->
+<script src="{{asset('plugins/dropzone/dist/dropzone.js')}}"></script>
+<!-- notification Js -->
+<script src="{{asset('assets2/js/plugins/bootstrap-notify.min.js')}}"></script>
+
+
+
 @livewireScripts
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <x-livewire-alert::scripts />
@@ -101,15 +108,31 @@
     window.livewire.on('taskStore', () => {
 
         $(".q-view").addClass("active");
-
-        $(".overlay").click(function() {
+      /*  $(".overlay").click(function() {
             $(".q-view").removeClass("active");
-        });
-    });
-    window.livewire.on('taskHide', () => {
-        $(".q-view").removeClass("active");
+        });*/
+        $('#storeTaskBtn').removeClass("d-none");
+        $('.addTaskDiv').removeClass("d-none");
+        $('#addFileBtn').addClass("d-none");
+        $('#addFileDiv').addClass("d-none");
+
     });
 
+   window.livewire.on('taskHide', () => {
+        $(".q-view").removeClass("active");
+       /*$('#dropzone')[0].dropzone.files.forEach(function(file) {
+           file.previewTemplate.remove();
+       });*/
+       $('.dz-preview').remove();
+       $('.dz-message').show();
+   });
+
+   window.livewire.on('changeBtn', () => {
+       $('.addTaskDiv').addClass("d-none");
+       $('#addFileDiv').removeClass("d-none");
+       $('#storeTaskBtn').addClass("d-none");
+       $('#addFileBtn').removeClass("d-none");
+   });
 
     window.livewire.on('courseStore', () => {
         $('#createModal').modal('hide');

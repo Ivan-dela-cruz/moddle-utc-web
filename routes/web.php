@@ -70,3 +70,7 @@ Route::namespace('Admin')->group(function () {
     //});
     });
 });
+
+Route::post('files/upload/store','Admin\DashboardController@fileStore')->name('store.filesTask');
+Route::post('files/delete','Admin\DashboardController@fileDestroy')->name('destroy.filesTask');
+Route::get('files/load','Admin\DashboardController@fileLoad')->name('load.filesTask');

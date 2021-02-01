@@ -10,10 +10,14 @@ class File extends Model
     protected $table = 'files';
     protected $fillable = [
         'name',
-    		'description',
-            'url_file',
-            'status',
-    ]; 
+        'filename',
+        'size_file',
+        'url_file'
+    ];
+
+    public function fileable(){
+        return $this->morphTo();
+    }
 
 
 }
