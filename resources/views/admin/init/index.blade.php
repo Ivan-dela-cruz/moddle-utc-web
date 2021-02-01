@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <title>UTC Virtual Classrooms-Admin</title>
@@ -10,7 +10,7 @@
     <meta name="keywords" content="">
     <meta name="author" content="Phoenixcoded"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-  
+
     @include('admin.init.css')
 </head>
 <body class="">

@@ -15,13 +15,13 @@ class CreateTaskFilesTable extends Migration
     {
         Schema::create('task_files', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('file_id');
-            $table->unsignedBigInteger('task_id');
+            //$table->unsignedBigInteger('file_id');
+            //$table->unsignedBigInteger('task_id');
             $table->boolean('status')->nullable()->default(true);
             $table->softDeletes();
             $table->timestamps();
-            $table->foreign('file_id')->references('id')->on('files');
-            $table->foreign('task_id')->references('id')->on('tasks');
+           // $table->foreign('file_id')->references('id')->on('files');
+            //$table->foreign('task_id')->references('id')->on('tasks');
         });
     }
 

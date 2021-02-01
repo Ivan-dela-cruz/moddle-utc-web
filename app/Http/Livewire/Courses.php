@@ -35,6 +35,8 @@ class Courses extends Component
 
     private $teacher_id = null;
 
+    public $task_id;
+
     public function render()
     {
         $teacher = Auth::user()->teacher;
@@ -243,7 +245,6 @@ class Courses extends Component
         }else{
             $this->alert('warning', 'No se puede eliminar el curso.',[ 'showCancelButton' =>  false, ]);
         }
-
     }
 
     public function openformtask($id)
@@ -271,7 +272,6 @@ class Courses extends Component
         $this->hour_t = "";
         $this->action_t = "";
         $this->course_id_t = "";
-        $this->emit('taskHide');
 
     }
 
@@ -282,10 +282,11 @@ class Courses extends Component
             $this->teacher_id = $teacher->id;
         }
         if(!is_null($this->teacher_id)){
+
             $validation = $this->validate([
                 'title_t'	=>	'required',
                 'description_t' => 'required',
-                'url_image_t' => 'required|image',
+              //  'url_image_t' => 'required|image',
                 'start_date_t' => 'required',
                 'end_date_t' => 'required',
                 'hour_t' => 'required',
@@ -299,25 +300,34 @@ class Courses extends Component
                 'course_id_t.required' => 'Campo obligatorio.',
             ]);
 
-            $name = "file-" . time() . '.' .  $this->url_image_t->getClientOriginalExtension();
-            $path =  $this->url_image_t->storeAs('/',$name,'tasks');
-
             $data =  [
                 'name'=>$this->title_t,
                 'description'=>$this->description_t,
                 'start_date'=> $this->start_date_t,
                 'end_date'=> $this->end_date_t,
                 'end_time'=> $this->hour_t,
-                'url_image'=> 'tasks/'.$path,
+             //   'url_image'=> 'tasks/'.$path,
                 'course_id'=>  $this->course_id_t ,
             ];
 
-            Task::create($data);
-            $this->alert('success', 'Tarea creada con exíto.',[ 'showCancelButton' =>  false, ]);
+            $task = Task::create($data);
+            $this->task_id = $task->id;
+            $this->dispatchBrowserEvent('data', ['task_id' => $task->id]);
             $this->resetInputFieldsTask();
-            $this->emit('taskHide');
+            $this->emit('changeBtn');
         }else{
             $this->alert('warning', 'Su usuario no esta registrado como profesor.',[ 'showCancelButton' =>  false, ]);
         }
+    }
+
+
+    public function finalizeTask(){
+        $this->emit('taskHide');
+        $this->alert('success', 'Tarea creada con exíto.',[ 'showCancelButton' =>  false, ]);
+    }
+
+    public function  cancelStoreTask(){
+        $this->resetInputFieldsTask();
+        $this->emit('taskHide');
     }
 }
