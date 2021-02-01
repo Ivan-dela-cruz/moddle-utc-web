@@ -184,7 +184,6 @@ class="{{request()->is('/ruta')?'active':''}}"
                         <li><a href="{{route('periods')}}">Periodos</a></li>
                         @endcan
 
-
                     </ul>
                 </li>
 

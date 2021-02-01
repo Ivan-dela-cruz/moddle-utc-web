@@ -91,6 +91,12 @@ class DashboardController extends Controller
 
     }
 
+     
+    public function detailByCourses()
+    {
+        return view('admin.dashboard.detail-course.index');
+
+    }
     //MATRICULAR UN STUDIANTE EN UN CURSO
     public function courseStudent()
     {

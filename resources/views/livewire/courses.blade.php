@@ -101,20 +101,21 @@
                                         <div class="card-body inner-center">
                                             <div class="ticket-customer font-weight-bold">{{ $data->name }}</div>
                                             <div class="ticket-type-icon private mt-1 mb-1"><i
-                                                    class="feather icon-lock mr-1 f-14"></i>{{ $data->teacher->name}} {{ $data->teacher->last_name}}
+                                                    class="fas fa-user-graduate text-primary mr-1 f-14"></i>{{ $data->teacher->name}} {{ $data->teacher->last_name}}
                                             </div>
                                             <div class="excerpt mt-4">
                                                 {{ $data->description }}
                                             </div>
                                             <ul class="list-inline mt-2 mb-0">
                                                 <li class="list-inline-item"><i
-                                                        class="feather icon-message-square mr-1 f-14"></i>{{ $data->level->name }}
+                                                        class="fas fa-chart-line mr-1 f-14"></i>{{ $data->level->name }}
                                                 </li>
                                                 <li class="list-inline-item"><i
-                                                        class="feather icon-file-text mr-1 f-14"></i>{{ $data->subject->name }}
+                                                        class="fas fa-book mr-1 f-14"></i>{{ $data->subject->name }}
                                                 </li>
                                                 <li class="list-inline-item"><i
-                                                        class="feather icon-clock mr-1 f-14"></i>{{ \Carbon\Carbon::parse($data->created_at)->diffForHumans()  }}
+                                                        class="feather icon-clock mr-1 f-14"></i>
+                                                        {{ \Carbon\Carbon::parse($data->created_at)->diffForHumans()  }}
                                                 </li>
 
                                             </ul>
@@ -125,15 +126,22 @@
                                                    wire:click="openformtask({{ $data->id }})"
                                                    data-toggle="tooltip"
                                                    title="Eliminar"
-                                                   class="text-info">
-                                                    <i class="feather icon-trash-2 mr-1"></i>Nueva tarea
+                                                   class="text-muted mr-3">
+                                                    <i class="feather icon-file-text mr-1"></i>Nueva tarea
                                                 </a>
+                                                <a href="{{route('detailcourses')}}{{'?course='.$data->id}}"
+                                                    data-toggle="tooltip"
+                                                    title="Eliminar"
+                                                    class="text-muted">
+                                                    <i class="fas fa-book-open mr-1"></i>Detalle
+                                                </a>
+                                                
                                                 @can('update_course')
                                                     <a href="javascript:void(0);" wire:click="edit({{ $data->id }})"
-                                                       class="mr-3 text-muted"
+                                                       class="text-muted float-right"
                                                        type="button"
                                                        data-toggle="modal" data-target="#updateModal">
-                                                        <i class="feather icon-edit-2"></i>
+                                                        <i class="feather icon-edit-1"></i>
                                                         Editar
                                                     </a>
                                                 @endcan
@@ -142,7 +150,7 @@
                                                        wire:click="delete({{ $data->id }})"
                                                        data-toggle="tooltip"
                                                        title="Eliminar"
-                                                       class="text-danger">
+                                                       class="text-muted float-right mr-3">
                                                         <i class="feather icon-trash-2 mr-1"></i>Eliminar
                                                     </a>
                                                 @endcan
@@ -172,12 +180,12 @@
             <div class="right-side">
                 <div class="card mb-3">
                     <div class="card-header">
-                        <div class="d-flex justify-content-between">
-                            <span><strong>Tareas por curso</strong></span>
+                        <div class="justify-content-between">
+                            <span >Listado de tareas para </span>
                             @foreach($courses as $course)
                                 @if($course->id == $course_id_t )
                                     <span class="text-muted">{{$course->name}}</span>
-                                    <span class="rounded-circle badge badge-info">{{$tasks->count()}}</span>
+                                    <span class="rounded-circle badge badge-info">{{$tasks->count()}} </span>
                                 @endif
                             @endforeach
 
