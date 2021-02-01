@@ -11,6 +11,8 @@
 
 <link rel="stylesheet" href="{{asset('plugins/select2/dist/css/select2.css')}}">
 <link rel="stylesheet" href="{{asset('assets2/css/plugins/trumbowyg.min.css')}}">
+<!-- fileupload-custom css -->
+<link rel="stylesheet" type="text/css" href="{{asset('plugins/dropzone/dist/dropzone.css')}}">
 
  @livewireStyles
 @yield('css')

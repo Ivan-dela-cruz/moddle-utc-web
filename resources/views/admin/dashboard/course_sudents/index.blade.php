@@ -6,9 +6,9 @@
     <div class="pcoded-main-container">
         <div class="pcoded-content">
             <x-content title="Registros" position="Formulario"></x-content>
-        
+
             @livewire('course-student')
-            
+
         </div>
     </div>
 @endsection
