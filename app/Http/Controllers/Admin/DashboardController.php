@@ -88,4 +88,9 @@ class DashboardController extends Controller
          return view('admin.dashboard.course_sudents.index');
 
      }
+     public function detailByCourses()
+     {
+         return view('admin.dashboard.detail-course.index');
+
+     }
 }

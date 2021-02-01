@@ -186,6 +186,7 @@ class="{{request()->is('/ruta')?'active':''}}"
                         @can('read_course')
                         <li><a href="{{route('courses')}}">Cursos</a></li>
                         @endcan
+                       
 
                     </ul>
                 </li>

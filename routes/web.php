@@ -17,6 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('dashboard/courses','Admin\DashboardController@courses')->name('courses');
+Route::get('dashboard/courses/detail','Admin\DashboardController@detailByCourses')->name('detailcourses');
 Auth::routes();
 Route::namespace('Admin')->group(function () {
     Route::group(['middleware' => ['auth']], function () {
