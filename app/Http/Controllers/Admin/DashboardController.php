@@ -6,6 +6,7 @@ use App\File;
 use App\Http\Controllers\Controller;
 use App\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class DashboardController extends Controller
 {
@@ -91,7 +92,7 @@ class DashboardController extends Controller
 
     }
 
-     
+
     public function detailByCourses()
     {
         return view('admin.dashboard.detail-course.index');
@@ -133,5 +134,13 @@ class DashboardController extends Controller
             unlink($path);
         }
         return $filename;
+    }
+
+    public function fileLoad(Request $request){
+        if($request->ajax()){
+            $task = Task::find($request->task_id);
+            return response()->json($task->files);
+        }
+
     }
 }

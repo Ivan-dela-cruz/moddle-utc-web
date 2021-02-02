@@ -134,6 +134,26 @@
        $('#addFileBtn').removeClass("d-none");
    });
 
+   window.livewire.on('loadData', () => {
+     //  $('.addTaskDiv').addClass("d-none");
+       $('#addFileDiv').removeClass("d-none");
+       $('#storeTaskBtn').addClass("d-none");
+       $('#updateTaskBtn').removeClass("d-none");
+       //$('#addFileBtn').removeClass("d-none");
+   });
+
+   window.livewire.on('updateData', () => {
+       //  $('.addTaskDiv').addClass("d-none");
+       $('#addFileDiv').addClass("d-none");
+       $('#storeTaskBtn').removeClass("d-none");
+       $('#updateTaskBtn').addClass("d-none");
+       //$('#addFileBtn').removeClass("d-none");
+       $('.dz-preview').remove();
+       $('.dz-message').show();
+   });
+
+
+
     window.livewire.on('courseStore', () => {
         $('#createModal').modal('hide');
         $('#updateModal').modal('hide');

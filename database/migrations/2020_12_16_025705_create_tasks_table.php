@@ -21,7 +21,8 @@ class CreateTasksTable extends Migration
             $table->date('end_date')->nullable();
             $table->string('url_file')->nullable();
             $table->time('end_time')->nullable();
-            $table->boolean('status')->nullable()->default(true);
+            //$table->boolean('status')->nullable()->default(true);
+            $table->enum('status',['Abierto','Cancelado','Finalizado'])->default('Abierto');
             $table->softDeletes();
             $table->timestamps();
         });
