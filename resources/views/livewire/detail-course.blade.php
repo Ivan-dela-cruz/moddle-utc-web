@@ -284,7 +284,7 @@
 
                         <div class="row">
                             <div hidden>  {{\Carbon\Carbon::setLocale('es')}} </div>
-                            @foreach($course->tasks as $task)
+                            @foreach($tasks as $task)
 
                                 @php($endtimes = \Carbon\Carbon::parse($task->end_time))
                                 @php($enddates = \Carbon\Carbon::parse($task->end_date))
@@ -340,7 +340,9 @@
                                                     </button>
                                                     <div class="dropdown-secondary dropdown">
                                                         <button
-                                                            class="btn waves-effect waves-light btn-primary btn-sm dropdown-toggle"
+                                                            class="btn waves-effect waves-light btn-sm dropdown-toggle {{$task->status == 'Abierto' ? 'btn-primary' : ''}}
+                                                            {{$task->status == 'Finalizado' ? 'btn-success' : ''}}
+                                                            {{$task->status == 'Cancelado' ? 'btn-danger' : ''}}"
                                                             type="button" id="dropdown1" data-toggle="dropdown"
                                                             aria-haspopup="true" aria-expanded="false">Estado
                                                         </button>
