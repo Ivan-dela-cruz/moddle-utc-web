@@ -20,9 +20,9 @@ class Tasks extends Component
 
     protected $queryString = [
         'search' => ['except' => ''],
-        'perPage' => ['except' => '9'],
+        'perPage' => ['except' => '6'],
     ];
-    public $search = '', $perPage = '9';
+    public $search = '', $perPage = '6';
 
     public $data_id, $name, $description, $start_date, $end_date, $url_file, $end_time, $status;//, $tasks = null;
 

@@ -27,14 +27,14 @@ class DetailCourse extends Component
     public $course_id, $course;
 
     ///VARIABLE CNTROL TABS
-    public $position = 'detail_c';
+    public $position = 'detail_c', $task_title = 'Nueva', $task_id;
 
     public function mount(Request $request)
     {
         $this->course_id = request()->query('course');
         $this->course = Course::find($this->course_id);
     }
-    
+
     public function render()
     {
         return view('livewire.detail-course');
@@ -43,16 +43,19 @@ class DetailCourse extends Component
     {
         $this->course = Course::find($id);
         $this->position = 'detail_c';
+        $this->cancelUpdate();
     }
     public function loadDataTask($id)
     {
         $this->course = Course::find($id);
         $this->position = 'task_c';
+        $this->cancelUpdate();
     }
     public function loadNewTask($id)
     {
         $this->course = Course::find($id);
         $this->position = 'new_task';
+        $this->cancelUpdate();
     }
     public function edit($id)
     {
@@ -69,7 +72,8 @@ class DetailCourse extends Component
         $this->subject_id = $data->subject_id;
         $this->data_id = $id;
         $this->position = 'update_c';
- 
+        $this->cancelUpdate();
+
         $this->emit('loadData');
     }
     public function update( )
@@ -121,7 +125,7 @@ class DetailCourse extends Component
                 //'level_id'=> $this->level_id,
                 //'subject_id'=> $this->subject_id,
             ]);
-           
+
             $this->alert('success', 'Curso actualizada con exíto.',[ 'showCancelButton' =>  false, ]);
             $this->edit($this->data_id);
 
@@ -140,7 +144,8 @@ class DetailCourse extends Component
         $this->hour_t = "";
         $this->action_t = "";
         $this->course_id_t = "";
-        $this->emit('taskHide');
+        //$this->emit('taskHide');
+        $this->task_title = 'Nueva';
 
     }
 
@@ -154,7 +159,7 @@ class DetailCourse extends Component
             $validation = $this->validate([
                 'title_t'	=>	'required',
                 'description_t' => 'required',
-                'url_image_t' => 'required|image',
+            //    'url_image_t' => 'required|image',
                 'start_date_t' => 'required',
                 'end_date_t' => 'required',
                 'hour_t' => 'required',
@@ -167,8 +172,8 @@ class DetailCourse extends Component
                 'course_id_t.required' => 'Campo obligatorio.',
             ]);
 
-            $name = "file-" . time() . '.' .  $this->url_image_t->getClientOriginalExtension();
-            $path =  $this->url_image_t->storeAs('/',$name,'tasks');
+           // $name = "file-" . time() . '.' .  $this->url_image_t->getClientOriginalExtension();
+            //$path =  $this->url_image_t->storeAs('/',$name,'tasks');
 
             $data =  [
                 'name'=>$this->title_t,
@@ -176,17 +181,94 @@ class DetailCourse extends Component
                 'start_date'=> $this->start_date_t,
                 'end_date'=> $this->end_date_t,
                 'end_time'=> $this->hour_t,
-                'url_image'=> 'tasks/'.$path,
+               // 'url_image'=> 'tasks/'.$path,
                 'course_id'=>  $this->course->id ,
             ];
 
-            Task::create($data);
-            $this->alert('success', 'Tarea creada con exíto.',[ 'showCancelButton' =>  false, ]);
+            $task = Task::create($data);
+            $this->emit('changeBtn');
+            //$this->alert('success', 'Tarea creada con exíto.',[ 'showCancelButton' =>  false, ]);
+            $this->dispatchBrowserEvent('data', ['task_id' => $task->id]);
             $this->resetInputFieldsTask();
-            $this->position = 'task_c';
+           // $this->position = 'task_c';
         }else{
             $this->alert('warning', 'Su usuario no esta registrado como profesor.',[ 'showCancelButton' =>  false, ]);
         }
     }
+
+    public function finalizeTask(){
+        $this->emit('taskHide');
+        $this->alert('success', 'Tarea creada con exíto.',[ 'showCancelButton' =>  false, ]);
+    }
+
+    public function  editTask($id){
+        $task = Task::find($id);
+        $this->task_id = $task->id;
+        $this->emit('loadData', $task->id);
+        $this->dispatchBrowserEvent('data', ['task_id' => $task->id]);
+        $this->task_title = 'Editar';
+        $this->position = 'new_task';
+        $this->title_t = $task->name;
+        $this->description_t = $task->description;
+        $this->start_date_t = $task->start_date->format('Y-m-d');
+        $this->end_date_t = $task->end_date->format('Y-m-d');
+        $this->hour_t = $task->end_time->format('H:i');
+    }
+    public function updateTask(){
+        $teacher = Auth::user()->teacher;
+        if($teacher){
+            $this->teacher_id = $teacher->id;
+        }
+        if(!is_null($this->teacher_id)){
+            $validation = $this->validate([
+                'title_t'	=>	'required',
+                'description_t' => 'required',
+                'start_date_t' => 'required',
+                'end_date_t' => 'required',
+                'hour_t' => 'required',
+            ],[
+                'title_t.required' => 'Campo obligatorio.',
+                'description_t.required' => 'Campo obligatorio.',
+                'start_date_t.required' => 'Campo obligatorio.',
+                'end_date_t.required' => 'Campo obligatorio.',
+                'hour_t.required' => 'Campo obligatorio.',
+                'course_id_t.required' => 'Campo obligatorio.',
+            ]);
+
+            $task = Task::find($this->task_id);
+            $task->update([
+                'name'=>$this->title_t,
+                'description'=>$this->description_t,
+                'start_date'=> $this->start_date_t,
+                'end_date'=> $this->end_date_t,
+                'end_time'=> $this->hour_t,
+                'course_id'=>  $this->course->id ,
+            ]);
+
+            $this->resetInputFieldsTask();
+            $this->emit('updateData');
+            $this->task_title = 'Nueva';
+            $this->position = 'task_c';
+            $this->alert('success', 'Tarea actualizada con exito.',[ 'showCancelButton' =>  false, ]);
+        }else{
+            $this->alert('warning', 'Su usuario no esta registrado como profesor.',[ 'showCancelButton' =>  false, ]);
+        }
+
+    }
+
+    public function cancelUpdate(){
+        $this->resetInputFieldsTask();
+        $this->emit('updateData');
+    }
+
+    public function updateTaskStatus($id, $status){
+        $task = Task::find($id);
+        $task->update([
+           'status' => $status
+        ]);
+        $this->alert('success', $status,[ 'showCancelButton' =>  false, ]);
+        $this->position = 'task_c';
+    }
+
 
 }
