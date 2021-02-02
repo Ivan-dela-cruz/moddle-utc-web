@@ -14,8 +14,9 @@ class DetailCourse extends Component
     public  $levels,$subjects,$teachers,$periods, $name,$description,$career='' ,$url_image,$content,$status = true, $data_id;
 
     //VARIABLES PARA LAS TAREAS
-    public $tasks, $title_t,$description_t,$url_image_t, $start_date_t, $end_date_t, $hour_t, $action_t, $course_id_t = null;
+    public  $title_t,$description_t,$url_image_t, $start_date_t, $end_date_t, $hour_t, $action_t, $course_id_t = null;
 
+    //public $tasks;
     //VARIABLES DEL SELECT
     public $period_id,$level_id,$subject_id,$parallel="A", $action = 'POST';
 
@@ -37,7 +38,8 @@ class DetailCourse extends Component
 
     public function render()
     {
-        return view('livewire.detail-course');
+        $tasks = Task::where('course_id',$this->course_id)->get();
+        return view('livewire.detail-course', compact('tasks'));
     }
     public function loadDataDetail($id)
     {
