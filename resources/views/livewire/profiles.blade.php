@@ -27,7 +27,10 @@
                                 <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <div class="profile-dp">
                                         <div class="position-relative d-inline-block">
-                                            <img id="preview" wire:ignore class="img-radius img-fluid wid-100" src="{{asset($user->url_image)}}" alt="User image">
+                                            <div wire:ignore  id="loading" class=" text-primary" Style="width: 6rem; height: 6rem;" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                                <img id="preview" wire:ignore class="img-radius img-fluid" src="{{asset($user->url_image)}}" alt="User image" style="width: 100px; height: 100px">
+                                            </div>
                                         </div>
                                         <div class="overlay">
                                             <span>Foto</span>
@@ -484,8 +487,9 @@
                 if (ext == "gif" || ext == "png" || ext == "jpg" || ext == "jpeg"){
                     readURL(this);
                        setTimeout(function (){
-                           $('#updatePhotoBtn').click()
-                       },1000)
+                           $('#loading').removeClass('spinner-grow');
+                           $('#updatePhotoBtn').click();
+                       },2000)
                 }
                 else{
                     notify('Elija imágenes (jpg, jpeg, png).','danger');
@@ -503,6 +507,7 @@
                         reader.readAsDataURL(input.files[0]);
                         reader.onload = function (e) {
                         $('#preview').attr('src', e.target.result);
+                        $('#loading').addClass('spinner-grow');
                         };
 //                $("#remove").val(0);
                     }
