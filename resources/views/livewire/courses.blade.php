@@ -286,7 +286,12 @@
             });
 
             window.livewire.on('loadData', () => {
+                console.log(@this.get('content'));
                 $(".summernote").eq(1).summernote("code", @this.get('content'));
+            });
+            window.livewire.on('cleanSummer', () => {
+                console.log(@this.get('content'));
+                $(".summernote").eq(0).summernote("code", @this.get('content'));
             });
 
             $(document).on("show.bs.modal", '.modal', function (event) {

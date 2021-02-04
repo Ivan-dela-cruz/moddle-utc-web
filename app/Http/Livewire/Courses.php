@@ -98,11 +98,13 @@ class Courses extends Component
         $this->url_image = '';
         $this->content = '';
         $this->status = true;
-        $this->action = 'POST';
+    //    $this->action = 'POST';
     }
 
     public function create(){
         $this->resetInputFields();
+
+        $this->emit('cleanSummer');
     }
 
     public function store(){
