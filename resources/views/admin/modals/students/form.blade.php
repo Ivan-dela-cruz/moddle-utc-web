@@ -34,11 +34,11 @@
         <small  class="text-primary" for="marital_status">Estado cívil</small>
         <select  class="form-control" name="marital_status" id="marital_status" wire:model="marital_status">
             <option value="">Selecciona</option>
-            <option value="casado">Casado</option>
-            <option value="unio">Unión libre</option>
-            <option value="soltero">Soltero</option>
-            <option value="viudo">Viudo</option>
-            <option value="otros">Otros</option>
+            <option value="Casado">Casado</option>
+            <option value="Unio">Unión libre</option>
+            <option value="Soltero">Soltero</option>
+            <option value="Viudo">Viudo</option>
+            <option value="Otros">Otros</option>
         </select>
         @error('marital_status')<span class="text-danger">{{ $message }}</span>
         @enderror
@@ -64,9 +64,9 @@
     </div>
     <div class="col-md-6 form-group">
         <div class="input-group mb-3">
-                                                    
+
             <div class="input-group-prepend">
-                
+
                 @if($url_image =='')
                     <img src="{{asset('img/user.jpg')}}" alt="user image" class="img-radius align-top m-r-15" style="width:40px;">
                 @else
@@ -77,7 +77,7 @@
                 <input type="file" class="custom-file-input" id="inputGroupFile01" wire:model="url_image">
                 <label class="custom-file-label" for="inputGroupFile01" >Subir imagen</label>
             </div>
-        
+
         </div>
         @error('url_image')<span class="text-danger">{{ $message }}</span>
         @enderror
@@ -89,6 +89,6 @@
             <input  wire:model="status"  type="checkbox" id="switch-i-1" checked>
             <label for="switch-i-1" class="cr"></label>
         </div>
-    
+
     </div>
 </div>

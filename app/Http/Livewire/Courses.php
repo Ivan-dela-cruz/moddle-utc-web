@@ -64,6 +64,11 @@ class Courses extends Component
         $this->teachers = Teacher::all();
         $this->emit('startEditor');
 
+        if(count($this->getErrorBag()->all()) > 0){
+            //   dd($this->getErrorBag()->getMessages());
+            $this->emit('errors',$this->getErrorBag()->all());
+        }
+
         return view('livewire.courses',compact('courses'));
     }
 
@@ -292,12 +297,12 @@ class Courses extends Component
                 'hour_t' => 'required',
                 'course_id_t' => 'required',
             ],[
-                'title_t.required' => 'Campo obligatorio.',
-                'description_t.required' => 'Campo obligatorio.',
-                'start_date_t.required' => 'Campo obligatorio.',
-                'end_date_t.required' => 'Campo obligatorio.',
-                'hour_t.required' => 'Campo obligatorio.',
-                'course_id_t.required' => 'Campo obligatorio.',
+                'title_t.required' => 'Ingrese un título.',
+                'description_t.required' => 'Ingrese una descripción.',
+                'start_date_t.required' => 'Defina una fecha de inicio.',
+                'end_date_t.required' => 'Defina una fecha de fin.',
+                'hour_t.required' => 'Defina una hora.',
+                'course_id_t.required' => 'No se encontro el curso.',
             ]);
 
             $data =  [
