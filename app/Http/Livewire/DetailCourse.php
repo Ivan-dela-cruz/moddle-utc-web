@@ -7,9 +7,14 @@ use Livewire\Component;
 use Illuminate\Http\Request;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
+use Livewire\WithPagination;
+
 class DetailCourse extends Component
 {
     use WithFileUploads;
+    use WithPagination;
+
+    protected $paginationTheme = 'bootstrap';
     //VARIABLES DE ESTUDIANTES
     public  $levels,$subjects,$teachers,$periods, $name,$description,$career='' ,$url_image,$content,$status = true, $data_id;
 
@@ -28,7 +33,7 @@ class DetailCourse extends Component
     public $course_id, $course;
 
     ///VARIABLE CNTROL TABS
-    public $position = 'detail_c', $task_title = 'Nueva', $task_id;
+    public $position = 'detail_c', $task_title = 'Nueva', $task_id, $task_status = '';
 
     public function mount(Request $request)
     {
@@ -38,8 +43,20 @@ class DetailCourse extends Component
 
     public function render()
     {
-        $tasks = Task::where('course_id',$this->course_id)->get();
+        $tasks = Task::where('course_id',$this->course_id)
+            ->where(function ($query) {
+                $query->when($this->task_status != '', function ($q) {
+                    $q->orWhere('status',$this->task_status);
+                });
+            })
+            ->orderBy('updated_at','desc')
+            ->paginate(6);
         return view('livewire.detail-course', compact('tasks'));
+    }
+
+    public function filterByStatus($status){
+        $this->task_status = $status;
+        $this->page = 1;
     }
     public function loadDataDetail($id)
     {
@@ -200,6 +217,7 @@ class DetailCourse extends Component
 
     public function finalizeTask(){
         $this->emit('taskHide');
+        $this->emit('taskStore');
         $this->alert('success', 'Tarea creada con exíto.',[ 'showCancelButton' =>  false, ]);
     }
 

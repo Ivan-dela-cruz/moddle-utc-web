@@ -98,6 +98,11 @@ class DashboardController extends Controller
         return view('admin.dashboard.detail-course.index');
 
     }
+
+    public function profile(){
+        return view('admin.dashboard.profile.index');
+    }
+
     //MATRICULAR UN STUDIANTE EN UN CURSO
     public function courseStudent()
     {
@@ -105,6 +110,7 @@ class DashboardController extends Controller
 
     }
 
+    //SUBIR ARCHIVOS PARA LAS TAREAS
     public function fileStore(Request $request)
     {
         $task = Task::find($request->task_id);

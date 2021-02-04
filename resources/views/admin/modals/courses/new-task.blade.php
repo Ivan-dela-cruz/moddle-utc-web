@@ -30,7 +30,7 @@
                                   <div class="form-group">
                                       <small class="text-primary">Título</small>
                                       <input type="text" id="exampleFormControlInput1" class="form-control" placeholder=""
-                                             wire:model="title_t"/>
+                                             wire:model.defer="title_t"/>
                                       @error('title_t')
                                       <span class="text-danger">{{ $message }}</span>
                                       @enderror
@@ -40,7 +40,7 @@
                                   <div class="form-group">
                                       <small class="text-primary">Descripcion</small>
                                       <textarea type="text" id="exampleFormControlInput2" class="form-control" rows="5"
-                                                placeholder="" wire:model="description_t"></textarea>
+                                                placeholder="" wire:model.defer="description_t"></textarea>
                                       @error('description_t')<span class="text-danger">{{ $message }}</span>
                                       @enderror
                                   </div>
@@ -51,7 +51,7 @@
                                   <div class="form-group">
                                       <small class="text-primary">Inicia</small>
                                       <input type="date" id="exampleFormControlInput2" class="form-control" placeholder=""
-                                             wire:model="start_date_t"/>
+                                             wire:model.defer="start_date_t"/>
                                       @error('start_date_t')<span class="text-danger">{{ $message }}</span>
                                       @enderror
                                   </div>
@@ -60,7 +60,7 @@
                                   <div class="form-group">
                                       <small class="text-primary">Finaliza</small>
                                       <input type="date" id="exampleFormControlInput2" class="form-control" placeholder=""
-                                             wire:model="end_date_t"/>
+                                             wire:model.defer="end_date_t"/>
                                       @error('end_date_t')<span class="text-danger">{{ $message }}</span>
                                       @enderror
                                   </div>
@@ -69,7 +69,7 @@
                                   <div class="form-group">
                                       <small class="text-primary">Hora límite</small>
                                       <input type="time" id="exampleFormControlInput2" class="form-control" placeholder=""
-                                             wire:model="hour_t"/>
+                                             wire:model.defer="hour_t"/>
                                       @error('hour_t')<span class="text-danger">{{ $message }}</span>
                                       @enderror
                                   </div>
@@ -92,11 +92,11 @@
                           <div class="row">
                               <div class="col-md-12" id="storeTaskBtn">
                                   <div class="form-group text-right">
-                                      <button wire:click.prevent="cancelStoreTask()" type="button"
+                                      <button wire:click="cancelStoreTask()" type="button"
                                               class="btn btn-sm btn-md btn-danger close-btn float-right ml-3"
                                               data-dismiss="modal">Cancelar
                                       </button>
-                                      <button wire:click.prevent="storeTask()" class="btn btn-sm btn-md btn-info float-right ">
+                                      <button wire:click="storeTask()" class="btn btn-sm btn-md btn-info float-right ">
                                           Guardar
                                       </button>
                                   </div>
@@ -104,7 +104,7 @@
 
                               <div class="col-md-12 d-none" id="addFileBtn" >
                                   <div class="form-group text-right">
-                                      <button wire:click.prevent="finalizeTask()" type="button"
+                                      <button wire:click="finalizeTask()" type="button"
                                               class="btn btn-sm btn-md btn-danger close-btn float-right ml-3"
                                               data-dismiss="modal">Finalizar
                                       </button>

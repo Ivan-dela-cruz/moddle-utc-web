@@ -21,14 +21,10 @@ class="{{request()->is('/ruta')?'active':''}}"
                 </div>
                 <div class="collapse" id="nav-user-link">
                     <ul class="list-inline">
-                        {{----
-                        <li class="list-inline-item"><a href="user-profile.html" data-toggle="tooltip"
-                                                        title="View Profile"><i class="feather icon-user"></i></a></li>
-                        <li class="list-inline-item"><a href="email_inbox.html"><i class="feather icon-mail"
-                                                                                   data-toggle="tooltip"
-                                                                                   title="Messages"></i><small
-                                    class="badge badge-pill badge-primary">5</small></a></li>
-                                    ---}}
+
+                        <li class="list-inline-item"><a href="{{route('view.profile')}}" data-toggle="tooltip"
+                                                        title="Mi Perfil"><i class="feather icon-user"></i></a></li>
+
                         <li class="list-inline-item">
                             <a href="{{ route('logout') }}" data-toggle="tooltip"
                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
@@ -38,8 +34,6 @@ class="{{request()->is('/ruta')?'active':''}}"
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
                             </form>
-
-
                         </li>
                     </ul>
                 </div>

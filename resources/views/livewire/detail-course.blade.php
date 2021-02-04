@@ -271,11 +271,11 @@
                                        id="bystatus" data-toggle="dropdown" aria-haspopup="true"
                                        aria-expanded="false"><i class="fas fa-chart-line"></i>Estados</a>
                                     <div class="dropdown-menu" aria-labelledby="bystatus">
-                                        <a class="dropdown-item" href="javascript: void(0);">Ver todos</a>
+                                        <a class="dropdown-item {{$task_status == '' ? 'active': ''}}" wire:click="filterByStatus('')" href="javascript: void(0);">Ver todos</a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="javascript: void(0);">Abierto</a>
-                                        <a class="dropdown-item" href="javascript: void(0);">Cancelado</a>
-                                        <a class="dropdown-item" href="javascript: void(0);">Finalizado</a>
+                                        <a class="dropdown-item {{$task_status == 'Abierto' ? 'active': ''}}" wire:click="filterByStatus('Abierto')" href="javascript: void(0);">Abierto</a>
+                                        <a class="dropdown-item {{$task_status == 'Cancelado' ? 'active': ''}}" wire:click="filterByStatus('Cancelado')" href="javascript: void(0);">Cancelado</a>
+                                        <a class="dropdown-item {{$task_status == 'Finalizado' ? 'active': ''}}" wire:click="filterByStatus('Finalizado')" href="javascript: void(0);">Finalizado</a>
                                     </div>
                                 </li>
 
@@ -285,11 +285,9 @@
                         <div class="row">
                             <div hidden>  {{\Carbon\Carbon::setLocale('es')}} </div>
                             @foreach($tasks as $task)
-
                                 @php($endtimes = \Carbon\Carbon::parse($task->end_time))
                                 @php($enddates = \Carbon\Carbon::parse($task->end_date))
                                 @php($final_date =  \Carbon\Carbon::parse($enddates->format('Y-m-d')." ".$endtimes->format('H:i:s')))
-
                                 <div class="col-md-6 col-sm-12">
                                     <div
                                         class="card {{$final_date->isPast()?'card-border-c-red':'card-border-c-blue'}}">
@@ -344,7 +342,7 @@
                                                             {{$task->status == 'Finalizado' ? 'btn-success' : ''}}
                                                             {{$task->status == 'Cancelado' ? 'btn-danger' : ''}}"
                                                             type="button" id="dropdown1" data-toggle="dropdown"
-                                                            aria-haspopup="true" aria-expanded="false">Estado
+                                                            aria-haspopup="true" aria-expanded="false">{{$task->status}}
                                                         </button>
                                                         <div class="dropdown-menu" aria-labelledby="dropdown1"
                                                              data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
@@ -363,6 +361,14 @@
                                     </div>
                                 </div>
                             @endforeach
+                        </div>
+                        <hr>
+                        <div class="row">
+                           <div class="col-md-12">
+                               <div class="float-right">
+                                   {{$tasks->links()}}
+                               </div>
+                           </div>
                         </div>
                     </div>
                 </div>
@@ -448,7 +454,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row" wire:ignore>
                                     <div class="col-md-12" id="storeTaskBtn">
                                         <div class="form-group text-right">
                                             <button wire:click.prevent="cancelUpdate()" type="button"

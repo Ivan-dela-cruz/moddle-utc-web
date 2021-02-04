@@ -135,7 +135,7 @@
                                                     class="text-muted">
                                                     <i class="fas fa-book-open mr-1"></i>Detalle
                                                 </a>
-                                                
+
                                                 @can('update_course')
                                                     <a href="javascript:void(0);" wire:click="edit({{ $data->id }})"
                                                        class="text-muted float-right"
@@ -350,7 +350,7 @@
                 },
                 error: function (file, response) {
                     console.log(response);
-                    console.log('error al subir');
+                 //   console.log('error al subir');
                     file.previewElement.remove();
                     $.notify({
                         message:'El archivo es demasiado grande. Tamaño máximo de archivo: 2MB.'
