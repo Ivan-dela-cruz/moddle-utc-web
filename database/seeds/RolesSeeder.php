@@ -84,6 +84,12 @@ class RolesSeeder extends Seeder
         Permission::create(['name' => 'update_file', 'modulo' => 'Archivos', 'alias' => 'Modificar']);
         Permission::create(['name' => 'destroy_file', 'modulo' => 'Archivos', 'alias' => 'Eliminar']);
 
+        //permisos para el crud de educacion continua
+        Permission::create(['name' => 'create_education', 'modulo' => 'Educación Continua', 'alias' => 'Crear']);
+        Permission::create(['name' => 'read_education', 'modulo' => 'Educación Continua', 'alias' => 'Leer ']);
+        Permission::create(['name' => 'update_education', 'modulo' => 'Educación Continua', 'alias' => 'Modificar']);
+        Permission::create(['name' => 'destroy_education', 'modulo' => 'Educación Continua', 'alias' => 'Eliminar']);
+
 
         /// role super admin
         $role = Role::create(['name' => 'SuperAdmin', 'description' => 'Rol de superadmin', 'status' => true]);
@@ -116,6 +122,11 @@ class RolesSeeder extends Seeder
                 'password' => $teacher_password,
                 'url_image' =>  'img/user.jpg'
                 ]);
+            \App\Address\Address::create([
+                'address' => 'Direccion'.$i,
+                'user_id' => $user_t->id,
+                'parish_id' => rand(1,1000)
+            ]);
             $user_t->assignRole('Profesor');
             $teacher = Teacher::create([
                 'user_id'=>$user_t->id,
@@ -124,6 +135,7 @@ class RolesSeeder extends Seeder
                 'url_image'=> $user_t->url_image,
                 'email'=> $user_t->email,
                 'dni'=> substr(str_shuffle($permitted_chars), 0, 9),
+                'phone'=> substr(str_shuffle($permitted_chars), 0, 9),
                 'profession'=> 'Profesion'.$i,
             ]);
         }
@@ -136,6 +148,11 @@ class RolesSeeder extends Seeder
                 'email' => 's'.$i.'@email.com',
                 'password' => $student_password,
                 'url_image' =>  'img/user.jpg'
+            ]);
+            \App\Address\Address::create([
+               'address' => 'Direccion'.$i,
+               'user_id' => $user_s->id,
+               'parish_id' => rand(1,1000)
             ]);
             $user_s->assignRole('Estudiante');
             $student = \App\Student::create([

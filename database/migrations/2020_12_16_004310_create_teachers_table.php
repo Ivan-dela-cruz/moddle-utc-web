@@ -22,6 +22,7 @@ class CreateTeachersTable extends Migration
             $table->string('email')->nullable();
             $table->string('profession')->nullable();
             $table->string('dni')->unique()->nullable();
+            $table->string('phone')->nullable();
             $table->boolean('status')->nullable()->default(true);
             $table->softDeletes();
             $table->timestamps();
