@@ -52,6 +52,46 @@
     </div>
 
     <div class="col-md-6 form-group">
+        <small  class="text-primary" for="province">Provincia</small>
+        <select name="province" id="province" class="form-control" wire:model="province_id">
+            <option value="">Seleccione...</option>
+            @foreach($provinces as $province)
+                <option value="{{$province->id}}">{{$province->name_province}}</option>
+            @endforeach
+        </select>
+        @error('province_id')<span class="text-danger">{{ $message }}</span>
+        @enderror
+    </div>
+    <div class="col-md-6 form-group">
+        <small  class="text-primary" for="canton">Cantón</small>
+        <select name="canton" id="canton" class="form-control" wire:model="canton_id">
+            <option value="">Seleccione...</option>
+            @foreach($cantons as $canton)
+                <option value="{{$canton->id}}">{{$canton->name_canton}}</option>
+            @endforeach
+        </select>
+        @error('canton_id')<span class="text-danger">{{ $message }}</span>
+        @enderror
+    </div>
+    <div class="col-md-6 form-group">
+        <small  class="text-primary" for="province">Parroquia</small>
+        <select name="parish" id="parish" class="form-control" wire:model="parish_id">
+            <option value="">Seleccione...</option>
+            @foreach($parishes as $parish)
+                <option value="{{$parish->id}}">{{$parish->name_parish}}</option>
+            @endforeach
+        </select>
+        @error('parish_id')<span class="text-danger">{{ $message }}</span>
+        @enderror
+    </div>
+    <div class="col-md-6 form-group">
+        <small  class="text-primary" for="canton">Dirección</small>
+        <input type="text" id="address" class="form-control" placeholder="" wire:model="address" />
+        @error('address')<span class="text-danger">{{ $message }}</span>
+        @enderror
+    </div>
+
+    <div class="col-md-6 form-group">
         <small style="margin-left: 0px;"  class="mr-3 text-primary">Estado</small>
         <div class="switch switch-info d-inline m-r-10">
             <input  wire:model="status"  type="checkbox" id="switch-i-1" checked>

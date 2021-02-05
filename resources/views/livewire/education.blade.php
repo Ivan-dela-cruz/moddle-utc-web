@@ -1,6 +1,6 @@
 <div>
-    @include('admin.modals.courses.create')
-    @include('admin.modals.courses.edit')
+    @include('admin.modals.education.create')
+    @include('admin.modals.education.edit')
     <div class="row help-desk">
         <div class="col-md-12">
             <div class="card">
@@ -53,13 +53,13 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-8 col-lg-12">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
                     <nav class="navbar justify-content-between p-0 align-items-center">
-                        <h5>Mis cursos</h5>
+                        <h5>Noticias</h5>
                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                            @can('create_course')
+                            @can('create_education')
                                 <button class="btn waves-effect waves-light btn-success"
                                         wire:click="create()"
                                         data-toggle="modal" data-target="#createModal">
@@ -87,15 +87,15 @@
                 </div>
             </div>
             <div hidden>  {{\Carbon\Carbon::setLocale('es')}} </div>
-            @foreach($courses as $data)
+            @foreach($education as $data)
                 <div class="ticket-block">
                     <div class="row">
                         <div class="col-auto">
-                            <img wire:click="taskByCourse({{ $data->id }})" class="media-object wid-100"
+                            <img  class="media-object wid-100"
                                  src="{{asset($data->url_image)}}" alt="Generic placeholder image ">
                         </div>
                         <div class="col">
-                            <div wire:click="taskByCourse({{ $data->id }})" class="card hd-body">
+                            <div  class="card hd-body">
                                 <div class="row align-items-center">
                                     <div class="col border-right pr-0">
                                         <div class="card-body inner-center">
@@ -115,28 +115,21 @@
                                                 </li>
                                                 <li class="list-inline-item"><i
                                                         class="feather icon-clock mr-1 f-14"></i>
-                                                        {{ \Carbon\Carbon::parse($data->created_at)->diffForHumans()  }}
+                                                    {{ \Carbon\Carbon::parse($data->created_at)->diffForHumans()  }}
                                                 </li>
 
                                             </ul>
 
                                             <div class="mt-2">
 
-                                                <a href="javascript:void(0);"
-                                                   wire:click="openformtask({{ $data->id }})"
+                                                <a href="{{route('detailcourses')}}{{'?course='.$data->id}}"
                                                    data-toggle="tooltip"
                                                    title="Eliminar"
-                                                   class="text-muted mr-3">
-                                                    <i class="feather icon-file-text mr-1"></i>Nueva tarea
-                                                </a>
-                                                <a href="{{route('detailcourses')}}{{'?course='.$data->id}}"
-                                                    data-toggle="tooltip"
-                                                    title="Eliminar"
-                                                    class="text-muted">
+                                                   class="text-muted">
                                                     <i class="fas fa-book-open mr-1"></i>Detalle
                                                 </a>
 
-                                                @can('update_course')
+                                                @can('update_education')
                                                     <a href="javascript:void(0);" wire:click="edit({{ $data->id }})"
                                                        class="text-muted float-right"
                                                        type="button"
@@ -145,7 +138,7 @@
                                                         Editar
                                                     </a>
                                                 @endcan
-                                                @can('destroy_course')
+                                                @can('destroy_education')
                                                     <a href="javascript:void(0);"
                                                        wire:click="delete({{ $data->id }})"
                                                        data-toggle="tooltip"
@@ -176,91 +169,7 @@
                 </div>
             @endforeach
         </div>
-        <div class="col-xl-4 col-lg-12">
-            <div class="right-side">
-                <div class="card mb-3">
-                    <div class="card-header">
-                        <div class="justify-content-between">
-                            <span >Listado de tareas para </span>
-                            @foreach($courses as $course)
-                                @if($course->id == $course_id_t )
-                                    <span class="text-muted">{{$course->name}}</span>
-                                    <span class="rounded-circle badge badge-info">{{$tasks->count()}} </span>
-                                @endif
-                            @endforeach
-
-
-                        </div>
-                    </div>
-                    <div class="card-body p-3">
-                        <div class="cat-list">
-                            @foreach($tasks as $task)
-                                <div class="border-bottom pb-3 ">
-                                    <div class="d-inline-block">
-                                        <img src="{{asset($task->url_image)}}" alt=""
-                                             class="wid-20 rounded mr-1 img-fluid">
-                                        <a href="javascript:void(0);">{{$task->name}}</a>
-                                    </div>
-                                    <div class="float-right span-content">
-
-                                        <a href="javascript:void(0);"
-                                           class="btn waves-effect waves-light btn-default {{$task->status == 1 ? 'badge-success':'badge-danger'}} rounded-circle mr-0 "
-                                           data-toggle="tooltip"
-                                           data-placement="top"
-                                           title="Entrega {{$task->end_date}}"
-                                           data-original-title="{{$task->start_date}} - {{$task->end_date}}">
-                                            <i style="width: 15px; height: 15px;"
-                                               class="{{$task->status == 1 ? 'feather icon-check':'feather icon-x'}}"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-                <div class="card mb-4">
-                    <div class="card-header pt-4 pb-4">
-                        <h5>Estudiantes por materia</h5>
-                    </div>
-                    <div class="card-body p-3">
-                        <div class="cat-list">
-                            @foreach($students as $student)
-                                <div class="border-bottom pb-3 ">
-                                    <div class="d-inline-block">
-                                        <img src="{{asset($student->url_image)}}" alt=""
-                                             class="wid-20 rounded mr-1 img-fluid">
-                                        <a href="javascript:void(0);">{{$student->name}} {{$student->last_name}}</a>
-                                    </div>
-                                    <div class="float-right span-content">
-                                        <a href="#"
-                                           class="btn waves-effect waves-light btn-default badge-danger rounded-circle mr-1"
-                                           data-toggle="tooltip" data-placement="top" title=""
-                                           data-original-title="tooltip on top">1</a>
-                                        <a href="#"
-                                           class="btn waves-effect waves-light btn-default badge-secondary rounded-circle mr-0 "
-                                           data-toggle="tooltip" data-placement="top" title=""
-                                           data-original-title="tooltip on top">3</a>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-                @if($courses->count() > 0)
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h6>Mis Cursos</h6>
-                            <hr>
-                            <div class="form-group">
-                                {{$courses->links()}}
-                            </div>
-                        </div>
-                    </div>
-                @endif
-            </div>
-        </div>
     </div>
-    @include('admin.modals.courses.new-task')
 
     @section('scripts')
         <script>
@@ -348,14 +257,14 @@
                 },
                 success: function (file, response) {
                     console.log('archivo guardado')
-                   /* toastr.success('La imágen se ha subido correctamente.', '¡Genial!', {
-                        positionClass: 'toastr toast-top-right',
-                        containerId: 'toast-top-right',
-                    });*/
+                    /* toastr.success('La imágen se ha subido correctamente.', '¡Genial!', {
+                         positionClass: 'toastr toast-top-right',
+                         containerId: 'toast-top-right',
+                     });*/
                 },
                 error: function (file, response) {
                     console.log(response);
-                 //   console.log('error al subir');
+                    //   console.log('error al subir');
                     file.previewElement.remove();
                     $.notify({
                         message:'El archivo es demasiado grande. Tamaño máximo de archivo: 2MB.'

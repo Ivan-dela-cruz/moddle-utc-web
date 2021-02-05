@@ -2,6 +2,10 @@
 
 namespace App\Http\Livewire;
 
+use App\Address\Address;
+use App\Address\Canton;
+use App\Address\Parish;
+use App\Address\Province;
 use App\User;
 use App\Student;
 use Livewire\Component;
@@ -27,6 +31,9 @@ class Students extends Component
     public $data_id, $user_id, $name, $last_name, $url_image, $email, $dni, $status = 1;
     public $passport, $instruction, $marital_status, $birth_date, $phone;
 
+    public $provinces, $cantons, $parishes, $address;
+    public $province_id, $canton_id, $parish_id;
+
     public function render()
     {
         $students = Student::where('name', 'LIKE', "%{$this->search}%")
@@ -36,7 +43,22 @@ class Students extends Component
             ->orWhere('passport', 'LIKE', "%{$this->search}%")
             ->orWhere('created_at', 'LIKE', "%{$this->search}%")
             ->paginate($this->perPage);
+
+        $this->provinces = Province::all();
+        $this->cantonByProvince();
+        $this->parishByCanton();
+
         return view('livewire.students', compact('students'));
+    }
+
+    public function cantonByProvince()
+    {
+        $this->cantons = Canton::where('province_id', $this->province_id)->get();
+    }
+
+    public function parishByCanton()
+    {
+        $this->parishes = Parish::where('canton_id', $this->canton_id)->get();
     }
 
     public function resetInputFields()
@@ -53,6 +75,10 @@ class Students extends Component
         $this->marital_status = '';
         $this->birth_date = '';
         $this->phone = '';
+        $this->province_id = '';
+        $this->canton_id = '';
+        $this->parish_id = '';
+        $this->address = '';
     }
 
     public function store()
@@ -62,7 +88,12 @@ class Students extends Component
             'last_name' => 'required|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u|max:255',
             'email' => 'required|email|unique:students',
             'dni' => 'required|unique:students|numeric|digits:10',
+            'birth_date' => 'required',
             'status' => 'required',
+            'province_id' => 'required',
+            'canton_id' => 'required',
+            'parish_id' => 'required',
+            'address' => 'required',
         ], [
             'name.required' => 'Campo obligatorio.',
             'last_name.required' => 'Campo obligatorio.',
@@ -74,16 +105,20 @@ class Students extends Component
             'dni.digits' => 'DNI incorrecto.',
             'email.unique' => 'Correo en uso, intente con otro',
             'dni.unique' => 'DNI en uso.',
+            'birth_date.required' => 'Campo obligatorio.',
             'status.required' => 'Campo obligatorio.',
+            'province_id.required' => 'Campo obligatorio.',
+            'canton_id.required' => 'Campo obligatorio.',
+            'parish_id.required' => 'Campo obligatorio.',
+            'address.required' => 'Campo obligatorio.',
         ]);
 
         $passport = null;
-        if($this->passport != ''){
-            $this->validate(['passport' => 'numeric|unique:students,passport'], ['passport.numeric' => 'Pasaporte incorrecto.','passport.unique' => 'PAsaporte en uso.']);
+        if ($this->passport != '') {
+            $this->validate(['passport' => 'numeric|unique:students,passport'], ['passport.numeric' => 'Pasaporte incorrecto.', 'passport.unique' => 'PAsaporte en uso.']);
             $passport = $this->passport;
         }
         $password = bcrypt($this->dni);
-
 
         $path = 'img/user.jpg';
         if ($this->url_image != '') {
@@ -121,6 +156,12 @@ class Students extends Component
 
         $user->assignRole('Estudiante');
 
+        $address = Address::create([
+            'address' => $this->address,
+            'user_id' => $user->id,
+            'parish_id' => $this->parish_id
+        ]);
+
         $this->alert('success', 'Estudiante registrado con exíto.', ['showCancelButton' => false,]);
 
         $this->resetInputFields();
@@ -144,6 +185,10 @@ class Students extends Component
         $this->birth_date = $student->birth_date;
         $this->phone = $student->phone;
         $this->user_id = $student->user_id;
+        $this->province_id = $student->user->address->parish->canton->province->id;
+        $this->canton_id = $student->user->address->parish->canton->id;
+        $this->parish_id = $student->user->address->parish->id;
+        $this->address = $student->user->address->address;
     }
 
     public function update()
@@ -154,7 +199,11 @@ class Students extends Component
             // 'url_image' => 'image|max:1024',
             'email' => ['required', Rule::unique('students')->ignore($this->data_id)],
             'dni' => ['required', Rule::unique('students')->ignore($this->data_id), 'numeric', 'digits:10'],
-            'status' => 'required'
+            'status' => 'required',
+            'province_id' => 'required',
+            'canton_id' => 'required',
+            'parish_id' => 'required',
+            'address' => 'required',
         ], [
             'name.required' => 'Campo obligatorio.',
             'last_name.required' => 'Campo obligatorio.',
@@ -167,14 +216,18 @@ class Students extends Component
             'dni.numeric' => 'DNI incorrecto.',
             'dni.digits' => 'DNI incorrecto.',
             'status.required' => 'Campo obligatorio.',
+            'province_id.required' => 'Campo obligatorio.',
+            'canton_id.required' => 'Campo obligatorio.',
+            'parish_id.required' => 'Campo obligatorio.',
+            'address.required' => 'Campo obligatorio.',
         ]);
 
         $user = User::find($this->user_id);
         $data = Student::find($this->data_id);
 
         $passport = null;
-        if($this->passport != ''){
-            $this->validate(['passport' => ['numeric', Rule::unique('students')->ignore($this->data_id),]], ['passport.numeric' => 'Pasaporte incorrecto.','passport.unique' => 'Pasaporte en uso.']);
+        if ($this->passport != '') {
+            $this->validate(['passport' => ['numeric', Rule::unique('students')->ignore($this->data_id),]], ['passport.numeric' => 'Pasaporte incorrecto.', 'passport.unique' => 'Pasaporte en uso.']);
             $passport = $this->passport;
         }
 
@@ -189,10 +242,16 @@ class Students extends Component
 
         $user->update([
             'name' => $this->name,
-            'last_name'=>$this->last_name,
-            'email'=> $this->email,
+            'last_name' => $this->last_name,
+            'email' => $this->email,
             'url_image' => $path,
             'status' => $this->status
+        ]);
+
+        $user->address->update([
+            'address' => $this->address,
+            'user_id' => $user->id,
+            'parish_id' => $this->parish_id
         ]);
 
         $data->update([
@@ -221,7 +280,7 @@ class Students extends Component
         Student::find($id)->delete();
         $user = User::find($user_id);
         $user->update([
-           'status' => 0,
+            'status' => 0,
         ]);
         $this->alert('success', 'Estudiante eliminado con exíto.', ['showCancelButton' => false,]);
     }

@@ -138,6 +138,26 @@ class="{{request()->is('/ruta')?'active':''}}"
                     </ul>
                 </li>
                 @endcan
+
+                @canany(['create_education','read_education'])
+                <li class="nav-item pcoded-hasmenu">
+                    <a href="javascript: return void();" class="nav-link ">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-layout"></i>
+                        </span>
+                        <span class="pcoded-mtext">Educación Continua</span>
+                    </a>
+                    <ul class="pcoded-submenu">
+                        @can('create_education')
+                            <li><a href="{{route('education.create')}}">Crear</a></li>
+                        @endcan
+                        @can('read_education')
+                            <li><a href="{{route('education.list')}}">Lista</a></li>
+                            @endcan
+                    </ul>
+                </li>
+                @endcanany
+
                 @can('read_file')
                 <li class="nav-item pcoded-hasmenu">
                     <a href="javascript: return void();" class="nav-link ">

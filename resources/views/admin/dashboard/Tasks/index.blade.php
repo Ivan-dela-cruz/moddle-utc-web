@@ -8,7 +8,7 @@
             <x-content title="Materias" position="Lista de materias"></x-content>
            @livewire('tasks')
                 <!--div class="col-lg-12">
-                    <div class="card user-profile-list">
+                    <div class="card user-profiles-list">
                         <div class="card-header">
                             <h5> Lista de materias</h5>
                             @can('create_task')

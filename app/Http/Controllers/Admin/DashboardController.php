@@ -100,7 +100,14 @@ class DashboardController extends Controller
     }
 
     public function profile(){
-        return view('admin.dashboard.profile.index');
+        return view('admin.dashboard.profiles.index');
+    }
+
+    public function education_create(){
+        return view('admin.dashboard.education.index');
+    }
+    public function education_list(){
+        return view('admin.dashboard.education.list');
     }
 
     //MATRICULAR UN STUDIANTE EN UN CURSO
