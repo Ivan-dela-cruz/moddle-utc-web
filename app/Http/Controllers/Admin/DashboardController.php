@@ -105,6 +105,13 @@ class DashboardController extends Controller
 
     }
 
+    public function detailTask()
+    {
+        return view('admin.dashboard.Tasks.detail');
+
+    }
+
+
     public function fileStore(Request $request)
     {
         $task = Task::find($request->task_id);
