@@ -117,6 +117,13 @@ class DashboardController extends Controller
 
     }
 
+    public function detailTask()
+    {
+        return view('admin.dashboard.Tasks.detail');
+
+    }
+
+
     //SUBIR ARCHIVOS PARA LAS TAREAS
     public function fileStore(Request $request)
     {

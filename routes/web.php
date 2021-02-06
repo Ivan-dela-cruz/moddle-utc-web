@@ -18,6 +18,7 @@ Route::get('/', function () {
 });
 Route::get('dashboard/courses','Admin\DashboardController@courses')->name('courses');
 Route::get('dashboard/courses/detail','Admin\DashboardController@detailByCourses')->name('detailcourses');
+Route::get('dashboard/tasks/detail','Admin\DashboardController@detailTask')->name('detailtasks');
 Auth::routes();
 Route::namespace('Admin')->group(function () {
     Route::group(['middleware' => ['auth']], function () {
@@ -81,3 +82,8 @@ Route::namespace('Admin')->group(function () {
 Route::post('files/upload/store','Admin\DashboardController@fileStore')->name('store.filesTask');
 Route::post('files/delete','Admin\DashboardController@fileDestroy')->name('destroy.filesTask');
 Route::post('files/load','Admin\DashboardController@fileLoad')->name('load.filesTask');
+
+///RUTAS PARA ENTREGA DE TAREAS
+Route::post('files/upload/store/student','Admin\FileController@fileStore')->name('store.filesTaskStudent');
+Route::post('files/delete/student','Admin\FileController@fileDestroy')->name('destroy.filesTaskStudent');
+Route::post('files/load/student','Admin\FileController@fileLoad')->name('load.filesTaskStudent');
