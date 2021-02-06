@@ -1,8 +1,13 @@
 <?php
 
 namespace App\Http\Livewire;
+
 use App\User;
 use App\Teacher;
+use App\Address\Address;
+use App\Address\Canton;
+use App\Address\Parish;
+use App\Address\Province;
 use Livewire\Component;
 use Illuminate\Validation\Rule;
 use Livewire\WithFileUploads;
@@ -24,7 +29,10 @@ class Teachers extends Component
     public $perPage = '10';
     public $search = '';
 
-    public  $data_id, $user_id,$name, $last_name, $url_image, $email,$profession, $dni, $status=1;
+    public $data_id, $user_id, $name, $last_name, $url_image, $email, $profession, $dni, $status = 1;
+    public $provinces, $cantons, $parishes, $address;
+    public $province_id, $canton_id, $parish_id;
+
     public function render()
     {
         $teachers = Teacher::where('name', 'LIKE', "%{$this->search}%")
@@ -34,30 +42,51 @@ class Teachers extends Component
             ->orWhere('profession', 'LIKE', "%{$this->search}%")
             ->orWhere('created_at', 'LIKE', "%{$this->search}%")
             ->paginate($this->perPage);
+
+        $this->provinces = Province::all();
+        $this->cantonByProvince();
+        $this->parishByCanton();
+
         return view('livewire.teachers', compact('teachers'));
     }
+    public function cantonByProvince(){
+        $this->cantons = Canton::where('province_id',$this->province_id)->get();
+
+    }
+    public function parishByCanton(){
+        $this->parishes = Parish::where('canton_id', $this->canton_id)->get();
+    }
+
     public function resetInputFields()
     {
-    	$this->name = '';
-    	$this->last_name = '';
+        $this->name = '';
+        $this->last_name = '';
         $this->url_image = '';
         $this->email = '';
         $this->dni = '';
         $this->status = 1;
         $this->profession = '';
         $this->user_id = '';
+        $this->province_id = '';
+        $this->canton_id = '';
+        $this->parish_id = '';
+        $this->address = '';
     }
 
     public function store()
     {
-    	$validation = $this->validate([
-    		'name'	=>	'required|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u|max:255',
-    		'last_name' => 'required|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u|max:255',
+        $validation = $this->validate([
+            'name' => 'required|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u|max:255',
+            'last_name' => 'required|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u|max:255',
             'email' => 'required|email|unique:users',
             'dni' => 'required|unique:teachers|numeric|digits:10',
             'status' => 'required',
-            'profession' => 'required'
-        ],[
+            'profession' => 'required',
+                'province_id' => 'required',
+            'canton_id' => 'required',
+            'parish_id' => 'required',
+            'address' => 'required',
+        ], [
             'name.required' => 'Campo obligatorio.',
             'last_name.required' => 'Campo obligatorio.',
             'name.regex' => 'Nombre incorrecto.',
@@ -71,6 +100,10 @@ class Teachers extends Component
             'dni.unique' => 'DNI en uso.',
             'status.required' => 'Campo obligatorio.',
             'profession.required' => 'Campo obligatorio.',
+            'province_id.required' => 'Campo obligatorio.',
+            'canton_id.required' => 'Campo obligatorio.',
+            'parish_id.required' => 'Campo obligatorio.',
+            'address.required' => 'Campo obligatorio.',
         ]);
         $password = bcrypt($this->dni);
 
@@ -83,39 +116,45 @@ class Teachers extends Component
         }
 
         $user = User::create([
-            'name'=>$this->name,
-            'last_name'=>$this->last_name,
+            'name' => $this->name,
+            'last_name' => $this->last_name,
             'url_image' => $path,
-            'email'=>$this->email,
-            'password'=>$password
+            'email' => $this->email,
+            'password' => $password
         ]);
 
-        $data =  [
-            'user_id'=>$user->id,
-            'name'=>$this->name,
-            'last_name'=>$this->last_name,
-            'url_image'=> $path,
-            'email'=> $this->email,
-            'dni'=> $this->dni,
-            'profession'=> $this->profession,
-            'status'=> $this->status
+        $data = [
+            'user_id' => $user->id,
+            'name' => $this->name,
+            'last_name' => $this->last_name,
+            'url_image' => $path,
+            'email' => $this->email,
+            'dni' => $this->dni,
+            'profession' => $this->profession,
+            'status' => $this->status
         ];
         Teacher::create($data);
 
         $user->assignRole('Profesor');
 
-        $this->alert('success', 'Profesor creado con exíto.',[ 'showCancelButton' =>  false, ]);
+        $address = Address::create([
+            'address' => $this->address,
+            'user_id' => $user->id,
+            'parish_id' => $this->parish_id
+        ]);
 
-    	$this->resetInputFields();
+        $this->alert('success', 'Profesor creado con exíto.', ['showCancelButton' => false,]);
 
-    	$this->emit('teacherStore');
+        $this->resetInputFields();
+
+        $this->emit('teacherStore');
     }
 
     public function edit($id)
     {
         $teacher = Teacher::findOrFail($id);
         $this->name = $teacher->name;
-    	$this->last_name = $teacher->last_name;
+        $this->last_name = $teacher->last_name;
         $this->url_image = $teacher->url_image;
         $this->email = $teacher->email;
         $this->dni = $teacher->dni;
@@ -123,18 +162,26 @@ class Teachers extends Component
         $this->status = $teacher->status;
         $this->data_id = $id;
         $this->user_id = $teacher->user_id;
+        $this->province_id = $teacher->user->address->parish->canton->province->id;
+        $this->canton_id = $teacher->user->address->parish->canton->id;
+        $this->parish_id = $teacher->user->address->parish->id;
+        $this->address = $teacher->user->address->address;
     }
 
     public function update()
     {
         $validation = $this->validate([
-    		'name'	=>	'required|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u|max:255',
-    		'last_name' => 'required|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u|max:255',
-            'email' => ['required',Rule::unique('users')->ignore($this->user_id),'email'],
-            'dni' => ['required',Rule::unique('teachers')->ignore($this->data_id),'numeric','digits:10'],
-            'profession' =>'required',
-            'status' => 'required'
-        ],[
+            'name' => 'required|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u|max:255',
+            'last_name' => 'required|regex:/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]+$/u|max:255',
+            'email' => ['required', Rule::unique('users')->ignore($this->user_id), 'email'],
+            'dni' => ['required', Rule::unique('teachers')->ignore($this->data_id), 'numeric', 'digits:10'],
+            'profession' => 'required',
+            'status' => 'required',
+            'province_id' => 'required',
+            'canton_id' => 'required',
+            'parish_id' => 'required',
+            'address' => 'required',
+        ], [
             'name.required' => 'Campo obligatorio.',
             'last_name.required' => 'Campo obligatorio.',
             'name.regex' => 'Nombre incorrecto.',
@@ -148,6 +195,10 @@ class Teachers extends Component
             'dni.unique' => 'DNI en uso.',
             'status.required' => 'Campo obligatorio.',
             'profession.required' => 'Campo obligatorio.',
+            'province_id.required' => 'Campo obligatorio.',
+            'canton_id.required' => 'Campo obligatorio.',
+            'parish_id.required' => 'Campo obligatorio.',
+            'address.required' => 'Campo obligatorio.',
         ]);
 
         $user = User::find($this->user_id);
@@ -164,24 +215,30 @@ class Teachers extends Component
 
         $user->update([
             'name' => $this->name,
-            'last_name'=>$this->last_name,
-            'email'=> $this->email,
+            'last_name' => $this->last_name,
+            'email' => $this->email,
             'url_image' => $path,
             'status' => $this->status
         ]);
 
+        $user->address->update([
+            'address' => $this->address,
+            'user_id' => $user->id,
+            'parish_id' => $this->parish_id
+        ]);
+
         $data->update([
-            'name'=>$this->name,
-            'last_name'=>$this->last_name,
-            'url_image'=>$path,
-            'email'=> $this->email,
-            'dni'=> $this->dni,
-            'profession'=> $this->profession,
-            'status'=> $this->status
+            'name' => $this->name,
+            'last_name' => $this->last_name,
+            'url_image' => $path,
+            'email' => $this->email,
+            'dni' => $this->dni,
+            'profession' => $this->profession,
+            'status' => $this->status
         ]);
 
 
-        $this->alert('success', 'Profesor actualizado con exíto.',[ 'showCancelButton' =>  false, ]);
+        $this->alert('success', 'Profesor actualizado con exíto.', ['showCancelButton' => false,]);
 
         $this->resetInputFields();
 
@@ -195,7 +252,7 @@ class Teachers extends Component
         $user->update([
             'status' => 0,
         ]);
-        $this->alert('success', 'Profesor eliminado con exíto.',[ 'showCancelButton' =>  false, ]);
+        $this->alert('success', 'Profesor eliminado con exíto.', ['showCancelButton' => false,]);
     }
 
     public function clear()

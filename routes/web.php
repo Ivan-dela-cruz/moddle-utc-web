@@ -68,8 +68,14 @@ Route::namespace('Admin')->group(function () {
         Route::group(['middleware' => ['permission:create_file|update_file|destroy_file|read_file']], function () {
             Route::get('dashboard/cs_activities','DashboardController@cs_activities')->name('cs_activities');
         });
+        Route::get('dashboard/profile','DashboardController@profile')->name('view.profile');
 
-    //});
+        Route::group(['middleware' => ['permission:create_education|update_education|destroy_education|read_education']], function () {
+            Route::get('dashboard/continuing-education','DashboardController@education_create')->name('education.create');
+            Route::get('dashboard/continuing-education/list','DashboardController@education_list')->name('education.list');
+        });
+
+
     });
 });
 

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Address\Address;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -74,5 +75,10 @@ class User extends Authenticatable implements JWTSubject
     public function teacher()
     {
         return $this->hasOne(Teacher::class, 'user_id');
+    }
+
+    public function address(){
+        return $this->hasOne(Address::class);
+        //un usuario tiene una direccion
     }
 }

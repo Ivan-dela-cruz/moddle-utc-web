@@ -21,14 +21,10 @@ class="{{request()->is('/ruta')?'active':''}}"
                 </div>
                 <div class="collapse" id="nav-user-link">
                     <ul class="list-inline">
-                        {{----
-                        <li class="list-inline-item"><a href="user-profile.html" data-toggle="tooltip"
-                                                        title="View Profile"><i class="feather icon-user"></i></a></li>
-                        <li class="list-inline-item"><a href="email_inbox.html"><i class="feather icon-mail"
-                                                                                   data-toggle="tooltip"
-                                                                                   title="Messages"></i><small
-                                    class="badge badge-pill badge-primary">5</small></a></li>
-                                    ---}}
+
+                        <li class="list-inline-item"><a href="{{route('view.profile')}}" data-toggle="tooltip"
+                                                        title="Mi Perfil"><i class="feather icon-user"></i></a></li>
+
                         <li class="list-inline-item">
                             <a href="{{ route('logout') }}" data-toggle="tooltip"
                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
@@ -38,8 +34,6 @@ class="{{request()->is('/ruta')?'active':''}}"
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
                             </form>
-
-
                         </li>
                     </ul>
                 </div>
@@ -144,6 +138,26 @@ class="{{request()->is('/ruta')?'active':''}}"
                     </ul>
                 </li>
                 @endcan
+
+                @canany(['create_education','read_education'])
+                <li class="nav-item pcoded-hasmenu">
+                    <a href="javascript: return void();" class="nav-link ">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-layout"></i>
+                        </span>
+                        <span class="pcoded-mtext">Educación Continua</span>
+                    </a>
+                    <ul class="pcoded-submenu">
+                        @can('create_education')
+                            <li><a href="{{route('education.create')}}">Crear</a></li>
+                        @endcan
+                        @can('read_education')
+                            <li><a href="{{route('education.list')}}">Lista</a></li>
+                            @endcan
+                    </ul>
+                </li>
+                @endcanany
+
                 @can('read_file')
                 <li class="nav-item pcoded-hasmenu">
                     <a href="javascript: return void();" class="nav-link ">

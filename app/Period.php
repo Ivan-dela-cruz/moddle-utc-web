@@ -12,10 +12,14 @@ class Period extends Model
             'end_date',
             'status',
             'url_image',
-            'color']; 
+            'color'];
     protected static function booted()
     {
         static::addGlobalScope(new StatusScope);
     }
-        
+
+    public function students(){
+        return $this->hasMany(Student::class);
+    }
+
 }

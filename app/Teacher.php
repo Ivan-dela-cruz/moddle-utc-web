@@ -17,6 +17,7 @@ class Teacher extends Model
         'email',
         'profession',
         'dni',
+        'phone',
         'status'
     ];
 

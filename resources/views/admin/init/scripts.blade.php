@@ -120,9 +120,6 @@
 
    window.livewire.on('taskHide', () => {
         $(".q-view").removeClass("active");
-       /*$('#dropzone')[0].dropzone.files.forEach(function(file) {
-           file.previewTemplate.remove();
-       });*/
        $('.dz-preview').remove();
        $('.dz-message').show();
    });
@@ -204,6 +201,39 @@
         $('.btn_update_rol').attr('hidden', true);
         $('.btn_store_rol').removeAttr('hidden', 'hidden');
     });
+
+   window.livewire.on('errors',errors => {
+       let html = '';
+       $(errors).each(function (key, value) {
+           html += '<li>'+value+'</li>';
+       });
+       notify('Solucione los siguientes errores:'+html,'danger')
+   });
+
+   function notify(msg,type){
+       $.notify({
+           message:msg
+       }, {
+           type: type,
+           allow_dismiss: false,
+           label: 'Cancel',
+           className: 'btn-xs btn-inverse',
+           placement: {
+               from: 'bottom',
+               align: 'left'
+           },
+           delay: 8000,
+           animate: {
+               enter: 'animated fadeInRight',
+               exit: 'animated fadeOutLeft'
+           },
+           offset: {
+               x: 30,
+               y: 30
+           }
+       });
+       return false;
+   }
 
 </script>
 
