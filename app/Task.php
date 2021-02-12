@@ -46,6 +46,11 @@ class Task extends Model
         return new Date($end_time);
     }
 
+    public function taskdeliveries()
+    {
+        return $this->hasMany(StudentTask::class, 'task_id');
+    }
+
     public function course(){
         return $this->belongsTo(Course::class, 'course_id');
     }

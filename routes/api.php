@@ -30,6 +30,7 @@ Route::namespace('Api')->group(function () {
 
     Route::get('tasks-by-course/{course_id}/{status}','TaskController@tasks')->middleware('jwtAuth');
     Route::get('detail-task/{task_id}','TaskController@detailTask')->middleware('jwtAuth');
+    Route::post('delivery-task','TaskController@deliveryTask')->middleware('jwtAuth');
 });
 //Route::middleware('auth:api')->get('/user', function (Request $request) {
 //    return $request->user();
