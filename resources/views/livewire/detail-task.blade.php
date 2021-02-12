@@ -168,27 +168,27 @@
                                     <a class="nav-link dropdown-toggle text-secondary" href="javascript: void(0);"
                                        id="bydate" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
                                             class="far fa-clock"></i> Fechas</a>
-                                    <div class="dropdown-menu" aria-labelledby="bydate">
-                                        <a class="dropdown-item" href="javascript: void(0);">Ver todos</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="javascript: void(0);">Hoy</a>
-                                        <a class="dropdown-item" href="javascript: void(0);">Ayer</a>
-                                        <a class="dropdown-item" href="javascript: void(0);">Esta semana</a>
-                                        <a class="dropdown-item" href="javascript: void(0);">Este mes</a>
-                                        <a class="dropdown-item" href="javascript: void(0);">Este año</a>
-                                    </div>
+                                        <div class="dropdown-menu" aria-labelledby="bydate">
+                                            <a wire:click="getTime('')" class="dropdown-item {{$timeWhere == '' ? 'active': ''}}" href="javascript: void(0);">Ver todos</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a wire:click="getTime('day')" class="dropdown-item {{$timeWhere == 'day' ? 'active': ''}}" href="javascript: void(0);">Hoy</a>
+                                            <a wire:click="getTime('yesterday')" class="dropdown-item {{$timeWhere == 'yesterday' ? 'active': ''}}" href="javascript: void(0);">Ayer</a>
+                                            <a wire:click="getTime('week')" class="dropdown-item {{$timeWhere == 'week' ? 'active': ''}}" href="javascript: void(0);">Esta semana</a>
+                                            <a wire:click="getTime('month')" class="dropdown-item {{$timeWhere == 'month' ? 'active': ''}}" href="javascript: void(0);">Este mes</a>
+                                            <a wire:click="getTime('year')" class="dropdown-item {{$timeWhere == 'year' ? 'active': ''}}" href="javascript: void(0);">Este año</a>
+                                        </div>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle text-secondary" href="javascript: void(0);"
                                        id="bystatus" data-toggle="dropdown" aria-haspopup="true"
                                        aria-expanded="false"><i class="fas fa-chart-line"></i>Estados</a>
                                     <div class="dropdown-menu" aria-labelledby="bystatus">
-                                        <a class="dropdown-item" href="javascript: void(0);">Ver todos</a>
+                                        <a class="dropdown-item {{$task_status == '' ? 'active': ''}}" wire:click="filterByStatus('')" href="javascript: void(0);">Ver todos</a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="javascript: void(0);">Abierto</a>
-                                        <a class="dropdown-item" href="javascript: void(0);">Cancelado</a>
-                                        <a class="dropdown-item" href="javascript: void(0);">Finalizado</a>
-                                        <a class="dropdown-item" href="javascript: void(0);">Atrasado</a>
+                                        <a class="dropdown-item {{$task_status == 'Abierto' ? 'active': ''}}" wire:click="filterByStatus('Abierto')" href="javascript: void(0);">Abierto</a>
+                                        <a class="dropdown-item {{$task_status == 'Cancelado' ? 'active': ''}}" wire:click="filterByStatus('Cancelado')" href="javascript: void(0);">Cancelado</a>
+                                        <a class="dropdown-item {{$task_status == 'Finalizado' ? 'active': ''}}" wire:click="filterByStatus('Finalizado')" href="javascript: void(0);">Finalizado</a>
+                                        <a class="dropdown-item {{$task_status == 'Atrasado' ? 'active': ''}}" wire:click="filterByStatus('Atrasado')" href="javascript: void(0);">Atrasado</a>
                                     </div>
                                 </li>
 

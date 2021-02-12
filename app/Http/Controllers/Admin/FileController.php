@@ -6,7 +6,7 @@ use App\StudentTask;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\File;
-
+use Illuminate\Support\Str;
 class FileController extends Controller
 {
     ///URL PARA ENTREGA DE TAREAS
@@ -47,5 +47,12 @@ class FileController extends Controller
             return response()->json($task->files);
         }
 
+    }
+
+    public function downloadFile( $id){
+        $file = File::find($id);
+        if(file_exists($file->url_file)){
+            return response()->download($file->url_file, $file->name);
+        }
     }
 }

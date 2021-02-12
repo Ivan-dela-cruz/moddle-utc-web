@@ -58,6 +58,8 @@
                                         <option value="B">B</option>
                                         <option value="C">C</option>
                                         <option value="D">D</option>
+                                        <option value="E">E</option>
+                                        <option value="F">F</option>
                                     </select>
                                 </div>
                             </div>
@@ -121,16 +123,11 @@
                                                 <a href="javascript: void(0);"><img class=" img-radius m-r-5" src="{{asset($course->url_image)}}" alt="1" height="40" width="40" /></a>
                                             @endif
                                         @endforeach
-                                        <a href="javascript: void(0);"><i class="fas fa-plus"></i></a>
+                                      
                                     </div>
                                     <div class="task-board">
                                         <div class="dropdown-secondary dropdown">
-                                            <button class="btn waves-effect waves-light btn-primary btn-sm dropdown-toggle" type="button" id="dropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Estado</button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdown1" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
-                                                <a class="dropdown-item" href="javascript: void(0);"><span class="point-marker bg-danger"></span>Abierto</a>
-                                                <a class="dropdown-item" href="javascript: void(0);"><span class="point-marker bg-warning"></span>Cancelado</a>
-                                                <a class="dropdown-item  active" href="javascript: void(0);"><span class="point-marker bg-success"></span>Finalizado</a>
-                                            </div>
+                                            <a href="{{route('detailtasks')}}{{'?course='.$course->id.'&task='.$task->id}}"><i class="text-muted fas fa-eye mr-2"></i>Ver detalle</a>
                                         </div>
 
                                     </div>
