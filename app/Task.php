@@ -50,6 +50,11 @@ class Task extends Model
         return $this->belongsTo(Course::class, 'course_id');
     }
 
+    public function taskdeliveries()
+    {
+        return $this->hasMany(StudentTask::class, 'task_id');
+    }
+
     public function files(){
         return $this->morphMany(File::class,'fileable');
     }

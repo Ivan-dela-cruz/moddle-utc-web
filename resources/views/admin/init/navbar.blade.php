@@ -78,7 +78,7 @@ class="{{request()->is('/ruta')?'active':''}}"
                     <ul class="pcoded-submenu">
                         <li><a href="{{route('students')}}">Estudiantes</a></li>
                         <li><a href="{{route('levelstudent')}}">Inscripciones nivel</a></li>
-                        <li><a href="{{route('coursebystudent')}}">Inscripciones curso</a></li>
+                    
                     </ul>
                 </li>
                 @can('read_subject')
@@ -134,7 +134,10 @@ class="{{request()->is('/ruta')?'active':''}}"
                         @can('read_course')
                             <li><a href="{{route('courses')}}">Cursos</a></li>
                         @endcan
-                        <li><a href="{{route('tasks')}}">Tareas</a></li>
+                       <p hidden>{{$student = \Illuminate\Support\Facades\Auth::user()->student}}</p> 
+                        @if($student)
+                            <li><a href="{{route('tasks')}}">Tareas</a></li>
+                        @endif
                     </ul>
                 </li>
                 @endcan
@@ -145,7 +148,7 @@ class="{{request()->is('/ruta')?'active':''}}"
                         <span class="pcoded-micon">
                             <i class="feather icon-layout"></i>
                         </span>
-                        <span class="pcoded-mtext">Educación Continua</span>
+                        <span class="pcoded-mtext">Edu. Continua</span>
                     </a>
                     <ul class="pcoded-submenu">
                         @can('create_education')

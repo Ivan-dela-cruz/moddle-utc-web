@@ -135,7 +135,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row m-3">
-                            <div class="cl-md-12">
+                            <div class="col-md-12">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -257,13 +257,13 @@
                                        id="bydate" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
                                             class="far fa-clock"></i> Fechas</a>
                                     <div class="dropdown-menu" aria-labelledby="bydate">
-                                        <a class="dropdown-item" href="javascript: void(0);">Ver todos</a>
+                                        <a wire:click="getTime('')" class="dropdown-item {{$timeWhere == '' ? 'active': ''}}" href="javascript: void(0);">Ver todos</a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="javascript: void(0);">Hoy</a>
-                                        <a class="dropdown-item" href="javascript: void(0);">Ayer</a>
-                                        <a class="dropdown-item" href="javascript: void(0);">Esta semana</a>
-                                        <a class="dropdown-item" href="javascript: void(0);">Este mes</a>
-                                        <a class="dropdown-item" href="javascript: void(0);">Este año</a>
+                                        <a wire:click="getTime('day')" class="dropdown-item {{$timeWhere == 'day' ? 'active': ''}}" href="javascript: void(0);">Hoy</a>
+                                        <a wire:click="getTime('yesterday')" class="dropdown-item {{$timeWhere == 'yesterday' ? 'active': ''}}" href="javascript: void(0);">Ayer</a>
+                                        <a wire:click="getTime('week')" class="dropdown-item {{$timeWhere == 'week' ? 'active': ''}}" href="javascript: void(0);">Esta semana</a>
+                                        <a wire:click="getTime('month')" class="dropdown-item {{$timeWhere == 'month' ? 'active': ''}}" href="javascript: void(0);">Este mes</a>
+                                        <a wire:click="getTime('year')" class="dropdown-item {{$timeWhere == 'year' ? 'active': ''}}" href="javascript: void(0);">Este año</a>
                                     </div>
                                 </li>
                                 <li class="nav-item dropdown">
@@ -276,6 +276,7 @@
                                         <a class="dropdown-item {{$task_status == 'Abierto' ? 'active': ''}}" wire:click="filterByStatus('Abierto')" href="javascript: void(0);">Abierto</a>
                                         <a class="dropdown-item {{$task_status == 'Cancelado' ? 'active': ''}}" wire:click="filterByStatus('Cancelado')" href="javascript: void(0);">Cancelado</a>
                                         <a class="dropdown-item {{$task_status == 'Finalizado' ? 'active': ''}}" wire:click="filterByStatus('Finalizado')" href="javascript: void(0);">Finalizado</a>
+                                        <a class="dropdown-item {{$task_status == 'Atrasado' ? 'active': ''}}" wire:click="filterByStatus('Atrasado')" href="javascript: void(0);">Atrasado</a>
                                     </div>
                                 </li>
 
@@ -329,18 +330,21 @@
                                                         <img class=" img-radius m-r-5"
                                                              width="40" height="40" src="{{asset($course->url_image)}}"
                                                              alt="1"/></a>
-                                                    <a href="javascript: void(0);"><i class="fas fa-plus"></i></a>
+                                                    <a href="{{route('deliverytasks')}}{{'?course='.$course->id.'&task='.$task->id}}">{{count($task->taskdeliveries)}} entregas</a>
                                                 </div>
                                                 <div class="task-board">
+                                                 
                                                     <button class="btn btn-sm  btn-info"
                                                             wire:click="editTask({{$task->id}})"><i
                                                             class="fa fa-pencil-alt"></i>&nbsp;Editar
                                                     </button>
                                                     <div class="dropdown-secondary dropdown">
                                                         <button
-                                                            class="btn waves-effect waves-light btn-sm dropdown-toggle {{$task->status == 'Abierto' ? 'btn-primary' : ''}}
+                                                            class="btn waves-effect waves-light btn-sm dropdown-toggle 
+                                                            {{$task->status == 'Abierto' ? 'btn-primary' : ''}}
                                                             {{$task->status == 'Finalizado' ? 'btn-success' : ''}}
-                                                            {{$task->status == 'Cancelado' ? 'btn-danger' : ''}}"
+                                                            {{$task->status == 'Cancelado' ? 'btn-warning' : ''}}
+                                                            {{$task->status == 'Atrasado' ? 'btn-danger' : ''}}"
                                                             type="button" id="dropdown1" data-toggle="dropdown"
                                                             aria-haspopup="true" aria-expanded="false">{{$task->status}}
                                                         </button>
@@ -353,6 +357,9 @@
                                                             <a class="dropdown-item {{$task->status == 'Finalizado' ? 'active' : ''}}"
                                                                href="javascript: void(0);" wire:click="updateTaskStatus({{$task->id}},'Finalizado')"><span
                                                                     class="point-marker bg-success"></span>Finalizado</a>
+                                                            <a class="dropdown-item {{$task->status == 'Atrasado' ? 'active' : ''}}"
+                                                                href="javascript: void(0);" wire:click="updateTaskStatus({{$task->id}},'Atrasado')"><span
+                                                                        class="point-marker bg-danger"></span>Atrasado</a>
                                                         </div>
                                                     </div>
                                                 </div>

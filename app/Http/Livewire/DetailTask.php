@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+
 class DetailTask extends Component
 {
     use WithFileUploads;
@@ -32,7 +33,9 @@ class DetailTask extends Component
     public $course_id, $course;
 
     ///VARIABLE CNTROL TABS
-    public $position = 'detail_c', $task_title = 'Nueva', $task_id, $task;
+    public $position = 'detail_c', $task_title = 'Nueva', $task_id, $task,$task_status = '';
+    //VARIABLE FILTRO POR TIEMPOS
+    public $time,$timeWhere = '';
 
     public function mount(Request $request)
     {
@@ -44,9 +47,99 @@ class DetailTask extends Component
 
     public function render()
     {
-        $tasks = Task::where('course_id',$this->course_id)->get();
+        $now = Carbon::now();
+       
+        switch($this->timeWhere){
+
+            case 'day':
+                $this->time = $now->day;
+                $tasks = Task::where('course_id',$this->course_id)
+                ->where(function ($query) {
+                    $query->when($this->task_status != '', function ($q) {
+                        $q->orWhere('status',$this->task_status);
+                    });
+                })
+                ->whereDay('created_at',$this->time)
+                ->orderBy('updated_at','desc')
+                ->paginate(6);
+                break;
+            case 'yesterday':
+                $now = Carbon::yesterday();
+                $this->time = $now->day;
+              
+                $tasks = Task::where('course_id',$this->course_id)
+                ->where(function ($query) {
+                    $query->when($this->task_status != '', function ($q) {
+                        $q->orWhere('status',$this->task_status);
+                    });
+                })
+                ->whereDay('created_at',$this->time)
+                ->orderBy('updated_at','desc')
+                ->paginate(6);
+                break;
+            case 'week':
+                $this->time = $now->startOfWeek()->format('Y-m-d');
+                $tasks = Task::where('course_id',$this->course_id)
+                ->where(function ($query) {
+                    $query->when($this->task_status != '', function ($q) {
+                        $q->orWhere('status',$this->task_status);
+                    });
+                })
+                ->whereBetween('created_at',[Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+                ->orderBy('updated_at','desc')
+                ->paginate(6);
+                break;
+            case 'month':
+                $this->time = $now->month;
+                $tasks = Task::where('course_id',$this->course_id)
+                ->where(function ($query) {
+                    $query->when($this->task_status != '', function ($q) {
+                        $q->orWhere('status',$this->task_status);
+                    });
+                })
+                ->whereMonth('created_at',$this->time)
+                ->orderBy('updated_at','desc')
+                ->paginate(6);
+                break;
+            case 'year':
+                $this->time = $now->year;
+                $tasks = Task::where('course_id',$this->course_id)
+                ->where(function ($query) {
+                    $query->when($this->task_status != '', function ($q) {
+                        $q->orWhere('status',$this->task_status);
+                    });
+                })
+                ->whereYear('created_at',$this->time)
+                ->orderBy('updated_at','desc')
+                ->paginate(6);
+                break;
+            case '':
+                $this->time = "";
+                $tasks = Task::where('course_id',$this->course_id)
+                ->where(function ($query) {
+                    $query->when($this->task_status != '', function ($q) {
+                        $q->orWhere('status',$this->task_status);
+                    });
+                })
+                ->orderBy('updated_at','desc')
+                ->paginate(6);
+                break; 
+        }
+
         return view('livewire.detail-task', compact('tasks'));
     }
+
+    public function getTime($time)
+    {
+        $this->timeWhere =  $time;
+    }
+
+    public function filterByStatus($status){
+        $this->task_status = $status;
+    }
+
+
+
     public function loadDataDetail($id)
     {
         $this->task = Task::find($id);

@@ -19,6 +19,7 @@ Route::get('/', function () {
 Route::get('dashboard/courses','Admin\DashboardController@courses')->name('courses');
 Route::get('dashboard/courses/detail','Admin\DashboardController@detailByCourses')->name('detailcourses');
 Route::get('dashboard/tasks/detail','Admin\DashboardController@detailTask')->name('detailtasks');
+Route::get('dashboard/tasks/delivery','Admin\DashboardController@deliveryTaskStudent')->name('deliverytasks');
 Auth::routes();
 Route::namespace('Admin')->group(function () {
     Route::group(['middleware' => ['auth']], function () {
@@ -87,3 +88,4 @@ Route::post('files/load','Admin\DashboardController@fileLoad')->name('load.files
 Route::post('files/upload/store/student','Admin\FileController@fileStore')->name('store.filesTaskStudent');
 Route::post('files/delete/student','Admin\FileController@fileDestroy')->name('destroy.filesTaskStudent');
 Route::post('files/load/student','Admin\FileController@fileLoad')->name('load.filesTaskStudent');
+Route::get('files/download/{id}','Admin\FileController@downloadFile')->name('download-delivery');
