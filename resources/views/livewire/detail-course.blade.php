@@ -330,7 +330,10 @@
                                                         <img class=" img-radius m-r-5"
                                                              width="40" height="40" src="{{asset($course->url_image)}}"
                                                              alt="1"/></a>
-                                                    <a href="{{route('deliverytasks')}}{{'?course='.$course->id.'&task='.$task->id}}">{{count($task->taskdeliveries)}} entregas</a>
+                                                             <p hidden>{{$teacher_auth = \Illuminate\Support\Facades\Auth::user()->teacher}}</p> 
+                                                             @if($teacher_auth)
+                                                             <a href="{{route('deliverytasks')}}{{'?course='.$course->id.'&task='.$task->id}}">{{count($task->taskdeliveries)}} entregas</a>
+                                                             @endif
                                                 </div>
                                                 <div class="task-board">
                                                  

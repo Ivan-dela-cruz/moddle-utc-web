@@ -6,7 +6,7 @@
     <div class="pcoded-main-container">
         <div class="pcoded-content">
             <x-content title="Tareas" position="Detalle de la tarea"></x-content>
-            @livewire('delivery-task-student')    
+            @livewire('detail-task')    
         </div>
     </div>
     
