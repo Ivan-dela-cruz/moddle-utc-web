@@ -74,8 +74,8 @@
     <div class="col-md-12">
         <div class="form-group">
             @error('period_id')<span class="text-danger">{{ $message }}</span><br>@enderror
-            @error('teacher_id')<span class="text-danger">{{ $message }}</span><br>@enderror
-            @error('teacher_id')<span class="text-danger">{{ $message }}</span><br>@enderror
+            @error('user_id')<span class="text-danger">{{ $message }}</span><br>@enderror
+            @error('user_id')<span class="text-danger">{{ $message }}</span><br>@enderror
             @error('subject_id')<span class="text-danger">{{ $message }}</span><br>@enderror
             @error('level_id')<span class="text-danger">{{ $message }}</span><br>@enderror
         </div>

@@ -32,16 +32,14 @@ class Education extends Component
     //variables para estudiantes metirulados en una materia
     public $students = [];
 
-    private $teacher_id = null;
+    private $user_id = null;
 
     public $task_id;
 
     public function render()
     {
-        $teacher = Auth::user()->teacher;
-        if($teacher){
-            $this->teacher_id = $teacher->id;
-        }
+        $this->user_id = Auth::user()->id;
+        
 
         $this->periods = Period::where('status',1)->get();
         $this->levels = Level::where('status',1)->get();
@@ -49,7 +47,7 @@ class Education extends Component
         $education = EducationModel::where('subject_id',$this->subject_id)
             ->where('academic_period_id',$this->period_id)
             ->where('level_id',$this->level_id)
-            ->where('teacher_id',$this->teacher_id)
+            ->where('user_id',$this->user_id)
             ->paginate(2);
 
 
@@ -92,11 +90,9 @@ class Education extends Component
     }
 
     public function store(){
-        $teacher = Auth::user()->teacher;
-        if($teacher){
-            $this->teacher_id = $teacher->id;
-        }
-        if(!is_null($this->teacher_id)){
+        $this->user_id = Auth::user()->id;
+        
+        if(!is_null($this->user_id)){
             $validation = $this->validate([
                 'name'	=>	'required',
                 'description' => 'required',
@@ -125,7 +121,7 @@ class Education extends Component
             }
 
             $data =  [
-                'teacher_id'=>$this->teacher_id,
+                'user_id'=>$this->user_id,
                 'name'=>$this->name,
                 'description'=>$this->description,
                 'career'=> $this->career,
@@ -143,7 +139,7 @@ class Education extends Component
             $this->emit('courseStore');
         }else{
             $this->emit('courseStore');
-            $this->alert('warning', 'Su usuario no esta registrado como profesor.',[ 'showCancelButton' =>  false, ]);
+            $this->alert('warning', 'Su usuario no esta registrado.',[ 'showCancelButton' =>  false, ]);
         }
 
     }
@@ -157,7 +153,7 @@ class Education extends Component
         $this->url_image = $data->url_image;
         $this->content = $data->content;
         $this->status = $data->status;
-        $this->teacher_id = $data->teacher_id;
+        $this->user_id = $data->user_id;
         $this->academic_period_id = $data->academic_period_id;
         $this->level_id = $data->level_id;
         $this->subject_id = $data->subject_id;
@@ -168,11 +164,9 @@ class Education extends Component
 
     public function update( )
     {
-        $teacher = Auth::user()->teacher;
-        if($teacher){
-            $this->teacher_id = $teacher->id;
-        }
-        if(!is_null($this->teacher_id)){
+        $this->user_id = Auth::user()->id;
+       
+        if(!is_null($this->user_id)){
             //    $this->content = $content;
 
             $validation = $this->validate([
@@ -204,7 +198,7 @@ class Education extends Component
             }
 
             $data->update([
-                'teacher_id'=>$this->teacher_id,
+                'user_id'=>$this->user_id,
                 'name'=>$this->name,
                 'description'=>$this->description,
                 'career'=> $this->career,
@@ -223,7 +217,7 @@ class Education extends Component
             $this->emit('courseStore');
         }else{
             $this->emit('courseStore');
-            $this->alert('warning', 'Su usuario no esta registrado como profesor.',[ 'showCancelButton' =>  false, ]);
+            $this->alert('warning', 'Su usuario no esta registrado.',[ 'showCancelButton' =>  false, ]);
         }
     }
 

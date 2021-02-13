@@ -101,7 +101,7 @@
                                         <div class="card-body inner-center">
                                             <div class="ticket-customer font-weight-bold">{{ $data->name }}</div>
                                             <div class="ticket-type-icon private mt-1 mb-1"><i
-                                                    class="fas fa-user-graduate text-primary mr-1 f-14"></i>{{ $data->teacher->name}} {{ $data->teacher->last_name}}
+                                                    class="fas fa-user-graduate text-primary mr-1 f-14"></i>{{ $data->user->name}} {{ $data->user->last_name}}
                                             </div>
                                             <div class="excerpt mt-4">
                                                 {{ $data->description }}
@@ -122,12 +122,6 @@
 
                                             <div class="mt-2">
 
-                                                <a href="{{route('detailcourses')}}{{'?course='.$data->id}}"
-                                                   data-toggle="tooltip"
-                                                   title="Eliminar"
-                                                   class="text-muted">
-                                                    <i class="fas fa-book-open mr-1"></i>Detalle
-                                                </a>
 
                                                 @can('update_education')
                                                     <a href="javascript:void(0);" wire:click="edit({{ $data->id }})"
