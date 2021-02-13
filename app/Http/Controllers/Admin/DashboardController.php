@@ -63,7 +63,7 @@ class DashboardController extends Controller
 
     public function tasks()
     {
-        return view('admin.dashboard.tasks.index');
+        return view('admin.dashboard.Tasks.index');
 
     }
 
