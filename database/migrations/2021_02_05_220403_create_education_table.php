@@ -18,19 +18,18 @@ class CreateEducationTable extends Migration
             $table->unsignedBigInteger('academic_period_id');
             $table->unsignedBigInteger('level_id');
             $table->unsignedBigInteger('subject_id');
-            $table->unsignedBigInteger('teacher_id');
+            $table->unsignedBigInteger('user_id');
             $table->string('name')->nullable();
             $table->string('description')->nullable();
             $table->string('career')->nullable();
             $table->string('url_image')->nullable();
             $table->longText('content')->nullable();
-
             $table->boolean('status')->nullable()->default(true);
             $table->softDeletes();
             $table->timestamps();
             $table->foreign('academic_period_id')->references('id')->on('academic_periods');
             $table->foreign('level_id')->references('id')->on('levels');
-            $table->foreign('teacher_id')->references('id')->on('teachers');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('subject_id')->references('id')->on('subjects');
         });
     }

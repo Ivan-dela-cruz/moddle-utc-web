@@ -14,15 +14,15 @@ class Education extends Model
         'url_image',
         'content',
         'status',
-        'teacher_id',
+        'user_id',
         'academic_period_id',
         'level_id',
         'subject_id'
     ];
 
-    public function teacher()
+    public function user()
     {
-        return $this->belongsTo(Teacher::class, 'teacher_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function academic_period()
