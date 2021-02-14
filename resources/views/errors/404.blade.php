@@ -1,36 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-
-
-<!-- error-40424:04-->
 <head>
+    <title>UTC CLASSROMS</title>
+   
+    <!--[if lt IE 11]>
+    	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    	<![endif]-->
+    <!-- Meta -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
-    <title>Preclinic - Medical & Hospital - Bootstrap 4 Admin Template</title>
-    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-    <!--[if lt IE 9]>
-		<script src="assets/js/html5shiv.min.js"></script>
-		<script src="assets/js/respond.min.js"></script>
-	<![endif]-->
-</head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="">
+    <meta name="author" content="Phoenixcoded" />
+    <!-- Favicon icon -->
+    <link rel="icon" href="{{asset('assets2/images/favicon.ico')}}" type="image/x-icon">
 
-<body>
-    <div class="main-wrapper error-wrapper">
-        <div class="error-box">
-            <h1>404</h1>
-            <h3><i class="fa fa-warning"></i> Oops!  Página no encontrada</h3>
-            <p>No se encontró la página que solicitó.</p>
-            <a href="{{ route('home') }}" class="btn btn-primary go-home">Volver</a>
+    <!-- vendor css -->
+    <link rel="stylesheet" href="{{asset('assets2/css/style.css')}}">
+    
+    
+
+</head>
+<!-- [ offline-ui ] start -->
+<div class="auth-wrapper maintance">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="text-center">
+                    <img src="{{asset('assets2/images/maintance/404.png')}}" alt="" class="img-fluid">
+                    <h5 class="text-muted my-4">Lo siento! No se encontro a página!</h5>
+                   
+                        <a href="{{route('dashboard')}}" class=" text-white btn waves-effect waves-light btn-primary mb-4"><i class="feather icon-refresh-ccw mr-2"></i>Regresar</a>
+                    
+                </div>
+            </div>
         </div>
     </div>
-    <script src="assets/js/jquery-3.2.1.min.js"></script>
-	<script src="assets/js/popper.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
+</div>
+<!-- [ offline-ui ] end -->
+<!-- Required Js -->
+<script src="{{asset('assets2/js/vendor-all.min.js')}}"></script>
+<script src="{{asset('assets2/js/plugins/bootstrap.min.js')}}"></script>
+
+
 </body>
-
-
-<!-- error-40424:04-->
 </html>

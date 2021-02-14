@@ -42,7 +42,7 @@ class Roles extends Component
         $role->save();
         $role->syncPermissions($this->select_permissions);
 
-    	session()->flash('message', 'Role creado con exíto.');
+        $this->alert('success', 'Rol registrado exitosamente!',[ 'showCancelButton' =>  false, ]);
         $this->resetInputFields();
         $this->action = 'POST';
         $this->emit('Success');
@@ -107,16 +107,15 @@ class Roles extends Component
         // sincronizar los nuevos permisos
         $role->syncPermissions($this->select_permissions);
         
-        session()->flash('message', 'Role actualizada con exíto.');
         $this->resetInputFields();
         $this->action = 'POST';
-        $this->alert('success', 'Rol actualizado exitosamente!');
+        $this->alert('success', 'Rol actualizado exitosamente!',[ 'showCancelButton' =>  false, ]);
     }
 
     public function delete($id)
     {
        HasRoles::find($id)->delete();
-        $this->alert('success', 'Rol eliminado exitosamente!');
+        $this->alert('success', 'Rol eliminado exitosamente!',[ 'showCancelButton' =>  false, ]);
         $this->resetInputFields();
         $this->action = 'POST';
     }

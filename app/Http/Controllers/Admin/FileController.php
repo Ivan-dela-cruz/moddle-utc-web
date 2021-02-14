@@ -17,13 +17,13 @@ class FileController extends Controller
         $file = $request->file('file');
         $size = $request->file('file')->getSize();
         $fileName = $file->getClientOriginalName();
-        $file->move(public_path('files/tasks/'), $fileName);
+        $file->move(public_path('files/deliveries/'), $fileName);
 
           $fileUpload = new File([
             'name'=> $request->name,
              'filename'=> $fileName,
              'size_file' => $size,
-              'url_file' => 'files/tasks/'.$fileName
+              'url_file' => 'files/deliveries/'.$fileName
           ]);
           $task->files()->save($fileUpload);
 
@@ -34,7 +34,7 @@ class FileController extends Controller
     {
         $filename =  $request->get('filename');
         File::where('filename',$filename)->delete();
-        $path=public_path('files/tasks/'.$filename);
+        $path=public_path('files/deliveries/'.$filename);
         if (file_exists($path)) {
             unlink($path);
         }

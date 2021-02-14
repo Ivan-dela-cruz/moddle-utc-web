@@ -50,7 +50,7 @@ class="{{request()->is('/ruta')?'active':''}}"
                 </li>
 
 
-                @can('read_role')
+                @canany(['read_role','create_user','read_user'])
                 <li class="nav-item pcoded-hasmenu">
                     <a href="javascript: return void();" class="nav-link ">
                         <span class="pcoded-micon">
@@ -67,7 +67,8 @@ class="{{request()->is('/ruta')?'active':''}}"
                        @endcan
                     </ul>
                 </li>
-                @endcan
+                @endcanany
+                @canany(['create_student','read_student'])
                 <li class="nav-item pcoded-hasmenu">
                     <a href="javascript: return void();" class="nav-link ">
                         <span class="pcoded-micon">
@@ -81,6 +82,7 @@ class="{{request()->is('/ruta')?'active':''}}"
                     
                     </ul>
                 </li>
+                @endcanany
                 @can('read_subject')
                 <li class="nav-item pcoded-hasmenu">
                     <a href="javascript: return void();" class="nav-link ">
@@ -144,7 +146,7 @@ class="{{request()->is('/ruta')?'active':''}}"
 
                 @canany(['create_education','read_education'])
                 <li class="nav-item pcoded-hasmenu">
-                    <a href="javascript: return void();" class="nav-link ">
+                    <a href="javascript:  void(0);" class="nav-link ">
                         <span class="pcoded-micon">
                             <i class="feather icon-layout"></i>
                         </span>
@@ -163,7 +165,7 @@ class="{{request()->is('/ruta')?'active':''}}"
 
                 @can('read_file')
                 <li class="nav-item pcoded-hasmenu">
-                    <a href="javascript: return void();" class="nav-link ">
+                    <a href="javascript:  void(0);" class="nav-link ">
                         <span class="pcoded-micon">
                             <i class="feather icon-layout"></i>
                         </span>
@@ -174,9 +176,9 @@ class="{{request()->is('/ruta')?'active':''}}"
                     </ul>
                 </li>
                 @endcan
-                @can('read_file') <!-- CAMBIAR PERMISOS -->
+                @canany(['create_vp','read_vp']) 
                     <li class="nav-item pcoded-hasmenu">
-                        <a href="javascript: return void();" class="nav-link ">
+                        <a href="javascript:  void(0);" class="nav-link ">
                         <span class="pcoded-micon">
                             <i class="feather icon-layout"></i>
                         </span>
@@ -187,22 +189,20 @@ class="{{request()->is('/ruta')?'active':''}}"
                             <li><a href="{{route('cs_activities')}}">A.S.C</a></li>
                         </ul>
                     </li>
-                @endcan
-
-                 <li class="nav-item pcoded-hasmenu">
-                    <a href="javascript: return void();" class="nav-link ">
+                @endcanany
+                @canany(['create_ac_period','read_ac_period'])
+                <li class="nav-item pcoded-hasmenu">
+                    <a href="javascript:  void(0);" class="nav-link ">
                         <span class="pcoded-micon">
                             <i class="feather icon-layout"></i>
                         </span>
-                        <span class="pcoded-mtext">Configuraciones</span>
+                        <span class="pcoded-mtext">Periodos</span>
                     </a>
                     <ul class="pcoded-submenu">
-                        @can('read_ac_period')
-                        <li><a href="{{route('periods')}}">Periodos</a></li>
-                        @endcan
-
+                        <li><a href="{{route('periods')}}">Periodos académicos</a></li>
                     </ul>
                 </li>
+                @endcanany
 
             </ul>
         </div>
