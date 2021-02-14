@@ -22,6 +22,8 @@ class TaskController extends Controller
         $list = new Collection();
         foreach ($tasks as $task) {
 
+            $d = $task->taskdeliveries->where('student_id', Auth::user()->student->id);
+
             $files = $task->files->count();
             $course_image = $task->Course->url_image;
             $item = [
@@ -34,7 +36,7 @@ class TaskController extends Controller
                 'end_time' => $task->end_time->format('H:m:i a'),
                 'status' => $task->status,
                 'course_id' => $task->course_id,
-                'deliveries' => $task->taskdeliveries->count(),
+                'deliveries' => $d->count(),
                 'files' => $files
             ];
             $list->push($item);
@@ -50,9 +52,18 @@ class TaskController extends Controller
     public function detailTask($task_id)
     {
         $task = Task::find($task_id);
+
+        $d = $task->taskdeliveries->where('student_id', Auth::user()->student->id);
+
+        foreach ($d as $deliveries){
+           $files =  $deliveries->files;
+        }
+       // dd($files);
+
         return response()->json([
             'success' => true,
             'files' => $task->files,
+            'files_deliveries' => $d->count() > 0 ? $files : null,
             'status' => 200
         ], 200);
     }
@@ -63,7 +74,7 @@ class TaskController extends Controller
         $size = $_FILES['files1']['size'];
         $target1 = basename($_FILES['files1']['name']);
         $filename = time() . ' - ' . $target1;
-        $filepath = public_path('tasks/delivery/');
+        $filepath = public_path('files/deliveries/');
 
         $studentTask = StudentTask::create([
             'description' => $request->description,
@@ -76,9 +87,9 @@ class TaskController extends Controller
             'name' => $target1,
             'filename' => $filename,
             'size_file' => $size,
-            'url_file' => 'tasks/delivery/' . $filename
+            'url_file' => 'files/deliveries/' . $filename
         ]);
-        $student->files()->save($fileUpload);
+        $studentTask->files()->save($fileUpload);
 
       /*  $task = Task::find($request->task_id);
         $task->update([
@@ -92,7 +103,7 @@ class TaskController extends Controller
 
         return response()->json([
             'success' => true,
-            'delivery_files' => $student->files,
+            'delivery_files' => $studentTask->files,
             'status' => 200
         ], 200);
 
