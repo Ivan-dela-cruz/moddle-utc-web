@@ -160,10 +160,10 @@
                                     <div class="col-auto pl-0 right-icon">
                                         <div class="card-body">
                                             <ul class="list-unstyled mb-0">
-                                                <li><a href="#" data-toggle="tooltip" data-placement="top" title=""
+                                                <li><a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title=""
                                                        data-original-title="tooltip on top" class="active"><i
                                                             class="feather icon-star text-warning"></i></a></li>
-                                                <li><a href="#" data-toggle="tooltip" data-placement="top" title=""
+                                                <li><a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title=""
                                                        data-original-title="tooltip on top"><i
                                                             class="feather icon-circle text-info"></i></a></li>
                                             </ul>

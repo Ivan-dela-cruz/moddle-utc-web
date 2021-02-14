@@ -9,12 +9,12 @@
                         <p class="list-inline-item mb-0">
                             <img src="{{asset('assets2/images/ticket/p1.jpg')}}" alt=""
                                  class="wid-20 rounded mr-1 img-fluid">
-                            Materia
+                            Esta tarea se asignará al curso seleccionado
                         </p>
                     </div>
                     <div class="col-md-5 text-right">
                         <p class="d-inline-block mb-0"><i class="feather icon-calendar mr-1"></i><label
-                                class="mb-0">Jan,1st,2019</label></p>
+                                class="mb-0">{{\Carbon\Carbon::now()->format('Y-m-d')}}</label></p>
                     </div>
                 </div>
             </div>
