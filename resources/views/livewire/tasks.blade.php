@@ -127,7 +127,7 @@
                                     </div>
                                     <div class="task-board">
                                         <div class="dropdown-secondary dropdown">
-                                            <a href="{{route('detailtasks')}}{{'?course='.$course->id.'&task='.$task->id}}"><i class="text-muted fas fa-eye mr-2"></i>Ver detalle</a>
+                                            <a href="{{route('detailtasks')}}{{'?course='.$task->course_id.'&task='.$task->id}}"><i class="text-muted fas fa-eye mr-2"></i>Ver detalle</a>
                                         </div>
 
                                     </div>
