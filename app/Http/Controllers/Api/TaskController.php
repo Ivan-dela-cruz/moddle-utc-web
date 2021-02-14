@@ -80,17 +80,19 @@ class TaskController extends Controller
         ]);
         $student->files()->save($fileUpload);
 
-        $task = Task::find($request->task_id);
+      /*  $task = Task::find($request->task_id);
         $task->update([
            'status' => 'Finalizado'
-        ]);
+        ]);*/
 
         move_uploaded_file($_FILES['files1']['tmp_name'], $filepath . $filename);
 
 
+
+
         return response()->json([
             'success' => true,
-            'files' => '',
+            'delivery_files' => $student->files,
             'status' => 200
         ], 200);
 
