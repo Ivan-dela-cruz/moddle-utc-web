@@ -20,9 +20,9 @@
                 <div class="card">
                     <div id="filters-side" class="button-group">
                         <button wire:ignore wire:click = "allTasks()" class="button btn btn-block text-left border-0 m-0 rounded-0 btn-outline-secondary active" data-filter="*">TODO</button>
-                        @foreach($courses as $course)
-                            <button class="button btn btn-block text-left border-0 m-0 rounded-0 btn-outline-secondary" data-filter=".{{$course->id}}" wire:ignore wire:click=" taskByCourse({{$course->id}})">
-                                {{$course->name}}</button>
+                        @foreach($courses as $course_f3)
+                            <button class="button btn btn-block text-left border-0 m-0 rounded-0 btn-outline-secondary" data-filter=".{{$course_f3->id}}" wire:ignore wire:click=" taskByCourse({{$course_f3->id}})">
+                                {{$course_f3->name}}</button>
                         @endforeach
                     </div>
                 </div>
@@ -99,9 +99,9 @@
 
                                             <div class="d-flex align-items-center justify-content-between mt-3">
                                                 <div>
-                                                    @foreach($courses as $course)
-                                                        @if($task->course_id == $course->id)
-                                                            <p class="m-0 font-weight-600"><strong>Prof:</strong><span class="text-dark">&nbsp;&nbsp;{{$course->teacher->profession}}&nbsp;{{$course->teacher->name}}&nbsp;{{$course->teacher->last_name}}</span></p>
+                                                    @foreach($courses as $course_f2)
+                                                        @if($task->course_id == $course_f2->id)
+                                                            <p class="m-0 font-weight-600"><strong>Prof:</strong><span class="text-dark">&nbsp;&nbsp;{{$course_f2->teacher->profession}}&nbsp;{{$course_f2->teacher->name}}&nbsp;{{$course_f2->teacher->last_name}}</span></p>
                                                         @endif
                                                     @endforeach
                                                     <p class="m-0 font-weight-600"><strong>F. Inicio:</strong><span class="text-primary">&nbsp;&nbsp;{{$task->start_date->format('M d')}}</span></p>
@@ -118,9 +118,9 @@
                                     <hr>
                                     <div class="d-flex align-items-center justify-content-between">
                                     <div class="task-list-table">
-                                        @foreach($courses as $course)
-                                            @if($task->course_id == $course->id)
-                                                <a href="javascript: void(0);"><img class=" img-radius m-r-5" src="{{asset($course->url_image)}}" alt="1" height="40" width="40" /></a>
+                                        @foreach($courses as $course_f)
+                                            @if($task->course_id == $course_f->id)
+                                                <a href="javascript: void(0);"><img class=" img-radius m-r-5" src="{{asset($course_f->url_image)}}" alt="1" height="40" width="40" /></a>
                                             @endif
                                         @endforeach
                                       
