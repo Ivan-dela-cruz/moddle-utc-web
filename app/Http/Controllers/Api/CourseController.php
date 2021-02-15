@@ -42,4 +42,42 @@ class CourseController extends Controller
             'status' => 200
         ], 200);
     }
+
+    public function myCourses(){
+
+        $period = Period::all();
+        $student_id = Auth::user()->student->id;
+        $period_id = $period->last()->id;
+
+        $ps = PeriodStudent::where('period_id', $period_id)
+            ->where('student_id', $student_id)
+            ->get();
+
+        $list = new Collection();
+        foreach ($ps as $p) {
+            $courses = Course::where('academic_period_id', $p->period_id)
+                ->where('subject_id', $p->subject_id)
+                ->get();
+            foreach ($courses as $course) {
+                $item = [
+                    'id' => $course->id,
+                    'title' => $course->name,
+                    'name' => $course->teacher->name,
+                    'last_name' => $course->teacher->last_name,
+                    'description' => $course->description,
+                    'url_image' => $course->url_image,
+                    'teacher_id' => $course->teacher_id,
+                    'subject_id' => $course->subject_id,
+                ];
+
+                $list->push($item);
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'courses' => $list,
+            'status' => 200
+        ], 200);
+    }
 }
