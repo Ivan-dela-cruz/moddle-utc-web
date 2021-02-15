@@ -1,5 +1,7 @@
 <div>
     <div class="col-md-12">
+        <p hidden> {{$st = \Illuminate\Support\Facades\Auth::user()->student}}</p>
+    
         <div class="card">
             <div class="card-body">
                 <ul class="nav nav-pills bg-nav-pills nav-justified mb-0">
@@ -11,7 +13,8 @@
                             <span class="d-none d-lg-inline-block m-l-10">Información</span>
                         </a>
                     </li>
-                    @if ($task->status == "Abierto")
+                   <p hidden>{{$del_st = $st->taskdeliveries()->where('task_id',$task_id)->get()}}</p>
+                    @if (count($del_st)<=0)
                         <li class="nav-item">
                             <a wire:click="loadNewTask({{ $task->id }})" href="#new_task" data-toggle="tab"
                             aria-expanded="{{$position == 'new_task'?true:false}}"
@@ -266,7 +269,8 @@
                                                     </a>
                                                 </div>
                                                 <div class="task-board">
-                                                    @if($t->status == 'Abierto' )
+                                                    <p hidden>{{$d_st = $st->taskdeliveries()->where('task_id',$t->id)->get()}}</p>
+                                                    @if (count($d_st)<=0)
                                                         <a class="btn btn-sm  btn-info" href="{{route('detailtasks')}}{{'?course='.$course->id.'&task='.$t->id}}" ><i
                                                             class="fas fa-cloud-upload-alt"></i>&nbsp;Entregar
                                                         </a>

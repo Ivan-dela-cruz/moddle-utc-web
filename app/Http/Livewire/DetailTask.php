@@ -39,6 +39,7 @@ class DetailTask extends Component
 
     public function mount(Request $request)
     {
+       
         $this->course_id = request()->query('course');
         $this->task_id = request()->query('task');
         $this->course = Course::find($this->course_id);
@@ -47,6 +48,7 @@ class DetailTask extends Component
 
     public function render()
     {
+        $this->student = Auth::user()->student;
         $now = Carbon::now();
        
         switch($this->timeWhere){
@@ -202,8 +204,8 @@ class DetailTask extends Component
             $enddates = Carbon::parse($this->task->end_date);
             $final_date =  Carbon::parse($enddates->format('Y-m-d')." ".$endtimes->format('H:i:s'));
 
-            $this->task->status = $final_date->isPast() ?"Atrasado":"Finalizado";
-            $this->task->save();
+           // $this->task->status = $final_date->isPast() ?"Atrasado":"Finalizado";
+           // $this->task->save();
            
             $this->resetInputFieldsTask();
         }else{
@@ -218,8 +220,8 @@ class DetailTask extends Component
         $final_date =  Carbon::parse($enddates->format('Y-m-d')." ".$endtimes->format('H:i:s'));
 
 
-        $this->task->status = $final_date->isPast() ?"Atrasado":"Finalizado";
-        $this->task->save();
+        //$this->task->status = $final_date->isPast() ?"Atrasado":"Finalizado";
+        //$this->task->save();
         $this->task = Task::find($this->task_id);
         $this->emit('taskHide');
         $this->alert('success', 'Tarea creada con exíto.',[ 'showCancelButton' =>  false, ]);

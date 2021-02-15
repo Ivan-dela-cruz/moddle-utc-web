@@ -32,6 +32,9 @@ class Student extends Model
     public function files(){
         return $this->morphMany(File::class,'fileable');
     }
-
+    public function taskdeliveries()
+    {
+        return $this->hasMany(StudentTask::class, 'student_id');
+    }
 
 }
