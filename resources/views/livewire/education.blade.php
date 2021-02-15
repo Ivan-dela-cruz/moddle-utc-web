@@ -122,10 +122,10 @@
 
                                             <div class="mt-2">
 
-
+                                               
                                                 @can('update_education')
                                                     <a href="javascript:void(0);" wire:click="edit({{ $data->id }})"
-                                                       class="text-muted float-right"
+                                                       class="text-muted"
                                                        type="button"
                                                        data-toggle="modal" data-target="#updateModal">
                                                         <i class="feather icon-edit-1"></i>
@@ -137,7 +137,7 @@
                                                        wire:click="delete({{ $data->id }})"
                                                        data-toggle="tooltip"
                                                        title="Eliminar"
-                                                       class="text-muted float-right mr-3">
+                                                       class="text-muted mr-3">
                                                         <i class="feather icon-trash-2 mr-1"></i>Eliminar
                                                     </a>
                                                 @endcan
@@ -147,10 +147,10 @@
                                     <div class="col-auto pl-0 right-icon">
                                         <div class="card-body">
                                             <ul class="list-unstyled mb-0">
-                                                <li><a href="#" data-toggle="tooltip" data-placement="top" title=""
+                                                <li><a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title=""
                                                        data-original-title="tooltip on top" class="active"><i
                                                             class="feather icon-star text-warning"></i></a></li>
-                                                <li><a href="#" data-toggle="tooltip" data-placement="top" title=""
+                                                <li><a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title=""
                                                        data-original-title="tooltip on top"><i
                                                             class="feather icon-circle text-info"></i></a></li>
                                             </ul>
