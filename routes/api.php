@@ -34,6 +34,7 @@ Route::namespace('Api')->group(function () {
     Route::get('education','EducationController@education_list')->middleware('jwtAuth');
     Route::get('task-for-today','TaskController@taskToday')->middleware('jwtAuth');
     Route::get('my-courses','CourseController@myCourses')->middleware('jwtAuth');
+    Route::get('my-levels','EducationController@myLevels')->middleware('jwtAuth');
 
 });
 //Route::middleware('auth:api')->get('/user', function (Request $request) {
