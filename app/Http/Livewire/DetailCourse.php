@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Livewire;
+
 use App\Course;
 use App\Task;
 use Livewire\Component;
@@ -17,14 +18,14 @@ class DetailCourse extends Component
 
     protected $paginationTheme = 'bootstrap';
     //VARIABLES DE ESTUDIANTES
-    public  $levels,$subjects,$teachers,$periods, $name,$description,$career='' ,$url_image,$content,$status = true, $data_id;
+    public $levels, $subjects, $teachers, $periods, $name, $description, $career = '', $url_image, $content, $status = true, $data_id;
 
     //VARIABLES PARA LAS TAREAS
-    public  $title_t,$description_t,$url_image_t, $start_date_t, $end_date_t, $hour_t, $action_t, $course_id_t = null;
+    public $title_t, $description_t, $url_image_t, $start_date_t, $end_date_t, $hour_t, $action_t, $course_id_t = null;
 
     //public $tasks;
     //VARIABLES DEL SELECT
-    public $period_id,$level_id,$subject_id,$parallel="A", $action = 'POST';
+    public $period_id, $level_id, $subject_id, $parallel = "A", $action = 'POST';
 
     //variables para estudiantes metirulados en una materia
     public $students = [];
@@ -37,7 +38,7 @@ class DetailCourse extends Component
     public $position = 'detail_c', $task_title = 'Nueva', $task_id, $task_status = '';
     //VARIABLE FILTRO POR TIEMPOS
     public $time, $timeWhere = '';
-    
+
 
     public function mount(Request $request)
     {
@@ -48,116 +49,127 @@ class DetailCourse extends Component
     public function render()
     {
         $now = Carbon::now();
-       
-        switch($this->timeWhere){
+
+        switch ($this->timeWhere) {
 
             case 'day':
                 $this->time = $now->day;
-                $tasks = Task::where('course_id',$this->course_id)
-                ->where(function ($query) {
-                    $query->when($this->task_status != '', function ($q) {
-                        $q->orWhere('status',$this->task_status);
-                    });
-                })
-                ->whereDay('created_at',$this->time)
-                ->orderBy('updated_at','desc')
-                ->paginate(6);
+                $tasks = Task::where('course_id', $this->course_id)
+                    ->where(function ($query) {
+                        $query->when($this->task_status != '', function ($q) {
+                            $q->orWhere('status', $this->task_status);
+                        });
+                    })
+                    ->whereDay('created_at', $this->time)
+                    ->orderBy('updated_at', 'desc')
+                    ->get();
+                //->paginate(6);
                 break;
             case 'yesterday':
                 $now = Carbon::yesterday();
                 $this->time = $now->day;
-              
-                $tasks = Task::where('course_id',$this->course_id)
-                ->where(function ($query) {
-                    $query->when($this->task_status != '', function ($q) {
-                        $q->orWhere('status',$this->task_status);
-                    });
-                })
-                ->whereDay('created_at',$this->time)
-                ->orderBy('updated_at','desc')
-                ->paginate(6);
+
+                $tasks = Task::where('course_id', $this->course_id)
+                    ->where(function ($query) {
+                        $query->when($this->task_status != '', function ($q) {
+                            $q->orWhere('status', $this->task_status);
+                        });
+                    })
+                    ->whereDay('created_at', $this->time)
+                    ->orderBy('updated_at', 'desc')
+                    ->get();
+                // ->paginate(6);
                 break;
             case 'week':
                 $this->time = $now->startOfWeek()->format('Y-m-d');
-                $tasks = Task::where('course_id',$this->course_id)
-                ->where(function ($query) {
-                    $query->when($this->task_status != '', function ($q) {
-                        $q->orWhere('status',$this->task_status);
-                    });
-                })
-                ->whereBetween('created_at',[Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
-                ->orderBy('updated_at','desc')
-                ->paginate(6);
+                $tasks = Task::where('course_id', $this->course_id)
+                    ->where(function ($query) {
+                        $query->when($this->task_status != '', function ($q) {
+                            $q->orWhere('status', $this->task_status);
+                        });
+                    })
+                    ->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+                    ->orderBy('updated_at', 'desc')
+                    ->get();
+                //->paginate(6);
                 break;
             case 'month':
                 $this->time = $now->month;
-                $tasks = Task::where('course_id',$this->course_id)
-                ->where(function ($query) {
-                    $query->when($this->task_status != '', function ($q) {
-                        $q->orWhere('status',$this->task_status);
-                    });
-                })
-                ->whereMonth('created_at',$this->time)
-                ->orderBy('updated_at','desc')
-                ->paginate(6);
+                $tasks = Task::where('course_id', $this->course_id)
+                    ->where(function ($query) {
+                        $query->when($this->task_status != '', function ($q) {
+                            $q->orWhere('status', $this->task_status);
+                        });
+                    })
+                    ->whereMonth('created_at', $this->time)
+                    ->orderBy('updated_at', 'desc')
+                    ->get();
+                // ->paginate(6);
                 break;
             case 'year':
                 $this->time = $now->year;
-                $tasks = Task::where('course_id',$this->course_id)
-                ->where(function ($query) {
-                    $query->when($this->task_status != '', function ($q) {
-                        $q->orWhere('status',$this->task_status);
-                    });
-                })
-                ->whereYear('created_at',$this->time)
-                ->orderBy('updated_at','desc')
-                ->paginate(6);
+                $tasks = Task::where('course_id', $this->course_id)
+                    ->where(function ($query) {
+                        $query->when($this->task_status != '', function ($q) {
+                            $q->orWhere('status', $this->task_status);
+                        });
+                    })
+                    ->whereYear('created_at', $this->time)
+                    ->orderBy('updated_at', 'desc')
+                    ->get();
+                //->paginate(6);
                 break;
             case '':
                 $this->time = "";
-                $tasks = Task::where('course_id',$this->course_id)
-                ->where(function ($query) {
-                    $query->when($this->task_status != '', function ($q) {
-                        $q->orWhere('status',$this->task_status);
-                    });
-                })
-                ->orderBy('updated_at','desc')
-                ->paginate(6);
-                break; 
+                $tasks = Task::where('course_id', $this->course_id)
+                    ->where(function ($query) {
+                        $query->when($this->task_status != '', function ($q) {
+                            $q->orWhere('status', $this->task_status);
+                        });
+                    })
+                    ->orderBy('updated_at', 'desc')
+                    ->get();
+                //->paginate(6);
+                break;
         }
-        
-    
+
+
         return view('livewire.detail-course', compact('tasks'));
     }
 
 
     public function getTime($time)
     {
-        $this->timeWhere =  $time;
+        $this->timeWhere = $time;
     }
 
-    public function filterByStatus($status){
+    public function filterByStatus($status)
+    {
         $this->task_status = $status;
         $this->page = 1;
     }
+
     public function loadDataDetail($id)
     {
         $this->course = Course::find($id);
         $this->position = 'detail_c';
         $this->cancelUpdate();
     }
+
     public function loadDataTask($id)
     {
         $this->course = Course::find($id);
         $this->position = 'task_c';
         $this->cancelUpdate();
     }
+
     public function loadNewTask($id)
     {
         $this->course = Course::find($id);
         $this->position = 'new_task';
         $this->cancelUpdate();
     }
+
     public function edit($id)
     {
         $data = Course::findOrFail($id);
@@ -177,24 +189,25 @@ class DetailCourse extends Component
 
         $this->emit('loadData');
     }
-    public function update( )
+
+    public function update()
     {
         $teacher = Auth::user()->teacher;
-        if($teacher){
+        if ($teacher) {
             $this->teacher_id = $teacher->id;
         }
-        if(!is_null($this->teacher_id)){
-        //    $this->content = $content;
+        if (!is_null($this->teacher_id)) {
+            //    $this->content = $content;
 
             $validation = $this->validate([
-                'name'	=>	'required',
+                'name' => 'required',
                 'description' => 'required',
                 'content' => 'required',
                 'status' => 'required',
-               // 'period_id' => 'required',
+                // 'period_id' => 'required',
                 //'level_id' => 'required',
                 //'subject_id' => 'required',
-            ],[
+            ], [
                 'name.required' => 'Campo obligatorio.',
                 'description.required' => 'Campo obligatorio.',
                 'content.required' => 'Campo obligatorio.',
@@ -215,23 +228,23 @@ class DetailCourse extends Component
             }
 
             $data->update([
-                'teacher_id'=>$this->teacher_id,
-                'name'=>$this->name,
-                'description'=>$this->description,
-                'career'=> $this->career,
-                'url_image'=> $path,
-                'content'=> $this->content,
-                'status'=> $this->status,
+                'teacher_id' => $this->teacher_id,
+                'name' => $this->name,
+                'description' => $this->description,
+                'career' => $this->career,
+                'url_image' => $path,
+                'content' => $this->content,
+                'status' => $this->status,
                 //'academic_period_id'=> $this->period_id,
                 //'level_id'=> $this->level_id,
                 //'subject_id'=> $this->subject_id,
             ]);
 
-            $this->alert('success', 'Curso actualizada con exíto.',[ 'showCancelButton' =>  false, ]);
+            $this->alert('success', 'Curso actualizada con exíto.', ['showCancelButton' => false,]);
             $this->edit($this->data_id);
 
-        }else{
-            $this->alert('warning', 'Su usuario no esta registrado como profesor.',[ 'showCancelButton' =>  false, ]);
+        } else {
+            $this->alert('warning', 'Su usuario no esta registrado como profesor.', ['showCancelButton' => false,]);
         }
     }
 
@@ -253,18 +266,18 @@ class DetailCourse extends Component
     public function storeTask()
     {
         $teacher = Auth::user()->teacher;
-        if($teacher){
+        if ($teacher) {
             $this->teacher_id = $teacher->id;
         }
-        if(!is_null($this->teacher_id)){
+        if (!is_null($this->teacher_id)) {
             $validation = $this->validate([
-                'title_t'	=>	'required',
+                'title_t' => 'required',
                 'description_t' => 'required',
-            //    'url_image_t' => 'required|image',
+                //    'url_image_t' => 'required|image',
                 'start_date_t' => 'required',
                 'end_date_t' => 'required',
                 'hour_t' => 'required',
-            ],[
+            ], [
                 'title_t.required' => 'Campo obligatorio.',
                 'description_t.required' => 'Campo obligatorio.',
                 'start_date_t.required' => 'Campo obligatorio.',
@@ -273,17 +286,17 @@ class DetailCourse extends Component
                 'course_id_t.required' => 'Campo obligatorio.',
             ]);
 
-           // $name = "file-" . time() . '.' .  $this->url_image_t->getClientOriginalExtension();
+            // $name = "file-" . time() . '.' .  $this->url_image_t->getClientOriginalExtension();
             //$path =  $this->url_image_t->storeAs('/',$name,'tasks');
 
-            $data =  [
-                'name'=>$this->title_t,
-                'description'=>$this->description_t,
-                'start_date'=> $this->start_date_t,
-                'end_date'=> $this->end_date_t,
-                'end_time'=> $this->hour_t,
-               // 'url_image'=> 'tasks/'.$path,
-                'course_id'=>  $this->course->id ,
+            $data = [
+                'name' => $this->title_t,
+                'description' => $this->description_t,
+                'start_date' => $this->start_date_t,
+                'end_date' => $this->end_date_t,
+                'end_time' => $this->hour_t,
+                // 'url_image'=> 'tasks/'.$path,
+                'course_id' => $this->course->id,
             ];
 
             $task = Task::create($data);
@@ -291,19 +304,21 @@ class DetailCourse extends Component
             //$this->alert('success', 'Tarea creada con exíto.',[ 'showCancelButton' =>  false, ]);
             $this->dispatchBrowserEvent('data', ['task_id' => $task->id]);
             $this->resetInputFieldsTask();
-           // $this->position = 'task_c';
-        }else{
-            $this->alert('warning', 'Su usuario no esta registrado como profesor.',[ 'showCancelButton' =>  false, ]);
+            // $this->position = 'task_c';
+        } else {
+            $this->alert('warning', 'Su usuario no esta registrado como profesor.', ['showCancelButton' => false,]);
         }
     }
 
-    public function finalizeTask(){
+    public function finalizeTask()
+    {
         $this->emit('taskHide');
         $this->emit('taskStore');
-        $this->alert('success', 'Tarea creada con exíto.',[ 'showCancelButton' =>  false, ]);
+        $this->alert('success', 'Tarea creada con exíto.', ['showCancelButton' => false,]);
     }
 
-    public function  editTask($id){
+    public function editTask($id)
+    {
         $task = Task::find($id);
         $this->task_id = $task->id;
         $this->emit('loadData', $task->id);
@@ -316,19 +331,21 @@ class DetailCourse extends Component
         $this->end_date_t = $task->end_date->format('Y-m-d');
         $this->hour_t = $task->end_time->format('H:i');
     }
-    public function updateTask(){
+
+    public function updateTask()
+    {
         $teacher = Auth::user()->teacher;
-        if($teacher){
+        if ($teacher) {
             $this->teacher_id = $teacher->id;
         }
-        if(!is_null($this->teacher_id)){
+        if (!is_null($this->teacher_id)) {
             $validation = $this->validate([
-                'title_t'	=>	'required',
+                'title_t' => 'required',
                 'description_t' => 'required',
                 'start_date_t' => 'required',
                 'end_date_t' => 'required',
                 'hour_t' => 'required',
-            ],[
+            ], [
                 'title_t.required' => 'Campo obligatorio.',
                 'description_t.required' => 'Campo obligatorio.',
                 'start_date_t.required' => 'Campo obligatorio.',
@@ -339,36 +356,38 @@ class DetailCourse extends Component
 
             $task = Task::find($this->task_id);
             $task->update([
-                'name'=>$this->title_t,
-                'description'=>$this->description_t,
-                'start_date'=> $this->start_date_t,
-                'end_date'=> $this->end_date_t,
-                'end_time'=> $this->hour_t,
-                'course_id'=>  $this->course->id ,
+                'name' => $this->title_t,
+                'description' => $this->description_t,
+                'start_date' => $this->start_date_t,
+                'end_date' => $this->end_date_t,
+                'end_time' => $this->hour_t,
+                'course_id' => $this->course->id,
             ]);
 
             $this->resetInputFieldsTask();
             $this->emit('updateData');
             $this->task_title = 'Nueva';
             $this->position = 'task_c';
-            $this->alert('success', 'Tarea actualizada con exito.',[ 'showCancelButton' =>  false, ]);
-        }else{
-            $this->alert('warning', 'Su usuario no esta registrado como profesor.',[ 'showCancelButton' =>  false, ]);
+            $this->alert('success', 'Tarea actualizada con exito.', ['showCancelButton' => false,]);
+        } else {
+            $this->alert('warning', 'Su usuario no esta registrado como profesor.', ['showCancelButton' => false,]);
         }
 
     }
 
-    public function cancelUpdate(){
+    public function cancelUpdate()
+    {
         $this->resetInputFieldsTask();
         $this->emit('updateData');
     }
 
-    public function updateTaskStatus($id, $status){
+    public function updateTaskStatus($id, $status)
+    {
         $task = Task::find($id);
         $task->update([
-           'status' => $status
+            'status' => $status
         ]);
-        $this->alert('success', $status,[ 'showCancelButton' =>  false, ]);
+        $this->alert('success', $status, ['showCancelButton' => false,]);
         $this->position = 'task_c';
     }
 

@@ -2,7 +2,7 @@
     <div class="m-header">
         <a class="mobile-menu" id="mobile-collapse" href="javascript:void(0);"><span></span></a>
         <a href="javascript: return void();" class="b-brand">
-            <img height="70" width="140" src="{{asset('img/logo_pantallas.png')}}" alt="">
+            <img height="45" width="160" src="{{asset('logo_large.png')}}" alt="" >
 
         </a>
         <a href="javascript:void(0);" class="mob-toggler">

@@ -330,20 +330,20 @@
                                                         <img class=" img-radius m-r-5"
                                                              width="40" height="40" src="{{asset($course->url_image)}}"
                                                              alt="1"/></a>
-                                                             <p hidden>{{$teacher_auth = \Illuminate\Support\Facades\Auth::user()->teacher}}</p> 
+                                                             <p hidden>{{$teacher_auth = \Illuminate\Support\Facades\Auth::user()->teacher}}</p>
                                                              @if($teacher_auth)
                                                              <a href="{{route('deliverytasks')}}{{'?course='.$course->id.'&task='.$task->id}}">{{count($task->taskdeliveries)}} entregas</a>
                                                              @endif
                                                 </div>
                                                 <div class="task-board">
-                                                 
+
                                                     <button class="btn btn-sm  btn-info"
                                                             wire:click="editTask({{$task->id}})"><i
                                                             class="fa fa-pencil-alt"></i>&nbsp;Editar
                                                     </button>
                                                     <div class="dropdown-secondary dropdown">
                                                         <button
-                                                            class="btn waves-effect waves-light btn-sm dropdown-toggle 
+                                                            class="btn waves-effect waves-light btn-sm dropdown-toggle
                                                             {{$task->status == 'Abierto' ? 'btn-primary' : ''}}
                                                             {{$task->status == 'Finalizado' ? 'btn-success' : ''}}
                                                             {{$task->status == 'Cancelado' ? 'btn-warning' : ''}}
@@ -376,7 +376,7 @@
                         <div class="row">
                            <div class="col-md-12">
                                <div class="float-right">
-                                   {{$tasks->links()}}
+                                   {{--$tasks->links()--}}
                                </div>
                            </div>
                         </div>

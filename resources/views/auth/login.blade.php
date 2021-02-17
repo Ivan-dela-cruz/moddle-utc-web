@@ -8,8 +8,8 @@
 			<div class="row align-items-center text-center">
 				<div class="col-md-12">
 					<div class="card-body">
-						 <img height="100" width="200" src="{{asset('img/logo_pantallas.png')}}" alt="" class="img-fluid mb-4">
-                       
+						 <img height="100" width="200" src="{{asset('logo_large.png')}}" alt="" class="img-fluid mb-4">
+
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
                             <div class="form-group mb-3">
