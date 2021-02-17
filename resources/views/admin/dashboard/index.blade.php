@@ -16,8 +16,8 @@
                                     <i class="fas fa-user-graduate f-36 text-c-purple"></i>
                                 </div>
                                 <div class="col-auto">
-                                    <h6 class="text-muted m-b-10">Student</h6>
-                                    <h2 class="m-b-0">45</h2>
+                                    <h6 class="text-muted m-b-10">Estudiantes</h6>
+                                    <h2 class="m-b-0">{{\App\Student::count()}}</h2>
                                 </div>
                             </div>
                         </div>
@@ -31,8 +31,8 @@
                                     <i class="fas fa-users f-36 text-c-red"></i>
                                 </div>
                                 <div class="col-auto">
-                                    <h6 class="text-muted m-b-10">Parents</h6>
-                                    <h2 class="m-b-0">9</h2>
+                                    <h6 class="text-muted m-b-10">Cursos</h6>
+                                    <h2 class="m-b-0">{{\App\Course::count()}}</h2>
                                 </div>
                             </div>
                         </div>
@@ -46,8 +46,8 @@
                                     <i class="fas fa-user-tie f-36 text-c-green"></i>
                                 </div>
                                 <div class="col-auto">
-                                    <h6 class="text-muted m-b-10">Teacher</h6>
-                                    <h2 class="m-b-0">5</h2>
+                                    <h6 class="text-muted m-b-10">Profesores</h6>
+                                    <h2 class="m-b-0">{{\App\Teacher::count()}}</h2>
                                 </div>
                             </div>
                         </div>
@@ -61,8 +61,8 @@
                                     <i class="fas fa-book-open f-36 text-c-blue"></i>
                                 </div>
                                 <div class="col-auto">
-                                    <h6 class="text-muted m-b-10">Subject</h6>
-                                    <h2 class="m-b-0">25</h2>
+                                    <h6 class="text-muted m-b-10">Materias</h6>
+                                    <h2 class="m-b-0">{{\App\Subject::count()}}</h2>
                                 </div>
                             </div>
                         </div>
