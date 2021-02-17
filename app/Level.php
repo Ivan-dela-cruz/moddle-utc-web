@@ -20,6 +20,8 @@ class Level extends Model
         static::addGlobalScope(new StatusScope);
     }
 
-    
+    public function periods(){
+        return $this->hasMany(PeriodStudent::class,'level_id');
+    }
 }
 

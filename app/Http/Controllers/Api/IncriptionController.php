@@ -41,11 +41,11 @@ class IncriptionController extends Controller
         ->get();
 
         $list = new Collection();
-       
+
         foreach($periods as $k => $v){
             $p = $periods->where('period_id',$v->period_id);
             if(count($p)>1){
-                unset($periods[$k]); 
+                unset($periods[$k]);
             }
         }
         foreach($periods as $period){
@@ -82,7 +82,7 @@ class IncriptionController extends Controller
             )
         ->where('students.id',$student->id)
         ->where('academic_periods.id',$id)
-        ->orderBy('levels.name','DESC')
+        ->orderBy('levels.id','DESC')
         ->groupBy('name')
         ->get();
 
@@ -97,7 +97,7 @@ class IncriptionController extends Controller
     {
         $user_id =  Auth::user()->id;
         $student = Student::where('user_id',$user_id)->first(['id']);
-     
+
         $subjects_students = DB::table('period_students')
         ->join('students','period_students.student_id','=','students.id')
         ->join('academic_periods','period_students.period_id','=','academic_periods.id')

@@ -16,4 +16,8 @@ class PeriodStudent extends Model
         'status'
     ];
 
+    public function levels(){
+        return $this->belongsTo(Level::class,'level_id');
+    }
+
 }
