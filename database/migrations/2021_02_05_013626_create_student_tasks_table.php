@@ -23,6 +23,7 @@ class CreateStudentTasksTable extends Migration
             $table->unsignedBigInteger('task_id');
             $table->foreign('task_id')->references('id')->on('tasks');
             $table->enum('status', ['revisado','anulado'])->default('revisado');
+            $table->float('note')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

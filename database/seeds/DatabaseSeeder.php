@@ -15,8 +15,8 @@ class DatabaseSeeder extends Seeder
         $this->call(CantonSeeder::class);
         $this->call(ParishSeeder::class);
          $this->call(RolesSeeder::class);
-         $this->call(LevelSeeder::class);
-         $this->call(PeriodSeeder::class);
-         $this->call(SubjectSeeder::class);
+        //$this->call(LevelSeeder::class);
+        // $this->call(PeriodSeeder::class);
+        // $this->call(SubjectSeeder::class);
     }
 }

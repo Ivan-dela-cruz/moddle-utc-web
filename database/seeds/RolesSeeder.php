@@ -90,6 +90,12 @@ class RolesSeeder extends Seeder
         Permission::create(['name' => 'update_education', 'modulo' => 'Educación Continua', 'alias' => 'Modificar']);
         Permission::create(['name' => 'destroy_education', 'modulo' => 'Educación Continua', 'alias' => 'Eliminar']);
 
+         //permisos para el crud de vinculacion
+         Permission::create(['name' => 'create_vp', 'modulo' => 'Vinculación', 'alias' => 'Crear']);
+         Permission::create(['name' => 'read_vp', 'modulo' => 'Vinculación', 'alias' => 'Leer ']);
+         Permission::create(['name' => 'update_vp', 'modulo' => 'Vinculación', 'alias' => 'Modificar']);
+         Permission::create(['name' => 'destroy_vp', 'modulo' => 'Vinculación', 'alias' => 'Eliminar']);
+
 
         /// role super admin
         $role = Role::create(['name' => 'SuperAdmin', 'description' => 'Rol de superadmin', 'status' => true]);

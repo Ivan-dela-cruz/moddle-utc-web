@@ -9,7 +9,7 @@ class StudentTask extends Model
     use SoftDeletes;
     protected $table = 'student_tasks';
     protected $fillable = [
-        'description', 'course_id', 'student_id', 'task_id','status'
+        'description', 'course_id', 'student_id', 'task_id','status','note'
     ];
     
     public function course(){
