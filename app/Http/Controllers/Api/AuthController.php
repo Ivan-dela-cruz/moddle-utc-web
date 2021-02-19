@@ -16,6 +16,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
 use Exception;
+
 class AuthController extends Controller
 {
     public function login(Request $request)
@@ -27,14 +28,14 @@ class AuthController extends Controller
                 'message' => 'invalid credentials'
             ], 401);
         }
-        $user =  Auth::user();
+        $user = Auth::user();
         //LIMPIAR DATA DE USER
         unset($user["email_verified_at"]);
         unset($user["created_at"]);
         unset($user["updated_at"]);
 
         //ADJUNTAR LA DATA DEL ESTUDAINTE A LA DATA DE USER
-        $student = Student::where('user_id',$user->id)->first(['id','name','last_name','dni','url_image']);
+        $student = Student::where('user_id', $user->id)->first(['id', 'name', 'last_name', 'dni', 'url_image']);
         $user["url_image"] = $student->url_image;
         $user["name"] = $student->name;
         $user["last_name"] = $student->last_name;
@@ -94,14 +95,17 @@ class AuthController extends Controller
     public function profileUser(Request $request)
     {
         $user = User::find(Auth::user()->id);
+        $temp_image = $user->url_image;
         $user->name = $request->name;
-      //  $user->last_name = $request->last_name;
+        $user->last_name = $request->last_name;
 
         if ($request->url_image) {
             if ($user->url_image != $request->url_image) {
-                $this->destroyFile($user->url_image);
-                $user->url_image = $this->UploadImage($request);
+              //  $this->destroyFile($user->url_image);
+                $user->url_image = $this->UploadImage($request, $temp_image);
             }
+        }else{
+            $user->url_image = $temp_image;
         }
         $user->update();
         return response()->json([
@@ -111,66 +115,89 @@ class AuthController extends Controller
             'last_name' => $user->last_name
         ], 200);
     }
+
     public function getProfile(Request $request)
     {
-        try{
+        try {
             $user = User::find(Auth::user()->id);
             $student = Student::where('user_id', $user->id)->first();
-            if(is_null($student)){
+
+            $data = [
+                'id'=>$student->id,
+                'user_id'=>$student->user_id,
+                'name'=>$student->name,
+                'last_name'=>$student->last_name,
+                'url_image'=>$student->url_image,
+                'dni'=>$student->dni,
+                'passport'=>$student->passport,
+                'instruction'=>$student->instruction,
+                'marital_status'=>$student->marital_status,
+                'birth_date'=>$student->birth_date,
+                'phone'=>$student->phone,
+                'email'=>$student->email,
+                'status'=>$student->status,
+                'address' => $user->address->address,
+                'province' => $user->address->parish->canton->province->name_province,
+                'canton' => $user->address->parish->canton->name_canton,
+                'parish' => $user->address->parish->name_parish,
+                'gender' => ''
+            ];
+
+            if (is_null($student)) {
                 return response()->json([
                     'success' => false,
                     'code' => 'PROFILE_NOT_FOUND',
                     'status' => 404,
-                ],404);
-            }else{
-                $levels = Level::where('status',1)->count();
-                $courses = Course::where('status',1)->count();
+                ], 404);
+            } else {
+                $levels = Level::where('status', 1)->count();
+                $courses = Course::where('status', 1)->count();
                 return response()->json([
-                    'profile' => $student,
+                    'profile' => $data,
                     'user' => $user,
                     'success' => true,
                     'code' => 'PROFILE_FOUND',
                     'status' => 200,
-                    'level'=>$levels,
-                    'courses'=>$courses
-                ],200);
+                    'level' => $levels,
+                    'courses' => $courses
+                ], 200);
             }
-        }catch(Exception $e){
+        } catch (Exception $e) {
             return response()->json([
 
                 'success' => false,
                 'code' => 'ERROR_PROFILE',
                 'status' => 500,
-            ],500);
+            ], 500);
         }
     }
 
     public function ChangePassword(Request $request)
     {
-        try{
+        try {
             $user = User::find(Auth::user()->id);
-            if(is_null($user)){
+            if (is_null($user)) {
                 return response()->json([
                     'success' => false,
                     'code' => 'USER_NOT_FOUND',
                     'status' => 404,
-                ],404);
-            }else{
+                ], 404);
+            } else {
                 $user->password = $this->generatePassword($request->password);
                 $user->update();
                 return response()->json([
                     'success' => true,
                     'code' => 'PASSWORD_CHANGED',
                     'status' => 200,
-                    'user'=>$user,
-                ],200);
+                    'user' => $user,
+                ], 200);
             }
-        }catch(Exception $e){
+        } catch (Exception $e) {
             return response()->json([
                 'success' => false,
                 'code' => 'ERROR_CHANGE_PASSWORD',
                 'status' => 500,
-            ],500);
+            ], 500);
         }
 
     }
@@ -182,16 +209,16 @@ class AuthController extends Controller
     }
 
 
-    public function UploadImage(Request $request)
+    public function UploadImage(Request $request, $temp_image)
     {
         $url_file = "img/users/";
-        if ($request->url_image && $request->url_image != '#') {
+        if ($request->url_image && $request->url_image != $temp_image) {
             $foto = time() . '.jpg';
             file_put_contents('img/users/' . $foto, base64_decode($request->url_image));
             return $url_file . $foto;
 
         } else {
-            return "#";
+            return $temp_image;
         }
         /*if ($request->url_image && $request->url_image != '#') {
             $image = $request->get('url_image');
@@ -203,7 +230,8 @@ class AuthController extends Controller
         }
         */
     }
-     public function destroyFile($path_file)
+
+    public function destroyFile($path_file)
     {
         if (File::exists(public_path($path_file))) {
 
