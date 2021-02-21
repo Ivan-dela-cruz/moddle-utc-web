@@ -78,7 +78,7 @@
 <!-- profile header end -->
 <!-- profile body start -->
 <div class="row">
-    <div class="col-md-8 order-md-2">
+    <div class="col-md-12 order-md-2">
         <div class="tab-content" id="myTabContent" wire:ignore>
             
             <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
@@ -210,7 +210,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4 order-md-1">
+    <div hidden class="col-md-4 order-md-1">
         <div class="card new-cust-card" wire:ignore>
             <div class="card-header">
                 <h5>Compañeros de Curso</h5>
