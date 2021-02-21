@@ -48,6 +48,7 @@ class="{{request()->is('/ruta')?'active':''}}"
                         <span class="pcoded-mtext">Panel de Control</span>
                     </a>
                 </li>
+                
 
 
                 @canany(['read_role','create_user','read_user'])
@@ -79,7 +80,14 @@ class="{{request()->is('/ruta')?'active':''}}"
                     <ul class="pcoded-submenu">
                         <li><a href="{{route('students')}}">Estudiantes</a></li>
                         <li><a href="{{route('levelstudent')}}">Inscripciones nivel</a></li>
-                    
+                       {{---
+                        <p hidden>{{$teacher = \Illuminate\Support\Facades\Auth::user()->teacher}}</p> 
+                       
+                        @if($teacher)
+                            <li class="nav-item "><a href="{{route('notes')}}" class="nav-link ">Notas</a> </li>
+                          
+                        @endif
+                       ---}}
                     </ul>
                 </li>
                 @endcanany

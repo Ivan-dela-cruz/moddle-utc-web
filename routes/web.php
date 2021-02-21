@@ -26,6 +26,7 @@ Route::namespace('Admin')->group(function () {
         //CURSOS
         Route::group(['middleware' => ['permission:create_course|update_course|destroy_course|read_course']], function () {
             Route::get('dashboard/courses','DashboardController@courses')->name('courses');
+            Route::get('dashboard/notes','DashboardController@notes')->name('notes');
             Route::get('dashboard/courses/detail','DashboardController@detailByCourses')->name('detailcourses');
         });
         //PERIODOS

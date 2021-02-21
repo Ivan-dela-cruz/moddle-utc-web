@@ -69,6 +69,7 @@
                                 </thead>
                                 <tbody class="text-muted">
                                     <p hidden>{{$cont = 1}}</p>
+                                    <p hidden> {{\Carbon\Carbon::setLocale('es')}}</p>
                                     @foreach($task->taskdeliveries as $delivery)
                                         <tr>
                                             <td>{{$cont}}</td>
@@ -146,11 +147,13 @@
                     </div>
                     <div class="card-body task-comment">
                         <div class="m-b-20">
-                            <h6>Nota</h6>
-                            <hr>
+                         
+                            <h6>Observación en la entrega</h6>
                             <p>{{$delivery_select->description}}</p>
-                            <h6>Archivos adjuntos</h6>
                             <hr>
+                           
+                            <h6>Archivos adjuntos</h6>
+                          
                             <ul class="media-list p-0">                             
                                 @foreach($delivery_select->files as $file_d)
                                     <li class="media d-flex m-b-15">
@@ -170,6 +173,15 @@
                                     </li>
                                 @endforeach
                             </ul>
+                            <h6>Nota</h6>
+                            <div class="form-inline w-auto">
+                                <input class="form-control" placeholder="Ingrese nota"  type="number" wire:model="note_new">
+
+                                <button type="button" class="btn btn-primary btn-md" wire:click="saveNote({{$delivery_select->id}})"> Guardar</button>
+                            </div>
+                            @error('note_new')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                 </div>

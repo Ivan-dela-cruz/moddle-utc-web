@@ -20,6 +20,14 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a wire:click="loadNotes({{ $course->id }})" href="#notes_c" data-toggle="tab"
+                           aria-expanded="{{$position == 'notes_c'?true:false}}"
+                           class="nav-link {{$position == 'notes_c'?'active':''}}">
+                            <i class="fas fa-archive f-18"></i>
+                            <span class="d-none d-lg-inline-block m-l-10">Notas</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a wire:click="loadDataTask({{ $course->id }})" href="#task_c" data-toggle="tab"
                            aria-expanded="{{$position == 'task_c'?true:false}}"
                            class="nav-link {{$position == 'task_c'?'active':''}} ">
@@ -58,7 +66,7 @@
                                                  data-ride="carousel">
                                                 <div class="carousel-inner">
                                                     <div class="carousel-item active">
-                                                        <img src="{{asset($course->url_image)}}" class="d-block"
+                                                        <img src="{{asset($course->url_image)}}" class="img-fluid"
                                                              alt="Product images">
                                                     </div>
                                                 </div>
@@ -237,6 +245,78 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane {{$position == 'notes_c'?'show active':''}}" id="notes_c">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-header-text"><i class="fas fa-plus m-r-5"></i> Lista de Notas del curso</h5>
+                        
+                    </div>
+                    <div class="card-body task-comment">
+                        <div class="m-b-20">
+        
+                            <div class="table-responsive m-t-20">
+                                @if($position=="notes_c")
+                                   
+                                    <table class="table m-b-0 f-14 b-solid requid-table">
+                                        <thead>
+                                            <tr class="text-uppercase">
+                                                <th>#</th>
+                                                <th>Paralelo</th>
+                                                <th>Estudiantes</th>
+                                                @foreach($listasks as $key => $value)
+                                                <th>
+                                                    <a  data-toggle="tooltip"
+                                                    title="{{$value->name}}"
+                                                    href="javascript:void(0);">
+                                                        {{Illuminate\Support\Str::limit($value->name,10)}}
+                                                    </a>
+                                                </th>
+                                                @endforeach
+                                                <th>Nota final</th>
+                                            
+                                            </tr>
+                                        </thead>
+                                        <tbody class="text-muted">
+                                            <p hidden>{{$cont = 1}}</p>
+                                            <p hidden> {{\Carbon\Carbon::setLocale('es')}}</p>
+                                            @foreach($students as $student)
+                                                <tr>
+                                                    <p hidden>{{$prom = 0}}</p>
+                                                    <td>{{$cont}}</td>
+                                                    <td>{{$student->parallel}}</td>
+                                                    <td><a  href="javascript:void(0);">{{$student->name}} {{$student->last_name}}</a></td>
+                                                    @foreach($listasks as $k => $v)
+                                                    <td class="">{{$note_s =  $v->taskdeliveries()->where('student_id',$student->id)->where('task_id',$v->id)->sum('note')}}</td>
+                                                    <p hidden>{{$prom  = $prom + $note_s}}</p>
+                                                    @endforeach
+                                                    <td>
+                                                        @if(count($listasks)>0)
+                                                            {{round($prom/count($listasks), 2)}}
+                                                            @if(round($prom/count($listasks), 2)>= 9)
+                                                                 <span class="text-white badge badge-success">Exonerado</span>
+                                                            @elseif(round($prom/count($listasks), 2)>= 7)
+                                                                <span class="text-white badge badge-info">Aprobado</span>
+                                                            @else
+                                                                <span class="text-white badge badge-danger">Reprobado</span>
+                                                            @endif
+                                                        @else
+                                                            0
+                                                        @endif
+                                                       
+                                                    </td>
+                                                
+                                                </tr>
+                                                <p hidden>{{$cont++}}</p>
+                                            @endforeach
+                                        
+                                        </tbody>
+                                    </table>
+                                @endif
                             </div>
                         </div>
                     </div>

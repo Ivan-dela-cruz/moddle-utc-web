@@ -167,4 +167,9 @@ class DashboardController extends Controller
         }
 
     }
+    public function notes()
+    {
+        return view('admin.dashboard.notes.index');
+    }
+
 }
