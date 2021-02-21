@@ -10,6 +10,7 @@ use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class DetailCourse extends Component
 {
@@ -38,7 +39,9 @@ class DetailCourse extends Component
     public $position = 'detail_c', $task_title = 'Nueva', $task_id, $task_status = '';
     //VARIABLE FILTRO POR TIEMPOS
     public $time, $timeWhere = '';
-
+    
+    //TAREAS PARA NOTAS
+    public $listasks = [];
 
     public function mount(Request $request)
     {
@@ -137,6 +140,25 @@ class DetailCourse extends Component
         return view('livewire.detail-course', compact('tasks'));
     }
 
+    public function loadNotes($id)
+    {
+        $course_f = Course::find($id);
+        $this->listasks = $course_f->tasks()->get();
+       
+        $this->students = DB::table('students')
+            ->join('period_students', 'students.id', 'period_students.student_id')
+            ->where('period_students.period_id', $course_f->academic_period_id)
+            ->where('period_students.level_id', $course_f->level_id)
+            ->where('period_students.subject_id', $course_f->subject_id)
+            ->where('period_students.status', 1)
+           // ->where('period_students.parallel', $this->parallel)
+            ->select('students.*','period_students.parallel')
+           // ->groupBy('period_students.parallel')
+            ->get();
+          
+        $this->position = 'notes_c';
+
+    }
 
     public function getTime($time)
     {

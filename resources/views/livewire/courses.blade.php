@@ -204,13 +204,12 @@
                                     <div class="float-right span-content">
 
                                         <a href="javascript:void(0);"
-                                           class="btn waves-effect waves-light btn-default {{$task->status == 1 ? 'badge-success':'badge-danger'}} rounded-circle mr-0 "
+                                           class="btn waves-effect waves-light btn-default badge-success rounded-circle mr-0 "
                                            data-toggle="tooltip"
                                            data-placement="top"
                                            title="Entrega {{$task->end_date}}"
                                            data-original-title="{{$task->start_date}} - {{$task->end_date}}">
-                                            <i style="width: 15px; height: 15px;"
-                                               class="{{$task->status == 1 ? 'feather icon-check':'feather icon-x'}}"></i>
+                                            {{count($task->files)}}
                                         </a>
                                     </div>
                                 </div>
@@ -231,22 +230,13 @@
                                              class="wid-20 rounded mr-1 img-fluid">
                                         <a href="javascript:void(0);">{{$student->name}} {{$student->last_name}}</a>
                                     </div>
-                                    <div class="float-right span-content">
-                                        <a href="#"
-                                           class="btn waves-effect waves-light btn-default badge-danger rounded-circle mr-1"
-                                           data-toggle="tooltip" data-placement="top" title=""
-                                           data-original-title="tooltip on top">1</a>
-                                        <a href="#"
-                                           class="btn waves-effect waves-light btn-default badge-secondary rounded-circle mr-0 "
-                                           data-toggle="tooltip" data-placement="top" title=""
-                                           data-original-title="tooltip on top">3</a>
-                                    </div>
+                                    
                                 </div>
                             @endforeach
                         </div>
                     </div>
                 </div>
-                @if($courses->count() > 0)
+                @if($courses->count() > 10)
                     <div class="row">
                         <div class="col-md-12">
                             <h6>Mis Cursos</h6>

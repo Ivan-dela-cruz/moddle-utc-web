@@ -70,7 +70,7 @@
                 </div>
                 <!-- customar project  end -->
                 <!-- subscribe start -->
-                <div class="col-md-12">
+                <div hidden class="col-md-12">
                     <div class="card">
                         <div class="card-header">
                             <h5>Account summary</h5>
@@ -80,9 +80,8 @@
                         </div>
                     </div>
                 </div>
-                <!-- subscribe end -->
-                <!-- Tasks start -->
-                <div class="col-xl-5 col-md-12">
+              
+                <div hidden class="col-xl-5 col-md-12">
                     <div class="card task-card">
                         <div class="card-header">
                             <h5>Notice</h5>
@@ -118,13 +117,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-7 col-md-12">
+                <div hidden class="col-xl-7 col-md-12">
                     <div class="card overflow-hidden">
                         <div class="card-body bg-c-blue">
                             <div id="absent-chart"></div>
                         </div>
                         <div class="card-footer">
-                            <h6 class="text-muted m-b-30 m-t-15">Students Today's Attendance</h6>
+                            <h6 class="text-muted m-b-30 m-t-15">Students Todays Attendance</h6>
                             <div class="row text-center">
                                 <div class="col-6 border-right">
                                     <h6 class="text-muted m-b-10">Total present student</h6>
@@ -138,9 +137,8 @@
                         </div>
                     </div>
                 </div>
-                <!-- Tasks end -->
-                <!-- subscribe start -->
-                <div class="col-md-12">
+               
+                <div hidden class="col-md-12">
                     <div class="card">
                         <div class="card-header">
                             <h5>Event List </h5>
@@ -150,7 +148,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- subscribe end -->
+                
             </div>
         </div>
     </div>

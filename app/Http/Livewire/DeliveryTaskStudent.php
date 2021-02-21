@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Task;
 use App\Course;
 use App\StudentTask;
+use App\Rules\ValidNote;
 use Illuminate\Http\Request;
 use Livewire\Component;
 use Illuminate\Support\Str;
@@ -15,7 +16,7 @@ class DeliveryTaskStudent extends Component
     ///VARIABLE CNTROL TABS
     public $position = 'detail_c', $task_title = 'Nueva', $task_id, $task,$task_status = '';
     //VARIABLE FILTRO POR TIEMPOS
-    public $time,$timeWhere = '';
+    public $time,$timeWhere = '',$note_new = 0;
 
     public $delivery_select = null;
     public function mount(Request $request)
@@ -32,9 +33,25 @@ class DeliveryTaskStudent extends Component
     }
 
 
+    public function saveNote($id)
+    {
+        $validation = $this->validate([
+            'note_new' => ['required','regex:/^[0-9]+/',new ValidNote]
+        ], [
+            'note_new.required' => 'La nota es obligatoria.',
+            'note_new.regex' => 'La nota debe ser entre 0 y 10.',
+        ]);
+
+        $delivery = StudentTask::find($id);
+     
+        $delivery->note = $this->note_new;
+        $delivery->save();
+        $this->alert('success', 'Nota actualizada con exíto.',[ 'showCancelButton' =>  false, ]);
+    }
     public function selectDelivery($id)
     {
         $this->delivery_select = StudentTask::find($id);
+        $this->note_new =  $this->delivery_select->note;
     }
     public function getIcon($file)
     {

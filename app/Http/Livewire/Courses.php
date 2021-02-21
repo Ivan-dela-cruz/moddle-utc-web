@@ -52,7 +52,7 @@ class Courses extends Component
         ->where('academic_period_id',$this->period_id)
         ->where('level_id',$this->level_id)
         ->where('teacher_id',$this->teacher_id)
-        ->paginate(2);
+        ->paginate(10);
 
 
         if(count($courses)==0){

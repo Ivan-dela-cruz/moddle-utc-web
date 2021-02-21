@@ -89,212 +89,41 @@
 <!-- profile header end -->
 <!-- profile body start -->
 <div class="row">
-    <div class="col-md-8 order-md-2">
+    <div class="col-md-12 order-md-2">
         <div class="tab-content" id="myTabContent" wire:ignore>
             <div class="tab-pane fade {{$position == 'tb_home' ? 'show active' : ''}}" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <div class="card">
-                    <div class="card-header">
-                        <h5 class="font-weight-normal"><a href="#!" class="text-h-primary text-reset"><b class="font-weight-bolder">Josephin Doe</b></a> posted on your timeline</h5>
-                        <p class="mb-0 text-muted">50 minutes ago</p>
-                        <div class="card-header-right">
-                            <div class="btn-group card-option">
-                                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="feather icon-more-horizontal"></i>
-                                </button>
-                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
-                                    <li class="dropdown-item full-card"><a href="#!"><span><i class="feather icon-maximize"></i> maximize</span><span style="display:none"><i class="feather icon-minimize"></i> Restore</span></a></li>
-                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display:none"><i class="feather icon-plus"></i> expand</span></a> </li>
-                                    <li class="dropdown-item reload-card"><a href="#!"><i class="feather icon-refresh-cw"></i> reload</a></li>
-                                    <li class="dropdown-item close-card"><a href="#!"><i class="feather icon-trash"></i> remove</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="#!"><img src="assets/images/profile/bg-1.jpg" alt="" class="img-fluid"></a>
                     <div class="card-body">
-                        <a href="#!" class="text-h-primary">
-                            <h6>The new Lorem Ipsum is simply</h6>
-                        </a>
-                        <p class="text-muted mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
-                            printer took a galley of type and scrambled it to make a type specimen book.</p>
-                    </div>
-                    <div class="card-body border-top border-bottom">
-                        <ul class="list-inline m-0">
-                            <li class="list-inline-item"><a href="#!" class="text-danger text-h-danger"><i class="feather icon-heart-on mr-2"></i>Like</a></li>
-                            <li class="list-inline-item"><a href="#!" class="text-muted text-h-primary"><i class="feather icon-message-square mr-2"></i>Comment</a></li>
-                            <li class="list-inline-item"><a href="#!" class="text-muted text-h-primary"><i class="feather icon-share-2 mr-2"></i>Share</a></li>
-                        </ul>
-                    </div>
-                    <div class="card-body">
-                        <div class="row justify-content-between mb-4">
-                            <div class="col-auto"><a href="#!" class="text-muted text-h-primary">Comment (50)</a></div>
-                            <div class="col-auto"><a href="#!" class="text-muted text-h-primary">See All</a></div>
-                        </div>
-                        <div class="media mb-0">
-                            <img src="assets/images/user/avatar-2.jpg" alt="user image" class="img-radius wid-30 align-top m-r-15">
-                            <div class="media-body">
-                                <a href="#!">
-                                    <h6 class="mb-0 text-h-primary">Alex aasa Thompson</h6>
-                                </a>
-                                <p class="m-b-0">Looking Very nice type and aasas asasa scrambled
-                                    <a href="#!" class="text-muted text-h-danger ml-1"><small>Like</small></a>
-                                    <a href="#!" class="text-muted text-h-primary ml-1"><small>Comment</small></a>
-                                </p>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="media mb-0">
-                            <img src="assets/images/user/avatar-3.jpg" alt="user image" class="img-radius wid-30 align-top m-r-15">
-                            <div class="media-body">
-                                <a href="#!">
-                                    <h6 class="mb-0 text-h-primary">Alex Thompson</h6>
-                                </a>
-                                <p class="m-b-0">Nice Pic printing and typesetting industry
-                                    <a href="#!" class="text-muted text-h-danger ml-1"><small>Like</small></a>
-                                    <a href="#!" class="text-muted text-h-primary ml-1"><small>Comment</small></a>
-                                </p>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="media mb-0">
-                            <img src="assets/images/user/avatar-1.jpg" alt="user image" class="img-radius wid-40 align-top m-r-15">
-                            <div class="media-body">
-                                <div class="form-group">
-                                    <label class="floating-label" for="comment1">Write comment hear !. . .</label>
-                                    <input type="text" class="form-control" id="comment1">
-                                    <div class="form-icon">
-                                        <button class="btn btn-primary btn-icon">
-                                            <i class="feather icon-message-circle"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <h6>Mi tareas entregadas</h6>
+                         <p hidden>{{ $ta = \Illuminate\Support\Facades\Auth::user()->student->taskdeliveries}}</p>   
+    
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="font-weight-normal"><a href="#!" class="text-h-primary text-reset"><b class="font-weight-bolder">Josephin Doe</b></a> posted on your timeline</h5>
-                        <p class="mb-0 text-muted">50 minutes ago</p>
-                        <div class="card-header-right">
-                            <div class="btn-group card-option">
-                                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="feather icon-more-horizontal"></i>
-                                </button>
-                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
-                                    <li class="dropdown-item full-card"><a href="#!"><span><i class="feather icon-maximize"></i> maximize</span><span style="display:none"><i class="feather icon-minimize"></i>
-														Restore</span></a></li>
-                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display:none"><i class="feather icon-plus"></i> expand</span></a>
-                                    </li>
-                                    <li class="dropdown-item reload-card"><a href="#!"><i class="feather icon-refresh-cw"></i> reload</a></li>
-                                    <li class="dropdown-item close-card"><a href="#!"><i class="feather icon-trash"></i> remove</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="#!"><img src="assets/images/profile/bg-2.jpg" alt="" class="img-fluid"></a>
+                <div class="card user-profile-list">
                     <div class="card-body">
-                        <a href="#!" class="text-h-primary">
-                            <h6>The new Lorem Ipsum is simply</h6>
-                        </a>
-                        <p class="text-muted mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
-                            printer took a galley of type and scrambled it to make a type specimen book.</p>
-                    </div>
-                    <div class="card-body border-top border-bottom">
-                        <ul class="list-inline m-0">
-                            <li class="list-inline-item"><a href="#!" class="text-muted text-h-danger"><i class="feather icon-heart mr-2"></i>Like</a></li>
-                            <li class="list-inline-item"><a href="#!" class="text-muted text-h-primary"><i class="feather icon-message-square mr-2"></i>Comment</a></li>
-                            <li class="list-inline-item"><a href="#!" class="text-muted text-h-primary"><i class="feather icon-share-2 mr-2"></i>Share</a></li>
-                        </ul>
-                    </div>
-                    <div class="card-body">
-                        <div class="row justify-content-between mb-4">
-                            <div class="col-auto"><a href="#!" class="text-muted text-h-primary">Comment (50)</a></div>
-                            <div class="col-auto"><a href="#!" class="text-muted text-h-primary">See All</a></div>
+                        <div class="dt-responsive table-responsive user-profile-list">
+                            <table class="table nowrap mb-2 dataTable ">
+                                <thead>
+                                <tr>
+                                    <th>Curso</th>
+                                    <th>Tarea</th>
+                                    <th>Nota</th>
+                                </tr>
+                                </thead>
+            
+                                <tbody>
+                                    @foreach($ta as $t )
+                                    <tr>
+                                        <td>{{ $t->task->course->name}}</td>
+                                        <td>{{ $t->task->name}}</td>
+                                        <td>{{ $t->note}}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+            
+                            </table>
                         </div>
-                        <div class="media mb-0">
-                            <img src="assets/images/user/avatar-3.jpg" alt="user image" class="img-radius wid-30 align-top m-r-15">
-                            <div class="media-body">
-                                <a href="#!">
-                                    <h6 class="mb-0 text-h-primary">Alex Thompson</h6>
-                                </a>
-                                <p class="m-b-0">Looking Very nice type and scrambled
-                                    <a href="#!" class="text-muted text-h-danger ml-1"><small>Like</small></a>
-                                    <a href="#!" class="text-muted text-h-primary ml-1"><small>Comment</small></a>
-                                </p>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="media mb-0">
-                            <img src="assets/images/user/avatar-1.jpg" alt="user image" class="img-radius wid-40 align-top m-r-15">
-                            <div class="media-body">
-                                <div class="form-group">
-                                    <label class="floating-label" for="comment2">Write comment hear !. . .</label>
-                                    <input type="text" class="form-control" id="comment2">
-                                    <div class="form-icon">
-                                        <button class="btn btn-primary btn-icon">
-                                            <i class="feather icon-message-circle"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="font-weight-normal"><a href="#!" class="text-h-primary text-reset"><b class="font-weight-bolder">Josephin Doe</b></a> posted on your timeline</h5>
-                        <p class="mb-0 text-muted">50 minutes ago</p>
-                        <div class="card-header-right">
-                            <div class="btn-group card-option">
-                                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="feather icon-more-horizontal"></i>
-                                </button>
-                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
-                                    <li class="dropdown-item full-card"><a href="#!"><span><i class="feather icon-maximize"></i> maximize</span><span style="display:none"><i class="feather icon-minimize"></i>
-														Restore</span></a></li>
-                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display:none"><i class="feather icon-plus"></i> expand</span></a>
-                                    </li>
-                                    <li class="dropdown-item reload-card"><a href="#!"><i class="feather icon-refresh-cw"></i> reload</a></li>
-                                    <li class="dropdown-item close-card"><a href="#!"><i class="feather icon-trash"></i> remove</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="#!"><img src="assets/images/profile/bg-3.jpg" alt="" class="img-fluid"></a>
-                    <div class="card-body">
-                        <a href="#!" class="text-h-primary">
-                            <h6>The new Lorem Ipsum is simply</h6>
-                        </a>
-                        <p class="text-muted mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
-                            printer took a galley of type and scrambled it to make a type specimen book.</p>
-                    </div>
-                    <div class="card-body border-top border-bottom">
-                        <ul class="list-inline m-0">
-                            <li class="list-inline-item"><a href="#!" class="text-muted text-h-danger"><i class="feather icon-heart mr-2"></i>Like</a></li>
-                            <li class="list-inline-item"><a href="#!" class="text-muted text-h-primary"><i class="feather icon-message-square mr-2"></i>Comment</a></li>
-                            <li class="list-inline-item"><a href="#!" class="text-muted text-h-primary"><i class="feather icon-share-2 mr-2"></i>Share</a></li>
-                        </ul>
-                    </div>
-                    <div class="card-body">
-                        <div class="row justify-content-between mb-4">
-                            <div class="col-auto"><a href="#!" class="text-muted text-h-primary">Comment (0)</a></div>
-                            <div class="col-auto"><a href="#!" class="text-muted text-h-primary">See All</a></div>
-                        </div>
-                        <div class="media mb-0">
-                            <img src="assets/images/user/avatar-1.jpg" alt="user image" class="img-radius wid-40 align-top m-r-15">
-                            <div class="media-body">
-                                <div class="form-group">
-                                    <label class="floating-label" for="comment3">Write comment hear !. . .</label>
-                                    <input type="text" class="form-control" id="comment3">
-                                    <div class="form-icon">
-                                        <button class="btn btn-primary btn-icon">
-                                            <i class="feather icon-message-circle"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                     
                     </div>
                 </div>
             </div>
@@ -451,7 +280,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4 order-md-1">
+    <div hidden class="col-md-4 order-md-1">
         <div class="card new-cust-card" wire:ignore>
             <div class="card-header">
                 <h5>Compañeros de Curso</h5>
