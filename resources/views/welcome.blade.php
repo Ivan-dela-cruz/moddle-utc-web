@@ -137,9 +137,9 @@
       <h3 class="my-4 text-3xl leading-tight">
         SISTEMA DE GESTION DE ACTIVIDADES Y TAREAS
       </h3>
-      <button class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+      <a href="{{route('download-apk')}}" class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
           Descargar App Android
-      </button>
+      </a>
     </section>
 
     <!-- jQuery if you need it

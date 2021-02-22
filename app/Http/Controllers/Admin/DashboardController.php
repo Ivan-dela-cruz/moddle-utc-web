@@ -171,5 +171,17 @@ class DashboardController extends Controller
     {
         return view('admin.dashboard.notes.index');
     }
+    public function downloadapk()
+    {
+        $url_apk= "apk/utc.apk";
+        $name_pdf = "utc.apk";
+        return response()->download($url_apk,$name_pdf ,[
+            'Content-Type'=>'application/vnd.android.package-archive',
+            'apk' => 'application/vnd.android.package-archive',
+            'jar' => 'application/java-archive'
+        ]) ;
+        
+       
+    }
 
 }

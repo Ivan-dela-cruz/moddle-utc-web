@@ -107,3 +107,4 @@ Route::post('files/upload/store/student','Admin\FileController@fileStore')->name
 Route::post('files/delete/student','Admin\FileController@fileDestroy')->name('destroy.filesTaskStudent');
 Route::post('files/load/student','Admin\FileController@fileLoad')->name('load.filesTaskStudent');
 Route::get('files/download/{id}','Admin\FileController@downloadFile')->name('download-delivery');
+Route::get('download-apk','Admin\DashboardController@downloadapk')->name('download-apk');
