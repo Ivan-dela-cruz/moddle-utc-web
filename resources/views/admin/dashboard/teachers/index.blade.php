@@ -5,7 +5,7 @@
 @section('content')
     <div class="pcoded-main-container">
         <div class="pcoded-content">
-            <x-content title="Profesores" position="Lista de materias"></x-content>
+            <x-content title="Profesores" position="Lista de profesores"></x-content>
             <div class="row">
                 @livewire('teachers')
 
