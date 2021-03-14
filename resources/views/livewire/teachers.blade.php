@@ -61,16 +61,16 @@
                 <table id="user-list-table" class="table nowrap dataTable">
                     <thead>
                     <tr>
-                        <th>Nombres</th>
+                        <th>Profesor</th>
                         <th>DNI</th>
                         <th>Email</th>
-                        <th>Usuario</th>
-                        <th>Profesiòn</th>
+                        <th>Dirección</th>
                         <th>Registrado</th>
                         <th>Estado</th>
                     </tr>
                     </thead>
                     <tbody>
+                       <p hidden> {{\Carbon\Carbon::setLocale('es')}}</p>
                     @foreach($teachers as $teacher)
                         <tr>
                             <td>
@@ -78,26 +78,34 @@
                                     <img src="{{asset($teacher->url_image)}}" alt="user image" class="img-radius align-top m-r-15" style="width:40px;">
                                     <div class="d-inline-block">
                                         <h6 class="m-b-0">{{$teacher->name}} {{$teacher->last_name}}</h6>
-                                        <p class="m-b-0">{{$teacher->email}}</p>
+                                        <p class="m-b-0">{{$teacher->profession}}</p>
                                     </div>
                                 </div>
                             </td>
                             <td>{{$teacher->dni}}</td>
-                            <td>{{$teacher->profession}}</td>
                             <td>{{$teacher->email}}</td>
-                            <td>{{$teacher->user->name}}</td>
-                            <td>{{$teacher->created_at}}</td>
+                            <td>
+                                <div class="d-inline-block">
+                                    <p class="m-b-0">
+                                        {{$teacher->user->address->parish->canton->province->name_province}} - 
+                                        {{$teacher->user->address->parish->canton->name_canton}}
+                                    </p>
+                                    <small class="m-b-0">{{$teacher->user->address->address}}</small>
+                                </div>
+                                
+                            </td>
+                            <td>{{\Carbon\Carbon::parse($teacher->created_at)->diffForHumans()}}</td>
                             <td>
                                 @if ($teacher->status === 1)
                                     <span
                                         class="badge badge-light-success">
-                           Activo
-                        </span>
+                                        Activo
+                                    </span>
                                 @else
                                     <span
                                         class="badge badge-light-danger">
-                                Inactivo
-                            </span>
+                                        Inactivo
+                                    </span>
                                 @endif
                                 <div class="overlay-edit">
                                     @can('update_techier')

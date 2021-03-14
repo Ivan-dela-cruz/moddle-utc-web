@@ -102,15 +102,15 @@ $(document).ready(function() {
                         '<label>Barra de posición</label>' +
                     '</div>' +
                 '</div>' +
-                '<a href="https://clinicasourilatacunga.com/" target="_blank" class="btn btn-success btn-block m-r-15 m-t-10 m-b-10">Web</a>' +
-                '<a href="http://ableproadmin.com/doc-7.0/" target="_blank" class="btn btn-primary btn-block m-r-15 m-t-5 m-b-10 ">Provedor Diseño</a>' +
+                '<a href="http://www.utc.edu.ec" target="_blank" class="btn btn-success btn-block m-r-15 m-t-10 m-b-10">Web UTC</a>' +
+                '<a href="https://www.facebook.com/Ingeniería-En-Sistemas-UTC-La-Maná-385598668877914" target="_blank" class="btn btn-primary btn-block m-r-15 m-t-5 m-b-10 "><i class="feather icon-facebook"></i> Extensión La Mana </a>' +
                 '<div class="text-center">' +
-                    '<span class="text-center f-18 m-t-15 m-b-15 d-block">!Gracias por preferirnos!</span>' +
-                    '<a href="https://www.facebook.com/carlos.delacruz.12576049" target="_blank" class="btn text-white bg-facebook btn-icon m-b-20">' +
+                    '<span class="text-center f-18 m-t-15 m-b-15 d-block">Elaborado por:</span>' +
+                    '<a href="https://www.facebook.com/darwincs22/" target="_blank" class="btn text-white bg-facebook btn-icon m-b-20">' +
                         '<i class="feather icon-facebook"></i>' +
                     '</a>' +
-                    '<a href="https://github.com/Ivan-dela-cruz" target="_blank" class="btn text-white bg-twitter btn-icon m-l-20 m-b-20">' +
-                        '<i class="feather icon-github"></i>' +
+                    '<a href="https://www.facebook.com/georginagabriela.suarezalvarado" target="_blank" class="btn text-white bg-twitter btn-icon m-l-20 m-b-20">' +
+                        '<i class="feather icon-facebook"></i>' +
                     '</a>' +
                 '</div>' +
             '</div>' +
@@ -195,15 +195,15 @@ $('body').append('' +
                         '<label>Barra de posición</label>' +
                     '</div>' +
                 '</div>' +
-                '<a href="https://clinicasourilatacunga.com/" target="_blank" class="btn btn-success btn-block m-r-15 m-t-10 m-b-10">Web</a>' +
-                '<a href="http://ableproadmin.com/doc-7.0/" target="_blank" class="btn btn-primary btn-block m-r-15 m-t-5 m-b-10 ">Provedor Diseño</a>' +
+                '<a href="http://www.utc.edu.ec" target="_blank" class="btn btn-success btn-block m-r-15 m-t-10 m-b-10">Web UTC</a>' +
+                '<a href="https://www.facebook.com/Ingeniería-En-Sistemas-UTC-La-Maná-385598668877914" target="_blank" class="btn btn-primary btn-block m-r-15 m-t-5 m-b-10 "><i class="feather icon-facebook"></i> Extensión La Mana </a>' +
                 '<div class="text-center">' +
-                    '<span class="text-center f-18 m-t-15 m-b-15 d-block">!Gracias por preferirnos!</span>' +
-                    '<a href="https://www.facebook.com/carlos.delacruz.12576049" target="_blank" class="btn text-white bg-facebook btn-icon m-b-20">' +
+                    '<span class="text-center f-18 m-t-15 m-b-15 d-block">Elaborado por: </span>' +
+                    '<a href="https://www.facebook.com/darwincs22/" target="_blank" class="btn text-white bg-facebook btn-icon m-b-20">' +
                         '<i class="feather icon-facebook"></i>' +
                     '</a>' +
-                    '<a href="https://github.com/Ivan-dela-cruz" target="_blank" class="btn text-white bg-twitter btn-icon m-l-20 m-b-20">' +
-                        '<i class="feather icon-github"></i>' +
+                    '<a href="https://www.facebook.com/georginagabriela.suarezalvarado" target="_blank" class="btn text-white bg-twitter btn-icon m-l-20 m-b-20">' +
+                        '<i class="feather icon-facebook"></i>' +
                     '</a>' +
                 '</div>' +
             '</div>' +
